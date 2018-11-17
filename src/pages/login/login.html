@@ -1,0 +1,42 @@
+<ion-content padding id="login">
+  <button ion-button class="back" (click)="back_home()">Back</button>
+  <div style=" width: 100%;">
+    <img class="logo_system" src="assets/imgs/cf_simbolo.png">
+    <hr>
+    <hr>
+  </div>
+  
+  <div class="loginCenter">
+    <h3>Tela de Acesso</h3>
+    <form [formGroup]="formLogin" novalidate (ngSubmit)="login()">
+    <ion-list>
+      <ion-item no-lines>
+        <ion-label>
+          <ion-icon name="contact"></ion-icon>
+        </ion-label>
+          <ion-input placeholder="Username" type="text" formControlName="username"></ion-input>
+        </ion-item>
+
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formLogin.get('username').hasError('required') && formLogin.get('username').touched">
+          <div >
+            Por favor informe o usuário!
+          </div>
+      </ion-item>
+
+        <ion-item>
+        <ion-label>
+          <ion-icon name="lock"></ion-icon>
+        </ion-label>
+          <ion-input placeholder="Password" type="password" formControlName="password"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formLogin.get('password').hasError('required') && formLogin.get('password').touched">
+          <div >
+            Por favor informe sua senha!
+          </div>
+      </ion-item>
+        <button ion-button block color="primary" type="submit" [disabled]="!formLogin.valid">Login</button>
+      <h6>Esqueci minha senha</h6>
+    </ion-list>
+    </form>
+  </div>
+</ion-content>

@@ -1,0 +1,15 @@
+<ion-content padding id="welcome">
+    <div class="menu">
+        <div class="tag_name" *ngIf="userDatails">
+            <h5>Olá, {{userDatails.client_name}} ! </h5>
+        </div>
+
+        <button ion-button menuToggle right icon-only >
+                <ion-icon name="menu"></ion-icon>
+              </button>
+    </div>
+
+    <div class="mid_align">
+        <img src="assets/imgs/logo2.png" class="welcome_logo" (click)="goTo()">
+    </div>
+</ion-content>

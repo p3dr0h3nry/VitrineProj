@@ -1,0 +1,48 @@
+<!-- Conteudo do menuToggle -->
+<!-- <ion-nav [root]="WelcomePage"></ion-nav> -->
+
+<ion-menu [content]="conteudo" side="right" *ngIf="!userDatails" cache-view="false">
+  <div *ngIf="thisPlace=='CentroFashionPage'">
+    <img src="assets/imgs/cf_simbolo.png">
+  </div>
+  <ion-content>
+
+    <!-- <img src="assets/imgs/cf_simbolo.png"> -->
+    <ion-list>
+      <button style="color:rgb(66, 66, 66);" ion-item (click)="login()" detail-none>
+        <ion-icon name="log-in"></ion-icon>Login
+      </button>
+      <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="signup()" detail-none>
+        <ion-icon name="contact"></ion-icon> Cadastro
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-menu class="cf_menu" [content]="conteudo" side="right" *ngIf="userDatails">
+  <ion-content>
+    <div *ngIf='thisPlace=="CentroFashionPage"'>
+      <img src="assets/imgs/cf_simbolo.png">
+      <div style="padding: 10px;">
+        <Span>Olá, {{userDatails.client_name}}!!</Span>
+      </div>
+
+    </div>
+    <!-- <img src="assets/imgs/cf_simbolo.png"> -->
+    <ion-list>
+      <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="createProfile()" detail-none>
+        <ion-icon name="ios-add-circle-outline"></ion-icon>
+        <span>Cadastrar Loja</span>
+      </button>
+
+      <button style="color:rgb(66, 66, 66);" ion-item (click)="logout()" detail-none>
+        <ion-icon name="log-out"></ion-icon>
+        <span>Logout</span>
+      </button>
+
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+<ion-nav [root]="rootPage" #conteudo swipeBackEnable="true"></ion-nav>
+<!-- Fim conteudo menuToggle -->

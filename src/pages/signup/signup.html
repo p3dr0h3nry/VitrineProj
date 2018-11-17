@@ -1,0 +1,140 @@
+<ion-content padding id="signup">
+  <button ion-button class="back" (click)="back_home()">Back</button>
+  <div style=" width: 100%;">
+    <img class="logo_system" src="assets/imgs/cf_simbolo.png">
+    <hr>
+    <hr>
+  </div>
+
+  <div class="loginCenter">
+    <h3>Cadastro</h3>
+    <!-- <form #singupForm="ngForm" (ngSubmit)="signUp()"> -->
+    <form [formGroup]="formSignup" novalidate (ngSubmit)="signUp()">
+      <ion-list>
+
+        <ion-item no-lines>
+          <ion-input placeholder="*Nome" id="name" formControlName="name" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('name').hasError('required')) && formSignup.get('name').touched">
+          <div>Por favor informe seu nome!</div>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-input placeholder="CPF" formControlName="cpf" [brmasker]="{mask:'000.000.000-00',len:14}" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('cpf').hasError('required')) && formSignup.get('cpf').touched">
+          <div>Por favor informe seu CPF!</div>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-input placeholder="Telefone 1" formControlName="phone1" [brmasker]="{mask:'(00)00000-0000',len:14}" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('phone1').hasError('required')) && formSignup.get('phone1').touched">
+          <div>Por favor informe seu contato!</div>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-input placeholder="Telefone 2" Name="phone2" [brmasker]="{mask:'(00)00000-0000',len:14}" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-input placeholder="Estado" formControlName="state" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('state').hasError('required')) && formSignup.get('state').touched">
+          <div>Por favor informe o estado!</div>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-input placeholder="Cidade" formControlName="city" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('city').hasError('required')) && formSignup.get('city').touched">
+          <div>Por favor informe sua cidade!</div>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-input placeholder="Bairro" formControlName="neigh" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('neigh').hasError('required')) && formSignup.get('neigh').touched">
+          <div>Por favor informe seu bairro!</div>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-input placeholder="Endereço" formControlName="address" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('address').hasError('required')) && formSignup.get('address').touched">
+          <div>Por favor informe seu endereço!</div>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-input placeholder="Número" formControlName="number" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('number').hasError('required')) && formSignup.get('number').touched">
+          <div>Por favor informe o Nº!</div>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-input placeholder="Complemento" name="comp" type="comp"></ion-input>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-input placeholder="CEP" formControlName="zip" [brmasker]="{mask:'00.000-000',len:10}" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('zip').hasError('required')) && formSignup.get('zip').touched">
+          <div>Por favor informe seu CEP!</div>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-input placeholder="Email" formControlName="email" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('email').hasError('required') || formSignup.get('email').hasError('pattern')) && formSignup.get('email').touched">
+          <div *ngIf="(formSignup.get('email').hasError('required')) && formSignup.get('email').touched">
+            Por favor informe um email!
+          </div>
+          <div *ngIf="(formSignup.get('email').hasError('pattern')) && formSignup.get('email').touched">
+            Informe um email válido!
+          </div>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <ion-icon name="contact"></ion-icon>
+          </ion-label>
+          <ion-input placeholder="Usuário" formControlName="username" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('username').hasError('required')||formSignup.get('username').hasError('minlength') ) && formSignup.get('username').touched">
+
+          <div *ngIf="(formSignup.get('username').hasError('required')) && formSignup.get('username').touched">
+            Por favor informe um usuário!
+          </div>
+          <div *ngIf="(formSignup.get('username').hasError('minlength')) && formSignup.get('username').touched">
+            informe um usuário de no mínimo 4 digitos!
+          </div>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <ion-icon name="lock"></ion-icon>
+          </ion-label>
+          <ion-input placeholder="Senha" formControlName="password" type="password"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('password').hasError('required')|| formSignup.get('password').hasError('minlength')) && formSignup.get('password').touched">
+            <div *ngIf="(formSignup.get('password').hasError('required')) && formSignup.get('password').touched">
+                Por favor informe sua senha!
+              </div>
+              <div *ngIf="(formSignup.get('password').hasError('minlength')) && formSignup.get('password').touched">
+                Informe uma senha de no mínimo 8 dígitos!
+              </div>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <ion-icon name="lock"></ion-icon>
+          </ion-label>
+          <ion-input placeholder="Repetir senha" formControlName="repassword" type="password"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('repassword').hasError('required') || formSignup.get('repassword').hasError('minlength')) && formSignup.get('repassword').touched">
+            <div *ngIf="(formSignup.get('repassword').hasError('required')) && formSignup.get('repassword').touched">
+                Reescreva sua senha
+              </div>
+              <div *ngIf="(formSignup.get('repassword').hasError('minlength')) && formSignup.get('repassword').touched">
+                Informe uma senha de no mínimo 8 dígitos!
+              </div>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formSignup.hasError('notSame')">
+            <div>
+                Senhas não conferem!
+              </div>
+        </ion-item>
+        <button ion-button block color="primary" type="submit"[disabled]="!formSignup.valid" >Cadastrar-se</button>
+        <!-- [disabled]="!formSignup.valid" -->
+        
+      </ion-list>
+    </form>
+  </div>
+</ion-content>

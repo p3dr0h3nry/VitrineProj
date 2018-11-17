@@ -1,0 +1,21 @@
+page-create-profile {
+    #profile{
+        background-color:azure;
+        height: 100%;
+        width: 100%;
+        margin-top: 60px;
+    }
+    ion-header{
+        ion-toolbar{
+            .header_logo{
+                float: left;
+                //margin-left: 10px;
+                width: 150px;
+                margin-top: auto;
+                margin-bottom: auto;
+            }
+        }
+    }
+
+}
+
