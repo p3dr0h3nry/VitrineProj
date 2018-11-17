@@ -39,4 +39,15 @@ export class AuthServiceProvider {
       }
     })
   }
+  getAllCategorys(from){
+    return new Promise((resolve, reject) => {
+      let headers = new Headers();
+      console.log(apiUrl + "getAllCategorys",JSON.stringify(from));
+      this.http.post(apiUrl + "getAllCategorys",JSON.stringify(from)).subscribe(res => {
+        resolve(res);
+      }), (err) => {
+        reject(err);
+      }
+    })
+  }
 }

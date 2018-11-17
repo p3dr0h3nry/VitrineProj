@@ -75,7 +75,8 @@ import { MyApp } from './app.component';
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthServiceProvider,
-    MyApp
+    MyApp,
+    CreateProfilePage
     
   ]
 })

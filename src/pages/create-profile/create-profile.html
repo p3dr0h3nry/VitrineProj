@@ -2,7 +2,39 @@
 </custom-header>
 
 <ion-content padding id="profile">
-<div style=" text-align: center; background-color: white; width: 100%;">
-  <h2> Criar Perfil</h2>
-</div>
+  <h3 style="text-align: center;">Criar Perfil</h3>
+  <form [formGroup]="formSignup" novalidate (ngSubmit)="createProfile()">
+    <ion-list>
+
+      <ion-item no-lines>
+        <ion-input placeholder="Nome da loja" id="name" formControlName="name" type="text"></ion-input>
+      </ion-item>
+      <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('name').hasError('required')) && formSignup.get('name').touched">
+        <div>Por favor informe o nome da loja</div>
+
+      </ion-item>
+      <ion-item no-lines>
+        <!-- //<ion-card style="width: 100%;"> -->
+        <div class="title">
+          <h2>
+              Categorias
+          </h2>
+          
+          </div>
+          <hr>
+          <div *ngFor="let cat of dataCategory">
+            <ion-item class="checkBox">
+              <ion-label>{{cat.cat_name}}</ion-label>
+              <ion-checkbox color="primary" formControlName="category" (ionChange)="selectCategory(cat.cat_id,$event)"></ion-checkbox>
+            </ion-item>
+          </div>
+        
+        <!-- </ion-card> -->
+      </ion-item>
+      
+      <button ion-button block color="primary" type="submit" [disabled]="!formSignup.valid">Cadastrar-se</button>
+      <!-- [disabled]="!formSignup.valid" -->
+
+    </ion-list>
+  </form>
 </ion-content>

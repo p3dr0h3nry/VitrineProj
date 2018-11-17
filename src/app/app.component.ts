@@ -18,27 +18,28 @@ import { CreateProfilePage } from '../pages/create-profile/create-profile';
 })
 export class MyApp implements OnInit {
   rootPage: any = WelcomePage;
-  @ViewChild(Nav) nav : Nav;
+  @ViewChild(Nav) nav: Nav;
   public userDatails: any;
   private thisPlace: any = null;
   userAtive;
+  ;
   //rootPage =Menu; //busca o menu na pag menu
 
 
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public app: App, public menuCtrl: MenuController, public events: Events) {
-    this.userAtive=false;
+    this.userAtive = false;
     this.events.unsubscribe('local');
     if (localStorage.getItem('user')) {
-      this.userAtive=true;
+      this.userAtive = true;
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).user;
 
     }
-    
+
     this.events.subscribe('Headerlocal', (data) => {
       if (localStorage.getItem('user')) {
-        this.userAtive=true;
+        this.userAtive = true;
         this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
         this.userDatails = JSON.parse(this.userDatails).user;
       }
@@ -49,7 +50,7 @@ export class MyApp implements OnInit {
 
   }
   ngOnInit() {
-    
+
 
   }
 
@@ -78,17 +79,21 @@ export class MyApp implements OnInit {
   createProfile() {
     ///this.navCtrl.push(Menu);
     this.menuCtrl.toggle();
-//    this.nav.setRoot(CentroFashionPage);
+    localStorage.setItem('from', this.thisPlace);
     this.nav.push(CreateProfilePage);
-    //this.rootPage = CentroFashionPage;
-    //this.navCtrl.push(CreateProfilePage);
+    // setTimeout(() => {
+      //this.events.publish('Headerlocal',"CentroFashionPage");
+      
+    //}, 500);
+    //this.nav.push(CreateProfilePage);
+
 
   }
 
   login(page: any) {
 
     this.menuCtrl.toggle();
-    
+
     this.app.getActiveNav().setRoot(LoginPage);
     //this.navCtrl.push(LoginPage);
     //this.menuCtrl.close();
@@ -104,17 +109,17 @@ export class MyApp implements OnInit {
     this.menuCtrl.toggle();
     //this.userAtive=false;
     //this.events.publish('Headerlocal',"WelcomePage");
-    this.nav.setRoot(WelcomePage,{},{animate: true, direction: "back"});
-    
+    this.nav.setRoot(WelcomePage, {}, { animate: true, direction: "back" });
 
-    
+
+
   }
-  backToWelcome(){
+  backToWelcome() {
     this.menuCtrl.toggle();
-    setTimeout(()=>{
-      this.events.publish('Headerlocal',"WelcomePage");
-      this.nav.setRoot(WelcomePage,{},{animate: true, direction: "back"});
-    },300);
+    setTimeout(() => {
+      this.events.publish('Headerlocal', "WelcomePage");
+      this.nav.setRoot(WelcomePage, {}, { animate: true, direction: "back" });
+    }, 300);
 
   }
 

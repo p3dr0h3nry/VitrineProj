@@ -17,6 +17,7 @@ export class Menu {
   public rootPage: any= WelcomePage;
   public userDatails: any = null;
   private thisPlace:any =null;
+  private createFrom: CreateProfilePage;
 
   constructor(public navCtrl: NavController, public menuCtrl: MenuController, public viewCtrl:ViewController, public events:Events) {
     
@@ -38,9 +39,11 @@ export class Menu {
   // Criação do perfil da loja
   createProfile(){
     ///this.navCtrl.push(Menu);
-    this.events.publish('Headerlocal',"CentroFashionPage");
-    this.navCtrl.push(CreateProfilePage);
-
+    //this.createFrom.SetFrom("CentroFashionPage");
+    // setTimeout(() => {
+    //   this.events.publish('Headerlocal',"CentroFashionPage");
+    //   this.navCtrl.push(CreateProfilePage);
+    // }, 500);
   }
 
   login(page: any) {

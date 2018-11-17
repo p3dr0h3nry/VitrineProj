@@ -19,6 +19,7 @@ export class CentroFashionPage {
       
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).user;
+      console.log(this.userDatails);
     }
   }
 

@@ -1,9 +1,69 @@
 page-create-profile {
+    // #profile{
+    //     background-color: rgb(151, 151, 151);
+    //     height: 100%;
+    //     width: 100%;
+    //     margin-top: 60px;
+    // }
     #profile{
-        background-color:azure;
+        //background-color: color($colors,menu_orange)!important;
+        background-color: rgb(151, 151, 151);
         height: 100%;
         width: 100%;
         margin-top: 60px;
+        .logo_system{
+            width: 100px;
+            margin-left: 35%;
+        }
+        .loginCenter{
+          // margin-top: 10%;
+            float: center;
+           // margin-bottom: auto;
+           background-color: color($colors,menu_orange)!important;
+           padding: 20px; 
+           h3{
+                text-align: center;
+                padding: 10px;
+                color: color($colors,dark)!important;
+            }
+            h6{
+                text-align: right;
+                color: black;
+            }
+    
+        }
+        .button{
+            background-color: color($colors,wel_orange)!important;
+            border-radius: 10px;
+          }
+        .back{
+            background-color: color($colors,wel_orange)!important;
+            border-radius: 10px;
+        }
+        ion-item.checkBox{
+            border-radius: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            //background-color: color($colors,menu_orange)!important;
+        }
+        ion-item{
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            //background-color: color($colors,menu_orange)!important;
+        }
+
+        .title{
+            width: 100%; 
+            text-align: center;
+            //border-radius: 10px;
+            //margin-bottom: 10px;
+            //background-color: color($colors,menu_orange)!important;
+            h2{
+                color: color($colors,primary);
+            }
+        }
+    
     }
     ion-header{
         ion-toolbar{
