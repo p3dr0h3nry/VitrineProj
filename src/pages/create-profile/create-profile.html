@@ -5,33 +5,108 @@
   <h3 style="text-align: center;">Criar Perfil</h3>
   <form [formGroup]="formSignup" novalidate (ngSubmit)="createProfile()">
     <ion-list>
-
       <ion-item no-lines>
         <ion-input placeholder="Nome da loja" id="name" formControlName="name" type="text"></ion-input>
       </ion-item>
-      <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="(formSignup.get('name').hasError('required')) && formSignup.get('name').touched">
+      <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formSignup.get('name').hasError('required') && formSignup.get('name').touched">
         <div>Por favor informe o nome da loja</div>
-
-      <ion-item no-lines>
+      </ion-item>
+      <div class="contact">
+        <!-- <ion-item no-lines> -->
         <!-- //<ion-card style="width: 100%;"> -->
         <div class="title">
           <h2>
-              Categorias
+            Setor
           </h2>
-          
-          </div>
-          <hr>
-          <div *ngFor="let cat of dataCategory">
-            <ion-item class="checkBox">
-              <ion-label>{{cat.cat_name}}</ion-label>
-              <ion-checkbox color="primary" formControlName="category" (ionChange)="selectCategory(cat.cat_id,$event)"></ion-checkbox>
-            </ion-item>
-          </div>
-        
-        <!-- </ion-card> -->
-      </ion-item>
-      
-      <button ion-button block color="primary" type="submit" [disabled]="!formSignup.valid">Cadastrar-se</button>
+        </div>
+        <hr>
+        <div *ngFor="let sector of sectors; let i=index" style="margin:10px;">
+          <ion-item class="checkBox" no-lines color="{{sector.sector_color}}" style="border-radius: 10px; ">
+            <ion-label>{{sector.sector_name}}</ion-label>
+            <ion-toggle color="{{sector.sector_color}}" formControlName="sectorName"
+             [ngModel]="checkedIdx1==i"
+            (ngModelChange)="$event ? checkedIdx1=i : checkedIdx1=-1"></ion-toggle>
+
+          </ion-item>
+        </div>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formSignup.get('sectorName').hasError('required') && formSignup.get('sectorName').touched">
+          <div>Por favor informe o setor</div>
+        </ion-item>
+        <hr>
+        <div style=" margin: 10px;">
+          <h5>Informe o endereço no setor</h5>
+          <ion-item no-lines style="background-color: rgb(238, 238, 238);">
+            <ion-input placeholder="Endereço" id="address" formControlName="address" type="text"></ion-input>
+          </ion-item>
+          <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formSignup.get('address').hasError('required') && formSignup.get('address').touched">
+            <div>Por favor informe o endereço</div>
+          </ion-item>
+        </div>
+      </div>
+      <div class="contact">
+        <div class="title">
+          <h2>
+            Contatos
+          </h2>
+        </div>
+        <hr>
+        <ion-item no-lines>
+          <ion-label>
+            <ion-icon name="logo-instagram" color="primary"></ion-icon>
+          </ion-label>
+          <ion-input placeholder="@instagram" id="instagram" formControlName="instagram" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-label>
+            <ion-icon name="logo-twitter" color="primary"></ion-icon>
+          </ion-label>
+          <ion-input placeholder="@twitter" id="twitter" formControlName="twitter" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-label>
+            <ion-icon name="logo-facebook" color="primary"></ion-icon>
+          </ion-label>
+          <ion-input placeholder="@facebook" id="face" formControlName="face" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-label>
+            <ion-icon name="call" color="primary"></ion-icon>
+          </ion-label>
+          <ion-input placeholder="Telefone" formControlName="phone" [brmasker]="{mask:'(00)00000-0000',len:14}" id="phone" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines>
+          <ion-label>
+            <ion-icon name="at" color="primary"></ion-icon>
+          </ion-label>
+          <ion-input no-lines placeholder="Email" formControlName="email" id="email" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formSignup.get('email').hasError('pattern') && formSignup.get('email').touched">
+            <div>Informe um email válido</div>
+        </ion-item>
+      </div>
+
+      <div class="contact">
+        <!-- <ion-item no-lines> -->
+        <!-- //<ion-card style="width: 100%;"> -->
+        <div class="title">
+          <h2>
+            Categorias
+          </h2>
+        </div>
+        <hr>
+        <div *ngFor="let cat of dataCategory; let i=index">
+          <ion-item class="checkBox" no-lines>
+            <ion-label>{{cat.cat_name}}</ion-label>
+            <ion-checkbox color="primary"
+            [ngModel]="checkedIdx==i" [ngModelOptions]="{standalone: true}" (ionchange)="setCategory(cat_id)" (ngModelChange)="$event ? checkedIdx =i : checkedIdx=-1;setCategory(cat.cat_id)"></ion-checkbox>
+          </ion-item>
+          <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formSignup.get('category').hasError('required') && formSignup.get('category').touched">
+            <div>Por favor informe uma categoria</div>
+          </ion-item>
+        </div>
+
+      </div>
+      <button ion-button block color="primary" type="submit">Cadastrar-se</button>
       <!-- [disabled]="!formSignup.valid" -->
 
     </ion-list>

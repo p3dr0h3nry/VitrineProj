@@ -7,7 +7,7 @@ page-create-profile {
     // }
     #profile{
         //background-color: color($colors,menu_orange)!important;
-        background-color: rgb(151, 151, 151);
+        background-color: rgb(238, 238, 238);
         height: 100%;
         width: 100%;
         margin-top: 60px;
@@ -50,7 +50,6 @@ page-create-profile {
             border-radius: 10px;
             margin-top: 10px;
             margin-bottom: 10px;
-            //background-color: color($colors,menu_orange)!important;
         }
 
         .title{
@@ -62,6 +61,14 @@ page-create-profile {
             h2{
                 color: color($colors,primary);
             }
+        }
+        .contact{
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background-color: white;
         }
     
     }

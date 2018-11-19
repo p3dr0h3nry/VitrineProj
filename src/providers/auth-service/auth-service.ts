@@ -50,4 +50,17 @@ export class AuthServiceProvider {
       }
     })
   }
+
+  getSectors(from){
+    return new Promise((resolve, reject) => {
+      let headers = new Headers();
+      console.log(apiUrl + "getSectors",JSON.stringify(from));
+      this.http.post(apiUrl + "getSectors",JSON.stringify(from)).subscribe(res => {
+        resolve(res);
+      }), (err) => {
+        reject(err);
+      }
+    })
+  }
+
 }
