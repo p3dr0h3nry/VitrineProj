@@ -20,14 +20,15 @@
           </h2>
         </div>
         <hr>
-        <div *ngFor="let sector of sectors; let i=index" style="margin:10px;">
-          <ion-item class="checkBox" no-lines color="{{sector.sector_color}}" style="border-radius: 10px; ">
-            <ion-label>{{sector.sector_name}}</ion-label>
-            <ion-toggle color="{{sector.sector_color}}" formControlName="sectorName"
-             [ngModel]="checkedIdx1==i"
-            (ngModelChange)="$event ? checkedIdx1=i : checkedIdx1=-1"></ion-toggle>
-
-          </ion-item>
+        <div *ngFor="let sec of sectors; let i=index" style="margin:10px;">
+          <ion-item class="checkBox" no-lines color="{{sec.sector_color}}" style="border-radius: 10px; ">
+            <ion-label>{{sec.sector_name}}</ion-label>
+            <!-- <ion-toggle color="{{sector.sector_color}}" formControlName="sectorName"
+             [ngModel]="checkedIdx1==i" 
+            (ngModelChange)="$event ? checkedIdx1=i : checkedIdx1=-1" (ionChange)="setSector(sector.sector_id)"></ion-toggle> -->
+              <ion-checkbox color="{{sec.sector_color}}" [ngModel]="checkedIdx1==i" [ngModelOptions]="{standalone: true}"
+                (ngModelChange)="$event ? checkedIdx1 =i : checkedIdx1=-1;setSector(sec.sector_id)"></ion-checkbox>
+            </ion-item>
         </div>
         <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formSignup.get('sectorName').hasError('required') && formSignup.get('sectorName').touched">
           <div>Por favor informe o setor</div>
@@ -72,7 +73,8 @@
           <ion-label>
             <ion-icon name="call" color="primary"></ion-icon>
           </ion-label>
-          <ion-input placeholder="Telefone" formControlName="phone" [brmasker]="{mask:'(00)00000-0000',len:14}" id="phone" type="text"></ion-input>
+          <ion-input placeholder="Telefone" formControlName="phone" [brmasker]="{mask:'(00)00000-0000',len:14}" id="phone"
+            type="text"></ion-input>
         </ion-item>
         <ion-item no-lines>
           <ion-label>
@@ -81,7 +83,7 @@
           <ion-input no-lines placeholder="Email" formControlName="email" id="email" type="text"></ion-input>
         </ion-item>
         <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formSignup.get('email').hasError('pattern') && formSignup.get('email').touched">
-            <div>Informe um email válido</div>
+          <div>Informe um email válido</div>
         </ion-item>
       </div>
 
@@ -97,8 +99,8 @@
         <div *ngFor="let cat of dataCategory; let i=index">
           <ion-item class="checkBox" no-lines>
             <ion-label>{{cat.cat_name}}</ion-label>
-            <ion-checkbox color="primary"
-            [ngModel]="checkedIdx==i" [ngModelOptions]="{standalone: true}" (ionchange)="setCategory(cat_id)" (ngModelChange)="$event ? checkedIdx =i : checkedIdx=-1;setCategory(cat.cat_id)"></ion-checkbox>
+            <ion-checkbox color="primary" [ngModel]="checkedIdx==i" [ngModelOptions]="{standalone: true}" (ionchange)="setCategory(cat_id)"
+              (ngModelChange)="$event ? checkedIdx =i : checkedIdx=-1;setCategory(cat.cat_id)"></ion-checkbox>
           </ion-item>
           <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formSignup.get('category').hasError('required') && formSignup.get('category').touched">
             <div>Por favor informe uma categoria</div>

@@ -27,9 +27,9 @@ export class CreateProfilePage {
   sectorChecked=0;
   sectors:any;
   checkedIdx =-1;
-  checkedIdx1 =5;
+  checkedIdx1 =-1;
   sec_id=0;
-  status=false;
+  status=1;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -59,7 +59,7 @@ export class CreateProfilePage {
           //console.log("Parse+stringify: " + this.responseGet);
           this.responseGet = JSON.parse(this.responseGet);
           this.sectors = this.responseGet.sectorsData;
-          //console.log(this.dataCategory);
+          console.log(this.sectors);
         });
         
        }
@@ -77,7 +77,7 @@ export class CreateProfilePage {
       face:  [''],
       phone: [''],
       address: new FormControl('',[Validators.required]),
-      sectorName: new FormControl(false,[Validators.required]),
+      sectorName: new FormControl('',[Validators.required]),
       email: new FormControl('', [ Validators.pattern(EMAILPATTERN)]),
 
       // repassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
@@ -91,12 +91,30 @@ setCategory(id){
   console.log("categoria"+id);
   this.categoryChecked=id;
 }
-setSector(id,i,index){
-  console.log(this.checkedIdx1);
-  console.log("sector:"+id+"-i="+i+"-index="+index);
-  this.sectorChecked=id;
+setSector(id){
+  console.log(id);
+
+  this.sectors.forEach(sect => {
+    console.log("id:"+id+"sec Id:"+sect.sector_id)
+    if(sect.sector_id==id){
+      sect.sector_checked=1;
+    }else{
+      sect.sector_checked=0;
+    }
+  });
+    // for(let i=0; this.sectors.lenght; i++){
+    //   console.log("id:"+id+"sec Id:"+this.sectors[i].sector_id)
+    //   if(this.sectors[i].sector_id==id){
+    //     this.sectors[i].sector_checked=1;
+    //   }else{
+    //     this.sectors[i].sector_checked=0;
+    //   }
+      
+    }
+
   
-}
+  
+
 createProfile(){
   // falta inserir o array de check no formulario
   //console.log(this.categoryChecked);
