@@ -41,11 +41,13 @@
     </div>
     <!-- <img src="assets/imgs/cf_simbolo.png"> -->
     <ion-list>
-      <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="createProfile()" detail-none>
+        <!-- *ngIf="profileAtive" -->
+      <div  *ngIf="userDatails">
+      <button *ngIf="!userDatails.prof_id"  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="createProfile()" detail-none>
         <ion-icon name="ios-add-circle-outline"></ion-icon>
         <span>Cadastrar Loja</span>
       </button>
-
+    </div>
       <button style="color:rgb(66, 66, 66);" ion-item (click)="logout()" detail-none>
         <ion-icon name="log-out"></ion-icon>
         <span>Logout</span>

@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler, ViewController } from 'ionic-angular';
 //import { MyApp } from './app.component';
 
 import { AboutPage } from '../pages/about/about';
@@ -40,6 +40,7 @@ import { MyApp } from './app.component';
     SignupPage,
     Menu,
     CreateProfilePage
+    
     //BrMaskerModule
     //Dialogs
 
@@ -49,6 +50,7 @@ import { MyApp } from './app.component';
     IonicModule.forRoot(MyApp),
     BrMaskerModule,
     HttpModule,
+    
     //Dialogs
   ],
   bootstrap: [IonicApp],
@@ -58,7 +60,7 @@ import { MyApp } from './app.component';
     ContactPage,
     HomePage,
     TabsPage,
-
+    
     //Modulos do sistema
     WelcomePage,
     CentroFashionPage,

@@ -5,6 +5,7 @@ import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms'
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { Subscription } from 'rxjs/Subscription';
 import { CentroFashionPage } from '../centro-fashion/centro-fashion';
+
 /**
  * Generated class for the CreateProfilePage page.
  *
@@ -19,66 +20,77 @@ import { CentroFashionPage } from '../centro-fashion/centro-fashion';
 })
 export class CreateProfilePage {
   private userDatails: any;
-  public formSignup: FormGroup;
+  public formProfile: FormGroup;
   responseGet: any;
   dataCategory: any;
   public thisPlace: any;
-  categoryChecked=0;
-  sectorChecked=0;
-  sectors:any;
-  checkedIdx =-1;
-  checkedIdx1 =-1;
-  sec_id=0;
-  status=1;
+  categoryChecked;
+  sectorChecked;
+  sectors: any;
+  checkedIdx = -1;
+  checkedIdx1 = -1;
+
+  reponseData: any;
+  data: any;
+  dataProfile:any;
+  dataError:any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
     private fBuilder: FormBuilder,
     public authServiceProvider: AuthServiceProvider,
-    private alertController: AlertController) {
+    private alertController: AlertController,
+    private alertCtrl: AlertController,
+    ) {
+
+      if(localStorage.getItem('user')){
+      
+        this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
+        this.userDatails = JSON.parse(this.userDatails).user;
+        console.log(this.userDatails);
+      }
 
 
+    if (localStorage.getItem('from')) {
 
-      if (localStorage.getItem('from')) {
+      this.authServiceProvider.getAllCategorys(localStorage.getItem('from')).then((result) => {
+        this.responseGet = result;
+        //console.log(this.responseGet);
+        this.responseGet = JSON.parse(JSON.stringify(this.responseGet))._body;
+        //console.log("Parse+stringify: " + this.responseGet);
+        this.responseGet = JSON.parse(this.responseGet);
+        this.dataCategory = this.responseGet.categoryData;
+        //console.log(this.dataCategory);
+      });
 
-        this.authServiceProvider.getAllCategorys(localStorage.getItem('from')).then((result) => {
-          this.responseGet = result;
-          //console.log(this.responseGet);
-          this.responseGet = JSON.parse(JSON.stringify(this.responseGet))._body;
-          //console.log("Parse+stringify: " + this.responseGet);
-          this.responseGet = JSON.parse(this.responseGet);
-          this.dataCategory = this.responseGet.categoryData;
-          //console.log(this.dataCategory);
-        });
+      this.authServiceProvider.getSectors(localStorage.getItem('from')).then((result) => {
+        this.responseGet = result;
+        //console.log(this.responseGet);
+        this.responseGet = JSON.parse(JSON.stringify(this.responseGet))._body;
+        //console.log("Parse+stringify: " + this.responseGet);
+        this.responseGet = JSON.parse(this.responseGet);
+        this.sectors = this.responseGet.sectorsData;
+      });
 
-        this.authServiceProvider.getSectors(localStorage.getItem('from')).then((result) => {
-          this.responseGet = result;
-          //console.log(this.responseGet);
-          this.responseGet = JSON.parse(JSON.stringify(this.responseGet))._body;
-          //console.log("Parse+stringify: " + this.responseGet);
-          this.responseGet = JSON.parse(this.responseGet);
-          this.sectors = this.responseGet.sectorsData;
-          console.log(this.sectors);
-        });
-        
-       }
+    }
 
   }
 
   ngOnInit() {
     let EMAILPATTERN = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-
-    this.formSignup = this.fBuilder.group({
+    
+    this.formProfile = this.fBuilder.group({
       name: new FormControl('', [Validators.required]),
-      category: new FormControl(false,[Validators.required]),
+      categoryName: [''],
       instagram: [''],
       twitter: [''],
-      face:  [''],
-      phone: [''],
-      address: new FormControl('',[Validators.required]),
-      sectorName: new FormControl('',[Validators.required]),
-      email: new FormControl('', [ Validators.pattern(EMAILPATTERN)]),
+      face: [''],
+      client_id: [''],
+      phone: [''], //inserir um pattern de validação
+      address: new FormControl('', [Validators.required]),
+      sectorName: [''],
+      email: new FormControl('', [Validators.required, Validators.pattern(EMAILPATTERN)]),
 
       // repassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
       //phone2:[''],
@@ -86,45 +98,107 @@ export class CreateProfilePage {
     });
 
   }
-setCategory(id){
-  
-  console.log("categoria"+id);
-  this.categoryChecked=id;
-}
-setSector(id){
-  console.log(id);
+  setCategory(ev,id) {
 
-  this.sectors.forEach(sect => {
-    console.log("id:"+id+"sec Id:"+sect.sector_id)
-    if(sect.sector_id==id){
-      sect.sector_checked=1;
+    if(ev==true){
+      this.categoryChecked = id;
     }else{
-      sect.sector_checked=0;
+      this.categoryChecked = 0;
     }
-  });
-    // for(let i=0; this.sectors.lenght; i++){
-    //   console.log("id:"+id+"sec Id:"+this.sectors[i].sector_id)
-    //   if(this.sectors[i].sector_id==id){
-    //     this.sectors[i].sector_checked=1;
-    //   }else{
-    //     this.sectors[i].sector_checked=0;
-    //   }
-      
+  }
+  setSector(ev,id) {
+    if(ev==true){
+      this.sectorChecked = id;
+    }else{
+      this.sectorChecked = 0;
     }
+    
+    
+  }
 
-  
-  
 
-createProfile(){
-  // falta inserir o array de check no formulario
-  //console.log(this.categoryChecked);
-  //console.log(this.formSignup.controls['sectorName'].na);
-  this.formSignup.controls['category'].setValue(this.categoryChecked);
-  this.formSignup.controls['sectorName'].setValue(this.sectorChecked);
-  console.log(this.formSignup.value);
-  this.navCtrl.push(CentroFashionPage);
+
+
+  createProfile(item) {
+    if (this.categoryChecked == 0) {
+      let alertProfile = this.alertController.create({
+        title: "Falha",
+        message: "Informe uma categoria",
+        buttons: [{
+          text: "Ok"
+        }]
+      });
+      alertProfile.present()
+    } else if (this.sectorChecked == 0) {
+      let alertProfile = this.alertController.create({
+        title: "Falha",
+        message: "Informe o setor",
+        buttons: [{
+          text: "Ok"
+        }]
+      });
+      alertProfile.present()
+    } else {
+
+      this.formProfile.controls['categoryName'].setValue(this.categoryChecked);
+      this.formProfile.controls['sectorName'].setValue(this.sectorChecked);
+      this.formProfile.controls['client_id'].setValue(this.userDatails.client_id);
+      //////////////////////////////////////////////////////////////////////////////////////////////////
+
+      this.authServiceProvider.postProfile(this.formProfile.value, "signupProfile").then((result) => {
+        this.reponseData = result;
+        this.data = JSON.parse(JSON.stringify(this.reponseData))._body;
+        this.dataError = JSON.parse(this.data).error;
+        let status: number = this.dataError.e;
+        localStorage.clear();
+        if (status == 0) {
+          localStorage.setItem('user', JSON.stringify(this.reponseData));
+          let alertSignup = this.alertController.create({
+            title: "Sucesso!",
+            message:"Loja Cadastrada!",
+            buttons:[{
+                text: "Ok"
+              }]
+          });
+          alertSignup.present()
+          this.events.publish('root',"CentroFashionPage");
+          window.location.reload();
+          //this.navCtrl.push(CentroFashionPage);
   
-}
+        } else if (status == 3) {
+          let alertSignup = this.alertController.create({
+            title: "Falha",
+            message:"CPF,Email ou Usuário já cadastrado",
+            buttons:[{
+                text: "Ok"
+              }]
+          });
+          alertSignup.present()
+        }else if(status == 1){
+          let alertSignup = this.alertController.create({
+            title: "Falha",
+            message:"Usuário já cadastrado",
+            buttons:[{
+                text: "Ok"
+              }]
+          });
+          alertSignup.present()
+        }
+        else if(status == 2){
+          let alertSignup = this.alertController.create({
+            title: "Falha",
+            message:"CPF ou Email já cadastrado",
+            buttons:[{
+                text: "Ok"
+              }]
+          });
+          alertSignup.present()
+        }
+      }, (err) => {
+  
+      });
+    }
+  }
   ionViewDidLoad() {
     //console.log('ionViewDidLoad CreateProfilePage');
   }

@@ -26,8 +26,12 @@ export class CustomHeaderComponent {
   constructor(public events:Events, public navCtrl: NavController, public menuCtrl:MenuController, public app:App) {
     console.log("Lendo header");
     if(localStorage.getItem('user')){
+      // this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
+      // this.userDatails = JSON.parse(this.userDatails).user;
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
-      this.userDatails = JSON.parse(this.userDatails).user;
+      this.userDatails = JSON.parse(this.userDatails).success;
+      // console.log(this.userDatails);
+      this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
     }
   }
 

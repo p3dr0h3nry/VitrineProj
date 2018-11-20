@@ -28,6 +28,19 @@ export class AuthServiceProvider {
     })
   }
 
+  postProfile(data, type) {
+     return new Promise((resolve, reject) => {
+      let headers = new Headers();
+      this.http.post(apiUrl + type, JSON.stringify(data)).subscribe(res => {
+        resolve(res);
+      }), (err) => {
+        reject(err);
+      }
+    })
+  }
+
+
+
   // Login
   getUser(data, type) {
     return new Promise((resolve, reject) => {
