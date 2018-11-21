@@ -1,24 +1,40 @@
 <custom-header>
 
 </custom-header>
-<ion-content class="nomargin" id="profile">
-  <!-- <div class="profileHeader"> -->
+<!-- <ion-content id="profile" [ngStyle]="{'background-color' : black}"> -->
+<ion-content [ngClass]="userDatails.sector_color">
+
   <ion-card class="profileHeader">
+
     <ion-card-content class="content-img">
-      <!-- <img src="../../assets/imgs/nophoto.png" > -->
-       <div class="div-edit">
-      <ion-icon name="md-create"></ion-icon>
-        </div>
+        <div class="div-edit" >
+            <ion-icon name="md-create" (click)="takePhoto()" ></ion-icon>
+          </div>
+          <img [src]="userDatails.prof_img | showPipe" class="headerImg">
+<!-- //<img *ngIf="!userDatails.prof_img" src="../../assets/imgs/nophoto.png" class="headerImg"> -->
+     
+          <!-- <img *ngIf="userDatails.prof_img" src="data:image/jpeg;base64,{{userDatails.prof_img}}" class="headerImg"> -->
+
     </ion-card-content>
-    <!-- <ion-row style="background-color: bisque; float: bottom; height: 15%;"> -->
-    <!-- <div class="div-edit"> -->
-      
-    <!-- </div> -->
 
   </ion-card>
-  <!-- </div> -->
-
-
-
 
 </ion-content>
+
+<!-- {
+"protocol": "ftp",
+"host": "agesi.com.br",
+"port": 21,
+"user": "pedroh@agesi.com.br",
+"pass": "p3dr0h@",
+"promptForPass": false,
+"remote": "/",
+"local": "",
+"secure": false,
+"secureOptions": null,
+"connTimeout": 10000,
+"pasvTimeout": 10000,
+"keepalive": 10000,
+"watch": [],
+"watchTimeout": 500
+} -->

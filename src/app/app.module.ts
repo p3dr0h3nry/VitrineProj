@@ -25,6 +25,11 @@ import {Menu} from './menu';
 import { CreateProfilePage } from '../pages/create-profile/create-profile';
 import { MyApp } from './app.component';
 import{ProfilePage} from '../pages/profile/profile';
+import{Camera} from'@ionic-native/camera';
+import{FileTransfer} from '@ionic-native/file-transfer';
+import {File} from '@ionic-native/file'
+import {HttpClientModule} from '@angular/common/http';
+import{ShowPipe} from '../pipes/show/show';
 
 @NgModule({
   declarations: [
@@ -41,8 +46,8 @@ import{ProfilePage} from '../pages/profile/profile';
     SignupPage,
     Menu,
     CreateProfilePage,
-    ProfilePage
-
+    ProfilePage,
+    ShowPipe
 
   ],
   imports: [
@@ -50,7 +55,8 @@ import{ProfilePage} from '../pages/profile/profile';
     IonicModule.forRoot(MyApp),
     BrMaskerModule,
     HttpModule,
-
+    HttpClientModule
+    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -68,7 +74,7 @@ import{ProfilePage} from '../pages/profile/profile';
     SignupPage,
     Menu,
     CreateProfilePage,
-    ProfilePage
+    ProfilePage,
  
   ],
   providers: [
@@ -77,7 +83,10 @@ import{ProfilePage} from '../pages/profile/profile';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthServiceProvider,
     MyApp,
-    CreateProfilePage
+    CreateProfilePage,
+    Camera,
+    FileTransfer,
+    File
     
   ]
 })

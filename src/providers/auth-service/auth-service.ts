@@ -1,6 +1,7 @@
 // import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+import { AlertController } from 'ionic-angular';
 
 // Endereço API restful
 let apiUrl = "http://www.prod.agesi.com.br/api_restful/api/";
@@ -13,7 +14,7 @@ let apiUrl = "http://www.prod.agesi.com.br/api_restful/api/";
 @Injectable()
 export class AuthServiceProvider {
 
-  constructor(public http: Http) {
+  constructor(public http: Http, private alertCtrl:AlertController) {
     console.log('Hello AuthServiceProvider Provider');
   }
 
@@ -74,6 +75,16 @@ export class AuthServiceProvider {
         reject(err);
       }
     })
+  }
+
+  uploadImg(img,from){
+    return new Promise((resolve, reject)=>{
+    let headers = new Headers();
+    this.http.post(apiUrl+from,JSON.stringify(img)).subscribe(res=>{
+    }), (err)=>{
+      reject(err);
+    }
+  })
   }
 
 }
