@@ -5,6 +5,7 @@ import { IonicPage, NavController, NavParams, Events, App} from 'ionic-angular';
 import { CentroFashionPage } from '../centro-fashion/centro-fashion';
 import { Menu } from '../../app/menu';
 import { MyApp } from '../../app/app.component';
+import { animate } from '@angular/core';
 /**
  * Generated class for the WelcomePage page.
  *
@@ -52,7 +53,8 @@ export class WelcomePage {
     //this.navCtrl.setRoot(Menu);
     // console.log(this.navCtrl.length.length);
     //this.app.getRootNav().setRoot(CentroFashionPage);
-    this.events.publish('root',"CentroFashionPage");
+       this.events.publish('root',"CentroFashionPage");
+
     //this.navCtrl.setRoot(CentroFashionPage,{},{animate: true, direction: 'forward'});
     //this.navCtrl.push(CentroFashionPage);
     

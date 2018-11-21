@@ -24,6 +24,7 @@ import { Dialogs } from '@ionic-native/dialogs'
 import {Menu} from './menu';
 import { CreateProfilePage } from '../pages/create-profile/create-profile';
 import { MyApp } from './app.component';
+import{ProfilePage} from '../pages/profile/profile';
 
 @NgModule({
   declarations: [
@@ -39,10 +40,9 @@ import { MyApp } from './app.component';
     CustomHeaderComponent,
     SignupPage,
     Menu,
-    CreateProfilePage
-    
-    //BrMaskerModule
-    //Dialogs
+    CreateProfilePage,
+    ProfilePage
+
 
   ],
   imports: [
@@ -50,8 +50,7 @@ import { MyApp } from './app.component';
     IonicModule.forRoot(MyApp),
     BrMaskerModule,
     HttpModule,
-    
-    //Dialogs
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -68,9 +67,9 @@ import { MyApp } from './app.component';
     CustomHeaderComponent,
     SignupPage,
     Menu,
-    CreateProfilePage
-    //Dialogs
-    //BrMaskerModule
+    CreateProfilePage,
+    ProfilePage
+ 
   ],
   providers: [
     StatusBar,

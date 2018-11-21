@@ -15,7 +15,20 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ProfilePage {
 
+  public userDatails:any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+    if(localStorage.getItem('user')){
+      // this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
+      // this.userDatails = JSON.parse(this.userDatails).user;
+      // console.log(this.userDatails);
+      this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
+      this.userDatails = JSON.parse(this.userDatails).success;
+      // console.log(this.userDatails);
+      this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
+      console.log(this.userDatails.client_name);
+    }
+
   }
 
   ionViewDidLoad() {

@@ -44,12 +44,22 @@ export class CreateProfilePage {
     private alertCtrl: AlertController,
     ) {
 
-      if(localStorage.getItem('user')){
-      
-        this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
-        this.userDatails = JSON.parse(this.userDatails).user;
-        console.log(this.userDatails);
-      }
+      this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
+      this.userDatails = JSON.parse(this.userDatails).success;
+      this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
+      console.log(this.userDatails.client_name);
+
+      this.events.subscribe('root', data=>{
+          if (localStorage.getItem('user')) {
+
+            this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
+            this.userDatails = JSON.parse(this.userDatails).success;
+            this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
+            console.log(this.userDatails.client_name);
+          }
+          
+        
+      });
 
 
     if (localStorage.getItem('from')) {
@@ -162,7 +172,6 @@ export class CreateProfilePage {
           });
           alertSignup.present()
           this.events.publish('root',"CentroFashionPage");
-          window.location.reload();
           //this.navCtrl.push(CentroFashionPage);
   
         } else if (status == 3) {

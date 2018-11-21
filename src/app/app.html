@@ -25,7 +25,7 @@
   </ion-content>
 </ion-menu>
 
-<ion-menu class="cf_menu" [content]="conteudo" side="right" *ngIf="userAtive==true">
+<ion-menu class="cf_menu" [content]="conteudo" side="right" *ngIf="userAtive">
   <ion-content>
 
     <div *ngIf='thisPlace=="CentroFashionPage"'>
@@ -42,10 +42,22 @@
     <!-- <img src="assets/imgs/cf_simbolo.png"> -->
     <ion-list>
         <!-- *ngIf="profileAtive" -->
-      <div  *ngIf="userDatails">
-      <button *ngIf="!userDatails.prof_id"  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="createProfile()" detail-none>
+      <div  *ngIf="!profileAtive">
+      <button  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="createProfile()" detail-none>
         <ion-icon name="ios-add-circle-outline"></ion-icon>
         <span>Cadastrar Loja</span>
+      </button>
+    </div>
+    <div  *ngIf="profileAtive">
+      <button  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="goToProfile()" detail-none>
+        <ion-icon name="logo-buffer"></ion-icon>
+        <span>Perfil</span>
+      </button>
+    </div>
+    <div  *ngIf="profileAtive">
+      <button  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editProfile()" detail-none>
+        <ion-icon name="md-create"></ion-icon>
+        <span>Editar Perfil</span>
       </button>
     </div>
       <button style="color:rgb(66, 66, 66);" ion-item (click)="logout()" detail-none>
