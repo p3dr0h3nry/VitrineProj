@@ -51,27 +51,29 @@ page-profile {
             }
         }
     }
-    .secYellow{
-        margin-top: 32px;
+    ion-content.secYellow{
+        margin-top: 35px;
         width: 100%;
         height: 100%;
         background-color: color($colors,secYellow)!important;
+        //margin: 150px;
 
         .profileHeader{
-            margin-top: 15px;
+            //margin-top: 15px;
             position: relative;
-            width: 94.5%;
-            height: 150px;
-        }
-        .overlay{
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0);
-            transition: background 0.5s ease;
+            height: 10em;
+            margin-left: 0px;
         }
+        // .overlay{
+        //     position: absolute;
+        //     top: 0;
+        //     left: 0;
+        //     width: 100%;
+        //     height: 100%;
+        //     background: rgba(0, 0, 0, 0);
+        //     transition: background 0.5s ease;
+        // }
         .profileHeader:hover .overlay{
             display: block;
             background: rgba(0, 0, 0, .5);
@@ -80,26 +82,31 @@ page-profile {
         .content-img{
             height: 100%; 
             padding: 0; 
+            
              .headerImg{
-                 height: 150%;
-                float: left;
+                 height: 100%;
+                // float: left;
                 object-fit: cover;
-
+                
             }
         }
         .div-edit{
-            background-color: rgba(0, 0, 0, 0.123); 
-            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.548); 
+            // opacity: 1;
             width: 30px;
             height: 30px;
-            margin-top: -10px;
-            margin-left: 90%;
+            // margin-top: -30px;
+            // margin-left: 90%;
+            // float: right;
             text-align: center;
             vertical-align: middle;
             padding-top:7px;
             //border-radius: 20px;
-            position: absolute;
-            transition: opacity .35s ease;
+            border-top-left-radius: 10px;
+            position: relative;
+            
+            
+            // transition: opacity .35s ease;
         }
 
     }
