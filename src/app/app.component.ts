@@ -57,7 +57,7 @@ export class MyApp implements OnInit {
           }else{
             this.profileAtive=false;
           }
-          console.log(this.userDatails.client_name);
+          //console.log(this.userDatails.client_name);
           
         }
         if(this.rootPage==CentroFashionPage){
@@ -73,12 +73,12 @@ export class MyApp implements OnInit {
          }, 1000);
         }
 
-        console.log(this.userDatails);
+        //console.log(this.userDatails);
       }
     });
    
     this.events.unsubscribe('local');
- 
+
     if (localStorage.getItem('user')) {
       this.userAtive = true;
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
@@ -127,10 +127,12 @@ export class MyApp implements OnInit {
   }
   goToProfile(){
     this.menuCtrl.toggle();
-    //localStorage.setItem('from', this.thisPlace);
     this.nav.push(ProfilePage);
-    // setTimeout(() => {
-    this.events.publish('Headerlocal',"CentroFashionPage");
+        setTimeout(() => {
+          this.events.publish('local',"CentroFashionPage");
+      
+          }, 1000);
+    // this.events.publish('Headerlocal',"CentroFashionPage");
   }
 
   // Criação do perfil da loja

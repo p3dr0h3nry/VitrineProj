@@ -1,5 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule,  } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler, ViewController } from 'ionic-angular';
 //import { MyApp } from './app.component';
 
@@ -30,6 +30,7 @@ import{FileTransfer} from '@ionic-native/file-transfer';
 import {File} from '@ionic-native/file'
 import {HttpClientModule} from '@angular/common/http';
 import{ShowPipe} from '../pipes/show/show';
+import{BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -55,8 +56,8 @@ import{ShowPipe} from '../pipes/show/show';
     IonicModule.forRoot(MyApp),
     BrMaskerModule,
     HttpModule,
-    HttpClientModule
-    
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

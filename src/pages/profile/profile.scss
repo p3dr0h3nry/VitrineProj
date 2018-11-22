@@ -33,7 +33,7 @@ page-profile {
             width: 30px;
             height: 30px;
             float: right;
-            margin-top: 115px;
+            //margin-top: 115px;
             margin-right: 5px;
             text-align: center;
             vertical-align: middle;
@@ -51,11 +51,14 @@ page-profile {
             }
         }
     }
+
     ion-content.secYellow{
-        margin-top: 35px;
+        margin-top: 40px;
+        position: relative;
         width: 100%;
         height: 100%;
         background-color: color($colors,secYellow)!important;
+        margin-bottom: 50px;
         //margin: 150px;
 
         .profileHeader{
@@ -84,30 +87,111 @@ page-profile {
             padding: 0; 
             
              .headerImg{
-                 height: 100%;
-                // float: left;
                 object-fit: cover;
-                
+                height: 100%;
             }
         }
-        .div-edit{
+        .photo{
             background-color: rgba(255, 255, 255, 0.548); 
             // opacity: 1;
             width: 30px;
             height: 30px;
-            // margin-top: -30px;
-            // margin-left: 90%;
-            // float: right;
+            margin-top: 106px;
+            margin-left: 90%;
             text-align: center;
             vertical-align: middle;
             padding-top:7px;
-            //border-radius: 20px;
-            border-top-left-radius: 10px;
-            position: relative;
+            border-radius: 20px;
+            //border-top-left-radius: 10px;
+            position: absolute;
             
             
             // transition: opacity .35s ease;
         }
+        .div-addPost{
+            border: 2px dashed rgba(2, 2, 2, 0.205);
+            width: 100%; 
+            height: 40px; 
+ 
+        }
+        .addPost{
+            margin-left: 85px;
+            float: left;
+            margin-top: 4px;
+            position: absolute;
+        }
+        .div-h6{
+            margin-left: 10px;
+            margin-top: -8px;
+            //width: 70px;
+            float: left;
+            position: absolute;
+        }
+        .createPost{
+            width: 100%;
+            height: 300px;
+            border: 2px dashed rgba(2, 2, 2, 0.205);
+            padding-left: 10px;
+            padding-right: 10px;
+            //padding-bottom: 0px;
+            //padding-top: 0px;
+         }
+        .iconAdd{
+            display: table;
+            
+            width: 100%;
+            height: 64%;
+            //padding: 25px;
+            // margin-top: auto;
+            // margin-bottom: auto; 
+            // margin-left: auto;
+            // margin-right: auto;
+            //margin-top: 10px;
+            //border: 1px;
+            border: 2px dashed rgba(2, 2, 2, 0.205);
+            background-color: rgba(2, 2, 2, 0.103);
+            padding-bottom: 0px;
+        }
+        .sendPost{
+            float: right;
+            margin-top: 5px;
 
+        }
+        .closePost{
+            float: left;
+            margin-top: 5px;
+
+        }
+        .container-newPoste{
+            padding: 10px;
+            margin-top: -10px;
+            //background-color: white;
+        }
+        .selected_Img{
+            object-fit: cover;
+            width: 88.5%;
+            height: 185px;
+            // margin-left: 10px;
+            float: left;
+            position: absolute;
+        }
+        .posts{
+            margin-top:10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            // padding: 5px;
+            width: 100%;
+            background-color: rgba(2, 2, 2, 0.103);
+        }
+        .card_post{
+            //width: 100%;
+            height: 200px;
+            padding: 10px;
+        }
+        .card_img{
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
     }
 }

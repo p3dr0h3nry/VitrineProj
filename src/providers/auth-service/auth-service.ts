@@ -88,21 +88,26 @@ export class AuthServiceProvider {
   })
   }
 
-  // uploadImge(img,from){
-  //   let alertSignup = this.alertCtrl.create({
-  //     title: "Erro!",
-  //     message: apiUrl+from+JSON.stringify(img)+"ZZZ"+img,
-  //     buttons: [{
-  //       text: "Ok"
-  //     }]
-  //   });
-  //   return new Promise((resolve, reject)=>{
-  //   let headers = new Headers();
-  //   this.http.post(apiUrl+from,img).subscribe(res=>{
-      
-  //   }), (err)=>{
-  //     reject(err);
-  //   }
-  // })
-  // }
+  newPost(img,from){
+    return new Promise((resolve, reject)=>{
+    let headers = new Headers();
+    this.http.post(apiUrl+from,JSON.stringify(img)).subscribe(res=>{
+      resolve (res);
+    }), (err)=>{
+      reject(err);
+    }
+  })
+  }
+  getAllPostsProfile(data,from){
+
+    return new Promise((resolve, reject)=>{
+    let headers = new Headers();
+    this.http.post(apiUrl+from,JSON.stringify(data)).subscribe(res=>{
+      resolve (res);
+    }), (err)=>{
+      reject(err);
+    }
+  })
+  }
+
 }

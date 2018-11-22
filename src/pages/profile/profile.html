@@ -1,43 +1,55 @@
 <custom-header>
 
 </custom-header>
-<!-- <ion-content id="profile" [ngStyle]="{'background-color' : black}"> -->
 <ion-content [ngClass]="userDatails.sector_color">
 
   <ion-card class="profileHeader">
 
     <ion-card-content class="content-img">
+      <div class="photo" (click)="selectImgFrom('imgProfile')">
+        <ion-icon name="md-create"></ion-icon>
+      </div>
+      <img *ngIf="userDatails.prof_img" [src]="userDatails.prof_img | showPipe" class="headerImg">
+      <img *ngIf="!userDatails.prof_img" src="../../assets/imgs/nophoto.png" class="headerImg">
 
-          <img *ngIf="userDatails.prof_img && !dataImagem"  [src]="userDatails.prof_img | showPipe" class="headerImg">
-          <img *ngIf="dataImagem"  [src]="dataImagem | showPipe" class="headerImg">
-          <img *ngIf="!userDatails.prof_img && !dataImagem" src="../../assets/imgs/nophoto.png" class="headerImg">
-     
-          <!-- <img *ngIf="userDatails.prof_img" src="data:image/jpeg;base64,{{userDatails.prof_img}}" class="headerImg"> -->
-          <!-- <div class="div-edit" >
-              <ion-icon name="camera" (click)="openeditprofile()" ></ion-icon>
-            </div> -->
     </ion-card-content>
-
- 
-  
   </ion-card>
+  <div class="container-newPoste">
+
+    <div class="div-addPost" *ngIf="addPost" [@visibilityChanged]="addPost ? 'show':'hidden'">
+      <div class="div-h6" (click)="toggle()" *ngIf="addPost" [@visibilityChanged]="addPost ? 'show':'hidden'">
+        <h6 *ngIf="addPost" [@visibilityChanged]="addPost ? 'show':'hidden'" style="padding: 0;">Add Post</h6>
+      </div>
+      <div class="addPost" *ngIf="addPost" (click)="toggle()" [@visibilityChanged]="addPost ? 'show':'hidden'">
+        <ion-icon name="md-add" *ngIf="addPost" style="font-size: 25px;" [@visibilityChanged]="addPost ? 'show':'hidden'"></ion-icon>
+      </div>
+    </div>
+
+    <!-- Expande para criar o post -->
+    <div class="createPost" [@visibilityChanged]="!addPost ? 'show':'hidden'">
+      <h6 *ngIf="!imgToPost" [@visibilityChanged]="!addPost && !imgToPost ? 'show':'hidden'">Add Imagem:</h6>
+      <h6 *ngIf="imgToPost" [@visibilityChanged]="!addPost ? 'show':'hidden'">Pressione novamente caso deseje alterar a imagem:</h6>
+      <div class="iconAdd" [@visibilityChanged]="!addPost ? 'show':'hidden'" (click)="selectImgFrom('imgPost')">
+
+        <ion-icon *ngIf="!imgToPost" [@visibilityChanged]="!addPost && !imgToPost ? 'show':'hidden'" name="ios-add-circle-outline"
+          style="text-align: center;font-size: 55px; vertical-align: middle; display: table-cell; color: rgba(2, 2, 2, 0.164);"></ion-icon>
+        <img *ngIf="imgToPost" [@visibilityChanged]="imgToPost ? 'show':'hidden'" [src]="imgToPost | showPipe" class="selected_Img">
+      </div>
+      <div *ngIf="!addPost" class="sendPost" (click)="createPost()" [@visibilityChanged]="!addPost ? 'show':'hidden'">
+        <ion-icon [@visibilityChanged]="!addPost ? 'show':'hidden'" name="md-paper-plane" style="font-size: 35px;"></ion-icon>
+      </div>
+      <div *ngIf="!addPost" class="closePost" (click)="toggle()" [@visibilityChanged]="!addPost ? 'show':'hidden'">
+        <ion-icon [@visibilityChanged]="!addPost ? 'show':'hidden'" name="ios-remove-circle-outline" style="font-size: 35px;"></ion-icon>
+      </div>
+    </div>
+
+    <!-- Exibição de postagens -->
+    <div class="posts" >
+        <ion-card *ngFor="let post of postsDatails" class="card_post">
+          <img [src]="post.post_img | showPipe" class="card_img">
+        </ion-card>
+    </div>
+  </div>
+
 
 </ion-content>
-
-<!-- {
-"protocol": "ftp",
-"host": "agesi.com.br",
-"port": 21,
-"user": "pedroh@agesi.com.br",
-"pass": "p3dr0h@",
-"promptForPass": false,
-"remote": "/",
-"local": "",
-"secure": false,
-"secureOptions": null,
-"connTimeout": 10000,
-"pasvTimeout": 10000,
-"keepalive": 10000,
-"watch": [],
-"watchTimeout": 500
-} -->

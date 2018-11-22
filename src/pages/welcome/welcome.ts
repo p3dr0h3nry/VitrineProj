@@ -31,8 +31,8 @@ export class WelcomePage {
       // this.userDatails = JSON.parse(this.userDatails).user;
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;
-      // console.log(this.userDatails);
       this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
+      //console.log(this.userDatails);
     }
  
   }
@@ -53,7 +53,7 @@ export class WelcomePage {
     //this.navCtrl.setRoot(Menu);
     // console.log(this.navCtrl.length.length);
     //this.app.getRootNav().setRoot(CentroFashionPage);
-       this.events.publish('root',"CentroFashionPage");
+    this.events.publish('root',"CentroFashionPage");
 
     //this.navCtrl.setRoot(CentroFashionPage,{},{animate: true, direction: 'forward'});
     //this.navCtrl.push(CentroFashionPage);
