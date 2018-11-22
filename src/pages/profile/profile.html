@@ -7,18 +7,19 @@
   <ion-card class="profileHeader">
 
     <ion-card-content class="content-img">
-        <div class="div-edit" >
-            <ion-icon name="md-create" (click)="takePhoto()" ></ion-icon>
-          </div>
-          <img [src]="userDatails.prof_img | showPipe" class="headerImg">
-<!-- //<img *ngIf="!userDatails.prof_img" src="../../assets/imgs/nophoto.png" class="headerImg"> -->
+
+          <img *ngIf="userDatails.prof_img && !dataImagem"  [src]="userDatails.prof_img | showPipe" class="headerImg">
+          <img *ngIf="dataImagem"  [src]="dataImagem | showPipe" class="headerImg">
+          <img *ngIf="!userDatails.prof_img && !dataImagem" src="../../assets/imgs/nophoto.png" class="headerImg">
      
           <!-- <img *ngIf="userDatails.prof_img" src="data:image/jpeg;base64,{{userDatails.prof_img}}" class="headerImg"> -->
 
     </ion-card-content>
 
   </ion-card>
-
+  <div class="div-edit" >
+    <ion-icon name="camera" (click)="openeditprofile()" ></ion-icon>
+  </div>
 </ion-content>
 
 <!-- {
