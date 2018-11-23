@@ -31,6 +31,7 @@ import {File} from '@ionic-native/file'
 import {HttpClientModule} from '@angular/common/http';
 import{ShowPipe} from '../pipes/show/show';
 import{BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import{AutoHideDirective} from '../directives/auto-hide/auto-hide';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import{BrowserAnimationsModule} from '@angular/platform-browser/animations';
     Menu,
     CreateProfilePage,
     ProfilePage,
-    ShowPipe
+    ShowPipe,
+    AutoHideDirective
 
   ],
   imports: [

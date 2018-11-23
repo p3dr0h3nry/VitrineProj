@@ -20,6 +20,11 @@ page-profile {
             width: 94%;
             height: 150px;
         }
+        display: flex;
+        align-items: center;
+	    justify-content: center;
+
+
         .content-img{
             height: 100%; 
             background-image:url(../../assets/imgs/nophoto.png);  
@@ -53,43 +58,44 @@ page-profile {
     }
 
     ion-content.secYellow{
-        margin-top: 40px;
+        //margin-top: 40px;
         position: relative;
         width: 100%;
         height: 100%;
-        background-color: color($colors,secYellow)!important;
+        background-image:linear-gradient(-90deg,color($colors,secYellow) , rgba(255, 208, 0, 0.294)) ;
+        //background-color: color($colors,secYellow)!important;
         margin-bottom: 50px;
+        align-items: center;
+	    justify-content: center;
         //margin: 150px;
 
         .profileHeader{
-            //margin-top: 15px;
+            margin-top: 55px;
             position: relative;
             width: 100%;
             height: 10em;
             margin-left: 0px;
+            -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
+            box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
         }
-        // .overlay{
-        //     position: absolute;
-        //     top: 0;
-        //     left: 0;
-        //     width: 100%;
-        //     height: 100%;
-        //     background: rgba(0, 0, 0, 0);
-        //     transition: background 0.5s ease;
+
+    
+        // .profileHeader:hover .overlay{
+        //     display: block;
+        //     background: rgba(0, 0, 0, .5);
         // }
-        .profileHeader:hover .overlay{
-            display: block;
-            background: rgba(0, 0, 0, .5);
-        }
         
         .content-img{
             height: 100%; 
             padding: 0; 
+            position: relative;
             
-             .headerImg{
-                object-fit: cover;
-                height: 100%;
-            }
+        }
+        .headerImg{
+            
+            object-fit: cover;
+            height: 100%;
         }
         .photo{
             background-color: rgba(255, 255, 255, 0.548); 
@@ -166,6 +172,7 @@ page-profile {
             padding: 10px;
             margin-top: -10px;
             //background-color: white;
+
         }
         .selected_Img{
             object-fit: cover;
@@ -182,11 +189,16 @@ page-profile {
             // padding: 5px;
             width: 100%;
             background-color: rgba(2, 2, 2, 0.103);
+
         }
         .card_post{
             //width: 100%;
             height: 200px;
             padding: 10px;
+            -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
+            box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
+            margin-bottom: 20px;
         }
         .card_img{
             width: 100%;

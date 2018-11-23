@@ -1,7 +1,7 @@
 <custom-header>
 
 </custom-header>
-<ion-content [ngClass]="userDatails.sector_color">
+<ion-content [ngClass]="userDatails.sector_color" auto-hide>
 
   <ion-card class="profileHeader">
 
@@ -15,15 +15,11 @@
     </ion-card-content>
   </ion-card>
   <div class="container-newPoste">
-
-    <div class="div-addPost" *ngIf="addPost" [@visibilityChanged]="addPost ? 'show':'hidden'">
-      <div class="div-h6" (click)="toggle()" *ngIf="addPost" [@visibilityChanged]="addPost ? 'show':'hidden'">
-        <h6 *ngIf="addPost" [@visibilityChanged]="addPost ? 'show':'hidden'" style="padding: 0;">Add Post</h6>
-      </div>
+    <!-- <div class="div-addPost" *ngIf="addPost" [@visibilityChanged]="addPost ? 'show':'hidden'">
       <div class="addPost" *ngIf="addPost" (click)="toggle()" [@visibilityChanged]="addPost ? 'show':'hidden'">
-        <ion-icon name="md-add" *ngIf="addPost" style="font-size: 25px;" [@visibilityChanged]="addPost ? 'show':'hidden'"></ion-icon>
+        <ion-icon name="md-add-circle" *ngIf="addPost" style="font-size: 25px;" [@visibilityChanged]="addPost ? 'show':'hidden'"></ion-icon>
       </div>
-    </div>
+    </div> -->
 
     <!-- Expande para criar o post -->
     <div class="createPost" [@visibilityChanged]="!addPost ? 'show':'hidden'">
@@ -50,6 +46,10 @@
         </ion-card>
     </div>
   </div>
-
+<ion-fab bottom right #fab>
+  <button ion-fab  (click)="toggle()">
+    <ion-icon name="ios-create-outline"></ion-icon> 
+  </button>
+</ion-fab>
 
 </ion-content>
