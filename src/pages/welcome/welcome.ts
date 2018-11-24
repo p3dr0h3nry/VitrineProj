@@ -1,11 +1,11 @@
-import { Component,Input,Output,EventEmitter } from '@angular/core';
+import { Component} from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, App} from 'ionic-angular';
 
 //imports do sistema
+import { LoginPage } from '../login/login';
+import { SignupPage } from '../signup/signup';
 import { CentroFashionPage } from '../centro-fashion/centro-fashion';
-import { Menu } from '../../app/menu';
-import { MyApp } from '../../app/app.component';
-import { animate } from '@angular/core';
+
 /**
  * Generated class for the WelcomePage page.
  *
@@ -24,43 +24,36 @@ export class WelcomePage {
   page:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public app:App) {
-    localStorage.setItem('local','WelcomePage');
-//this.events.publish('local',"WelcomePage");
+
     if(localStorage.getItem('user')){
-      // this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
-      // this.userDatails = JSON.parse(this.userDatails).user;
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;
       this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
-      //console.log(this.userDatails);
+    }else{
+      this.userDatails='';
     }
- 
-  }
+   }///Fim do construtor
+
 
   ionViewDidLoad() {
-
-    this.events.publish('local',"WelcomePage");
-
+    //this.events.publish('local',"WelcomePage");
   }
 
-  goTo(){
-  
-    //localStorage.setItem('local','CentroFashionPage');
-    //this.navCtrl.setRoot(Menu); se habilitar o menu vai ser o mesmo da
-    //this.events.publish('local',"CentroFashionPage");
-     this.events.publish('Headerlocal',"CentroFashionPage");
-    
-    //this.navCtrl.setRoot(Menu);
-    // console.log(this.navCtrl.length.length);
-    //this.app.getRootNav().setRoot(CentroFashionPage);
-    this.events.publish('root',"CentroFashionPage");
+  login() {
+    this.navCtrl.push(LoginPage);
+  }
+  signup() {
+    this.navCtrl.push(SignupPage);
+  }
 
-    //this.navCtrl.setRoot(CentroFashionPage,{},{animate: true, direction: 'forward'});
-    //this.navCtrl.push(CentroFashionPage);
-    
-    
-    //this.navCtrl.push(CentroFashionPage);
-    
+  logout() {
+    localStorage.clear();
+    this.userDatails='';
+  }
+  goTo(){
+    this.navCtrl.push(CentroFashionPage);
+    this.events.publish('root',"CentroFashionPage");
+    localStorage.setItem('root',"CentroFashionPage");
   }
 
 }

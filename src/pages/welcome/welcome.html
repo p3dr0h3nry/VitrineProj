@@ -1,17 +1,35 @@
-
 <ion-content padding id="welcome">
+
     <div class="menu">
         <div class="tag_name" *ngIf="userDatails">
             <h5>Olá, {{userDatails.client_name}} ! </h5>
         </div>
-
-        <button ion-button menuToggle right icon-only >
-                <ion-icon name="menu"></ion-icon>
-              </button>
+        <div class="login" *ngIf="!userDatails" (click)="login()">
+            <ion-icon class="icon-sign-in" name="md-log-in"></ion-icon>
+            <div class="span-log-in">
+                <span>Entrar</span>
+            </div>
+        </div>
+        <div class="sign-in" *ngIf="!userDatails" (click)="signup()">
+            <ion-icon class="icon-sign-in" name="ios-contact"></ion-icon>
+            <div class="span-sign-in">
+                <span>Cadastro</span>
+            </div>
+        </div>
+        <div class="logout" *ngIf="userDatails" (click)="logout()">
+                <ion-icon class="icon-logout" name="md-log-out"></ion-icon>
+                <div class="span-log-out">
+                    <span>Sair</span>
+                </div>
+            </div>
+        <!-- <button ion-button menuToggle right icon-only>
+            <ion-icon name="menu"></ion-icon>
+        </button> -->
     </div>
 
     <div class="mid_align">
         <img src="assets/imgs/logo2.png" class="welcome_logo" (click)="goTo()">
     </div>
+
 </ion-content>
 <!-- <ion-nav [root]="rootPage"></ion-nav> -->

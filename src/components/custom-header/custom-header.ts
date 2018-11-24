@@ -1,9 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Events, NavController, MenuController, App } from 'ionic-angular';
-import { CentroFashionPage } from '../../pages/centro-fashion/centro-fashion';
-import { WelcomePage } from '../../pages/welcome/welcome';
 import { Menu } from '../../app/menu';
-import { CustomheaderPage } from '../../pages/customheader/customheader';
+import { CentroFashionPage } from '../../pages/centro-fashion/centro-fashion';
+
 
 /**
  * Generated class for the CustomHeaderComponent component.
@@ -24,14 +23,13 @@ export class CustomHeaderComponent {
   private headerPlace:any;
 
   constructor(public events:Events, public navCtrl: NavController, public menuCtrl:MenuController, public app:App) {
-    console.log("Lendo header");
     if(localStorage.getItem('user')){
-      // this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
-      // this.userDatails = JSON.parse(this.userDatails).user;
+      console.log("Lendo header com usuário");
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;
-      // console.log(this.userDatails);
       this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
+    }else{
+      console.log("Lendo header sem usuário");
     }
   }
 
@@ -43,19 +41,15 @@ export class CustomHeaderComponent {
   get header() {
     return this.header_data;
   }
-
-
-  goBack(){
-    //console.log(this.navCtrl.getPrevious());
-    // if(this.navCtrl.getPrevious().name=="WelcomePage"){
-    //   this.events.publish('Headerlocal',"WelcomePage");
-    // }
-    setTimeout(()=>this.navCtrl.popToRoot(),300);
-
+  back(){
+    setTimeout(()=>this.navCtrl.pop(),150);
   }
-
-
+  backToRoot(){
+    setTimeout(()=>this.navCtrl.push(CentroFashionPage),300);
+    
+  }
   goToHome(){
+    console.log("gotohome");
     this.events.publish('local',"CentroFashionPage");
     // this.navCtrl.setRoot(Menu,{'rPage':CentroFashionPage});
     this.menuCtrl.close();

@@ -1,17 +1,12 @@
+
 <ion-header>
   <ion-toolbar>
-    <!-- <button ion-button style="float: left; background-color: white; color: steelblue;" icon-only (click)="goBack()">
-      <ion-icon name="ios-arrow-back"></ion-icon>
-    </button > -->
-    <button ion-button menuToggle right icon-only persistent="true">
+    <div class="icon-back" (click)="back()">
+      <ion-icon name="ios-arrow-back-outline"></ion-icon>
+    </div>
+    <button ion-button menuToggle right icon-only persistent="true" [disabled]="!userDatails">
         <ion-icon name="menu"></ion-icon>
     </button>
-      <img class="header_logo" src="assets/imgs/cf_index_logo.png" (click)="goBack()">
-
-
-    <!-- <ion-icon name="contact" *ngIf="userDatails">
-
-    </ion-icon>
-    {{userDatails.client_name}} -->
+      <img class="header_logo" src="assets/imgs/cf_index_logo.png" (click)="backToRoot()">
   </ion-toolbar>
 </ion-header>

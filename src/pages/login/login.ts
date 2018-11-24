@@ -58,13 +58,10 @@ export class LoginPage {
       this.data = JSON.parse(JSON.stringify(this.responseLogin))._body;
 
       if (!JSON.parse(this.data).error) { //login ok
-
         localStorage.setItem('user', JSON.stringify(this.responseLogin));
         this.events.publish('Headerlocal',"WelcomePage");
-         //this.navCtrl.setRoot(Menu);
         this.navCtrl.setRoot(WelcomePage,{},{animate: true, direction: "back"});
-        //this.navCtrl.setRoot(WelcomePage);
-        
+
         } else { //fail
 
         this.data = JSON.parse(this.data).error;

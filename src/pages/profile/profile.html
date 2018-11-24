@@ -1,19 +1,40 @@
 <custom-header>
-
 </custom-header>
-<ion-content [ngClass]="userDatails.sector_color" auto-hide>
+<ion-content [ngClass]="profileDatails.sector_color" auto-hide>
 
-  <ion-card class="profileHeader">
+  <div class="profileHeader">
 
-    <ion-card-content class="content-img">
-      <div class="photo" (click)="selectImgFrom('imgProfile')">
-        <ion-icon name="md-create"></ion-icon>
+    <!-- <ion-card-content class="content-img"> -->
+    <div right class="photo" (click)="selectImgFrom('imgProfile')">
+      <ion-icon name="md-create"></ion-icon>
+    </div>
+    <img *ngIf="profileDatails.prof_img" [src]="profileDatails.prof_img | showPipe" class="headerImg">
+    <img *ngIf="!profileDatails.prof_img" src="../../assets/imgs/nophoto.png" class="headerImg">
+
+    <!-- </ion-card-content> -->
+  </div>
+  <div class="social">
+    <a href="https://www.instagram.com/{{profileDatails.prof_inst}}">
+      <div class="">
+        <ion-icon name="logo-instagram" class="instagram"></ion-icon>
       </div>
-      <img *ngIf="userDatails.prof_img" [src]="userDatails.prof_img | showPipe" class="headerImg">
-      <img *ngIf="!userDatails.prof_img" src="../../assets/imgs/nophoto.png" class="headerImg">
-
-    </ion-card-content>
-  </ion-card>
+    </a>
+    <a href="https://www.facebook.com/{{profileDatails.prof_face}}">
+      <div class="outFace">
+        <ion-icon class="facebook"></ion-icon>
+      </div>
+    </a>
+    <a href="https://twitter.com/{{profileDatails.prof_tw}}">
+      <div class="tw">
+        <ion-icon name="logo-twitter" class="twitter"></ion-icon>
+      </div>
+    </a>
+    <a href="https://wa.me/55{{profileDatails.prof_phone}}">
+      <div class="whatsApp">
+        <ion-icon name="logo-whatsapp" class="fab fa-whatsapp fa-7x" class="twitter"></ion-icon>
+      </div>
+    </a>
+  </div>
   <div class="container-newPoste">
     <!-- <div class="div-addPost" *ngIf="addPost" [@visibilityChanged]="addPost ? 'show':'hidden'">
       <div class="addPost" *ngIf="addPost" (click)="toggle()" [@visibilityChanged]="addPost ? 'show':'hidden'">
@@ -23,12 +44,13 @@
 
     <!-- Expande para criar o post -->
     <div class="createPost" [@visibilityChanged]="!addPost ? 'show':'hidden'">
-      <h6 *ngIf="!imgToPost" [@visibilityChanged]="!addPost && !imgToPost ? 'show':'hidden'">Add Imagem:</h6>
-      <h6 *ngIf="imgToPost" [@visibilityChanged]="!addPost ? 'show':'hidden'">Pressione novamente caso deseje alterar a imagem:</h6>
-      <div class="iconAdd" [@visibilityChanged]="!addPost ? 'show':'hidden'" (click)="selectImgFrom('imgPost')">
+      <h6 *ngIf="!imgToPost" [@visibilityChanged]="!addPost && !imgToPost ? 'show':'hidden'">Escolher Imagem:</h6>
+      <h6 *ngIf="imgToPost" [@visibilityChanged]="!addPost ? 'show':'hidden'">Click novamente para alterar a
+        imagem:</h6>
+      <div *ngIf="!addPost" class="iconAdd" [@visibilityChanged]="!addPost ? 'show':'hidden'" (click)="selectImgFrom('imgPost')">
 
-        <ion-icon *ngIf="!imgToPost" [@visibilityChanged]="!addPost && !imgToPost ? 'show':'hidden'" name="ios-add-circle-outline"
-          style="text-align: center;font-size: 55px; vertical-align: middle; display: table-cell; color: rgba(2, 2, 2, 0.164);"></ion-icon>
+        <label *ngIf="!imgToPost" [@visibilityChanged]="!addPost && !imgToPost ? 'show':'hidden'" style="text-align: center;font-size: 35px; vertical-align: middle; display: table-cell; color: rgba(2, 2, 2, 0.164);">Add
+          Imagem</label>
         <img *ngIf="imgToPost" [@visibilityChanged]="imgToPost ? 'show':'hidden'" [src]="imgToPost | showPipe" class="selected_Img">
       </div>
       <div *ngIf="!addPost" class="sendPost" (click)="createPost()" [@visibilityChanged]="!addPost ? 'show':'hidden'">
@@ -40,16 +62,38 @@
     </div>
 
     <!-- Exibição de postagens -->
-    <div class="posts" >
-        <ion-card *ngFor="let post of postsDatails" class="card_post">
-          <img [src]="post.post_img | showPipe" class="card_img">
-        </ion-card>
+    <div class="posts">
+      <ion-card *ngFor="let post of postsDatails" class="card_post">
+          <div class="trash" (click)="deletePost(post.post_id)">
+              <ion-icon name="ios-trash" style="font-size: 30px;"></ion-icon>
+          </div>
+        <div class="profileName">
+          {{profileDatails.prof_name}}
+        </div>
+
+        <img [src]="post.post_img | showPipe" class="card_img">
+
+        <ion-card-content class="content-card">
+
+          <div class="icon-pin">
+            <ion-icon name="pin" class="pin"></ion-icon>
+          </div>
+          <div style="float: left; margin-right: 10px;">
+            <h5>{{profileDatails.prof_address}}</h5>
+          </div>
+          <div class="div-sector">
+            <h5 style="float: left;">Setor</h5>
+            <div class="color-sector"></div>
+          </div>
+        </ion-card-content>
+      </ion-card>
     </div>
   </div>
-<ion-fab bottom right #fab>
-  <button ion-fab  (click)="toggle()">
-    <ion-icon name="ios-create-outline"></ion-icon> 
-  </button>
-</ion-fab>
+  <ion-fab bottom right #fab>
+    <button ion-fab (click)="toggle()">
+      <ion-icon name="ios-create-outline"></ion-icon>
+    </button>
+  </ion-fab>
+
 
 </ion-content>

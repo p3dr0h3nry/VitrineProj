@@ -8,11 +8,7 @@
     <img src="assets/imgs/cf_simbolo.png">
   </div>
   <ion-content>
-      <div *ngIf="thisPlace=='CentroFashionPage'">
-          <ion-icon name="return-left" style="float: right; margin-top: 10px;" (click)="backToWelcome()">
-            <span>Sair</span>
-          </ion-icon>
-        </div>
+
     <!-- <img src="assets/imgs/cf_simbolo.png"> -->
     <ion-list>
       <button style="color:rgb(66, 66, 66);" ion-item (click)="login()" detail-none>
@@ -29,10 +25,6 @@
   <ion-content>
 
     <div *ngIf='thisPlace=="CentroFashionPage"'>
-
-      <ion-icon name="return-left" style="float: right; margin-top: 10px;" (click)="backToWelcome()">
-        <span>Sair</span>
-      </ion-icon>
       <img src="assets/imgs/cf_simbolo.png">
       <div style="padding: 10px;">
         <Span>Olá, {{userDatails.client_name}}!!</Span>

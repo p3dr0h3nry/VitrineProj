@@ -1,10 +1,13 @@
 page-profile {
     ion-header{
+        height: 0px;
         ion-toolbar{
+            height: 0px;
             .header_logo{
                 float: left;
                 //margin-left: 10px;
                 width: 100px;
+                //height: 35px;
                 margin-top: auto;
                 margin-bottom: auto;
 
@@ -62,70 +65,157 @@ page-profile {
         position: relative;
         width: 100%;
         height: 100%;
-        background-image:linear-gradient(-90deg,color($colors,secYellow) , rgba(255, 208, 0, 0.294)) ;
-        //background-color: color($colors,secYellow)!important;
+        //background-image:linear-gradient(-90deg,color($colors,secYellow) , rgba(255, 208, 0, 0.294)) ;
+        background-color: #e4e4e4;
+
+        // background: -moz-linear-gradient(left, rgba(251,228,152,1) 0%, rgba(255,204,0,1) 50%, rgba(251,228,152,1) 100%);
+        // background: -webkit-gradient(left top, right top, color-stop(0%, rgba(251,228,152,1)), color-stop(50%, rgba(255,204,0,1)), color-stop(100%, rgba(251,228,152,1)));
+        // background: -webkit-linear-gradient(left, rgba(251,228,152,1) 0%, rgba(255,204,0,1) 50%, rgba(251,228,152,1) 100%);
+        // background: -o-linear-gradient(left, rgba(251,228,152,1) 0%, rgba(255,204,0,1) 50%, rgba(251,228,152,1) 100%);
+        // background: -ms-linear-gradient(left, rgba(251,228,152,1) 0%, rgba(255,204,0,1) 50%, rgba(251,228,152,1) 100%);
+        // background: linear-gradient(to right, rgba(251,228,152,1) 0%, rgba(255,204,0,1) 50%, rgba(251,228,152,1) 100%);
+        // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbe498', endColorstr='#fbe498', GradientType=1 );
+
         margin-bottom: 50px;
         align-items: center;
 	    justify-content: center;
         //margin: 150px;
 
         .profileHeader{
-            margin-top: 55px;
-            position: relative;
+            margin-top: 60px;
+            //position: relative;
             width: 100%;
-            height: 10em;
+            height: 140px;
             margin-left: 0px;
-            -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
-            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
-            box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
+            // -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
+            // -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
+            // box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
         }
+        // .content-img{
+        //     height: 145px; 
+            
+        //     padding: 0; 
 
-    
-        // .profileHeader:hover .overlay{
-        //     display: block;
-        //     background: rgba(0, 0, 0, .5);
+        //     position: relative;
+            
         // }
-        
-        .content-img{
-            height: 100%; 
-            padding: 0; 
-            position: relative;
-            
-        }
         .headerImg{
-            
+            //object-position: center center;
+            // display: block;
+            // overflow: hidden;
+            // height: 200%;
+            // width: 100%;
+            // object-fit: cover;
+            // text-align: right;
+
             object-fit: cover;
-            height: 100%;
+            width: 100%;
+            height: 140px;
         }
         .photo{
-            background-color: rgba(255, 255, 255, 0.548); 
+            background-color: rgba(255, 255, 255, 0.301); 
             // opacity: 1;
             width: 30px;
             height: 30px;
-            margin-top: 106px;
-            margin-left: 90%;
+            margin: 5px;
+            
+            // margin-left: 95%;
             text-align: center;
             vertical-align: middle;
             padding-top:7px;
             border-radius: 20px;
             //border-top-left-radius: 10px;
             position: absolute;
-            
-            
-            // transition: opacity .35s ease;
+
+
         }
-        .div-addPost{
-            border: 2px dashed rgba(2, 2, 2, 0.205);
+        .social{
+            margin-top:2px;
+            background-color: rgba(247, 247, 247, 0.089);
             width: 100%; 
             height: 40px; 
- 
+            padding: 6px;
+
         }
-        .addPost{
-            margin-left: 85px;
+        .instagram{
             float: left;
-            margin-top: 4px;
-            position: absolute;
+            //display: inline-block;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            border-radius: 10px;
+            color: #fff;
+            // font-size: 220px;
+            line-height: 31px;
+            vertical-align: middle;
+            background: #d6249f;
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+            box-shadow: 0px 3px 10px rgba(0,0,0,.25);
+            font-size: 25px;
+            margin-right: 10px;
+            -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+            box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
         }
+
+        .outFace{
+            background-color: #43609C; 
+            padding-top: 4px;
+            padding-left: 4px;
+            //text-align: center;
+            width: 30px;
+            height: 30px;
+            //display: block;
+            float: left;
+            border-radius: 12%;
+            margin-right: 10px;
+            -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+            box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+
+        }
+        .facebook{
+            background: #fff;
+            border-radius: 9%;
+            //display: block;
+            position: absolute;
+            height: 22px;
+            //margin: px 0 0 -49px;
+            //position: absolute;
+            //top: 50%;
+            width: 22px; 
+            padding-top: 5px;
+        }
+        .facebook:after {
+            color: #43609C;
+            content: "f";
+            //display: block;
+            font-family: Facebook Letter Faces, Arial;
+            font-size: 25px;
+            font-weight: bold;
+            margin-left: 50%;
+            //margin-top: 22px; 
+            width: 45px;
+        }
+        .tw{
+            text-align: center;
+            padding-top: 3px;
+            width: 30px;
+            height: 30px;
+            background-color:  #2daae1;
+            border-radius: 5px;
+            float: left;
+            margin-right: 10px;
+            -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+            box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+
+        }
+        .twitter{
+            color: white;
+            font-size: 24px;
+        }
+
         .div-h6{
             margin-left: 10px;
             margin-top: -8px;
@@ -141,31 +231,28 @@ page-profile {
             padding-right: 10px;
             //padding-bottom: 0px;
             //padding-top: 0px;
+            margin-top: 10px;
          }
         .iconAdd{
             display: table;
-            
             width: 100%;
             height: 64%;
-            //padding: 25px;
-            // margin-top: auto;
-            // margin-bottom: auto; 
-            // margin-left: auto;
-            // margin-right: auto;
-            //margin-top: 10px;
-            //border: 1px;
-            border: 2px dashed rgba(2, 2, 2, 0.205);
+            //border: 2px dashed rgba(2, 2, 2, 0.205);
             background-color: rgba(2, 2, 2, 0.103);
             padding-bottom: 0px;
+            -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
+            box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
         }
         .sendPost{
             float: right;
-            margin-top: 5px;
+            margin-top: 10px;
+            
 
         }
         .closePost{
             float: left;
-            margin-top: 5px;
+            margin-top: 10px;
 
         }
         .container-newPoste{
@@ -176,34 +263,118 @@ page-profile {
         }
         .selected_Img{
             object-fit: cover;
-            width: 88.5%;
-            height: 185px;
-            // margin-left: 10px;
-            float: left;
-            position: absolute;
+            width: 100%;
+            height: 100%;
+
         }
         .posts{
-            margin-top:10px;
+            margin-top:-10px;
             padding-top: 10px;
             padding-bottom: 10px;
+            padding-left: 0px;
             // padding: 5px;
             width: 100%;
-            background-color: rgba(2, 2, 2, 0.103);
+            //background-color: rgba(2, 2, 2, 0.103);
 
         }
         .card_post{
-            //width: 100%;
-            height: 200px;
-            padding: 10px;
+            
+            width: 100%;
+            // background-color: color($colors,secYellow);
+                background: -moz-linear-gradient(left, rgba(251,228,152,1) 0%, rgba(255,204,0,1) 50%, rgba(251,228,152,1) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(251,228,152,1)), color-stop(50%, rgba(255,204,0,1)), color-stop(100%, rgba(251,228,152,1)));
+        background: -webkit-linear-gradient(left, rgba(251,228,152,1) 0%, rgba(255,204,0,1) 50%, rgba(251,228,152,1) 100%);
+        background: -o-linear-gradient(left, rgba(251,228,152,1) 0%, rgba(255,204,0,1) 50%, rgba(251,228,152,1) 100%);
+        background: -ms-linear-gradient(left, rgba(251,228,152,1) 0%, rgba(255,204,0,1) 50%, rgba(251,228,152,1) 100%);
+        background: linear-gradient(to right, rgba(251,228,152,1) 0%, rgba(255,204,0,1) 50%, rgba(251,228,152,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbe498', endColorstr='#fbe498', GradientType=1 );
+
+            height: 240px;
+            padding-top: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
             -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
             -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
             box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
             margin-bottom: 20px;
+            margin-left:0px;
         }
         .card_img{
             width: 100%;
             height: 150px;
             object-fit: cover;
+            //position: relative;
         }
+        .content-card{
+            width: 100%;
+            padding-left: 5px;
+            background-color: rgb(255, 255, 255);
+            height: 35px;
+            padding-top: 8px;
+            
+        }
+        .profileName{
+            float: left;
+            //position: relative;
+            //margin-top: -150px;
+            font-size: 25px;
+            margin-bottom: 10px;
+            
+        }
+        .trash{
+            //position: absolute;
+            float: right;
+            
+        }
+        .icon-pin{
+            width: 30px;
+            height: 30px;
+            border-radius: 20px;
+            float: left;
+            background-color: rgba(223, 157, 157, 0.178);
+            padding-top: 3px;
+            padding-left: 8px;
+            margin-top: -5px;
+            margin-right: 5px;
+        }
+        .pin{
+            color: red;
+            float: left;
+            font-size: 24px;
+        }
+        .div-sector{
+            float: left;
+            margin-right: 10px;
+            //width: 60px;
+        }
+        .color-sector{
+            width: 20px; 
+            height: 20px; 
+            border-radius: 20px;
+            background-color: color($colors,secYellow);
+            margin-top: 0px; 
+            margin-left: 5px;
+            float: left;
+
+        }
+        .whatsApp{
+            width: 30px;
+            height: 30px;
+            float: left;
+            background-color: #25d366;
+            border-radius: 5px;
+            padding-top: 3px;
+            padding-left: 5px;
+            margin-right: 10px;
+            -webkit-box-shadow: 0px 12px 25px -11px rgba(0, 0, 0, 1);
+            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+            box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+        }
+        .fa-whatsapp  {
+            color:#fff;
+            
+          
+          }
+      
     }
 }
