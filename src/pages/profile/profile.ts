@@ -7,7 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { HttpClient } from '@angular/common/http';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ImageViewerController } from 'ionic-img-viewer';
 /**
  * Generated class for the ProfilePage page.
  *
@@ -55,17 +55,14 @@ export class ProfilePage {
     public navParams: NavParams,
     public platform: Platform,
     private camera: Camera,
-    private transfer: FileTransfer,
-    private file: File,
     private alertCtrl: AlertController,
-    private domSanitizer: DomSanitizer,
     private loadCtrl: LoadingController,
     private authService: AuthServiceProvider,
-    private http: HttpClient,
     private actionsheetCtrl: ActionSheetController,
-    private events: Events
+    private events: Events,
+    private imgViewerCtrl:ImageViewerController
   ) {
-
+    this.imgViewerCtrl.config
     this.imgToPost = '';
     this.addPost = true;
     this.events.unsubscribe('local');
@@ -79,7 +76,7 @@ export class ProfilePage {
       
 
       let loader = this.loadCtrl.create({
-        content: 'Buscando postagens...'
+        content: 'Atualizando postagens...'
       });
       loader.present();
       console.log(this.userDatails);
@@ -94,12 +91,13 @@ export class ProfilePage {
       this.profileDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('profileData'))))._body;
       this.profileDatails = JSON.parse(this.profileDatails).success;
       this.profileDatails = JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(this.profileDatails)))).profileData;
+      console.log(this.profileDatails);
     }
 
-    this.events.subscribe('updateUser', (data) => {
-      this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
-      this.userDatails = JSON.parse(this.userDatails).success;
-      this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
+    this.events.subscribe('updateProfile', (data) => {
+      this.profileDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('profile'))))._body;
+      this.profileDatails = JSON.parse(this.profileDatails).success;
+      this.profileDatails = JSON.parse(JSON.stringify(this.profileDatails)).profile;
     });
 
     if (localStorage.getItem('posts')) {
@@ -108,16 +106,15 @@ export class ProfilePage {
       this.postsDatails = JSON.parse(this.postsDatails).success;
       this.postsDatails = JSON.parse(JSON.stringify(this.postsDatails)).posts;
       // this.imgToPost = this.userDatails.prof_img;
-      console.log(this.postsDatails);
+      //console.log(this.postsDatails);
     }
 
     this.events.subscribe('newPosts', (data) => {
-      console.log(JSON.parse(localStorage.getItem('posts')));
       this.postsDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('posts'))))._body;
       this.postsDatails = JSON.parse(this.postsDatails).success;
       this.postsDatails = JSON.parse(JSON.stringify(this.postsDatails)).posts;
       // this.imgToPost = this.userDatails.prof_img;
-      //console.log("Posts do evento:"+this.postsDatails);
+      console.log(this.postsDatails);
 
     });
     
@@ -130,13 +127,14 @@ export class ProfilePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePage');
   }
+
   
   getAllPostsProfile() {
     this.getPostsFrom.post_prof_id = this.profileDatails.prof_id;
     
     this.getPostsFrom.post_from = this.thisplace;
-    console.log(this.thisplace);
-    console.log(this.getPostsFrom);
+    //console.log(this.thisplace);
+    //console.log(this.getPostsFrom);
     this.authService.getAllPostsProfile(this.getPostsFrom, "getAllPostsProfile").then((result) => {
       this.responsePost = result;
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
@@ -187,11 +185,11 @@ export class ProfilePage {
         content: 'Salvando postagem...'
       });
       loader.present();
-      this.newPost.post_prof_id = this.userDatails.prof_id;
+      this.newPost.post_prof_id = this.profileDatails.prof_id;
       this.newPost.post_img = this.imgToPost;
       this.newPost.post_desc = "";
-      this.newPost.post_sector_id = this.userDatails.sector_id;
-      this.newPost.post_category_id = this.userDatails.prof_category_id;
+      this.newPost.post_sector_id = this.profileDatails.sector_id;
+      this.newPost.post_category_id = this.profileDatails.prof_category_id;
       this.newPost.post_from = this.thisplace;
 
       this.authService.newPost(this.newPost, "newPost").then((result) => {
@@ -248,7 +246,7 @@ export class ProfilePage {
 
   deletePost(post_id) {
     this.postId.post_id = post_id;
-    this.postId.prof_id = this.userDatails.prof_id;
+    this.postId.prof_id = this.profileDatails.prof_id;
     const confirm = this.alertCtrl.create({
       title: 'Deletar Post',
       message: 'Você tem certeza que deseja deletar esse post?',
@@ -393,7 +391,7 @@ export class ProfilePage {
     });
     loader.present();
 
-    this.imgData.prof_id = this.userDatails.prof_id;
+    this.imgData.prof_id = this.profileDatails.prof_id;
     this.imgData.imageB64 = base64Image;
 
     this.authService.uploadImg(this.imgData, "uploadImg").then((result) => {
@@ -401,8 +399,8 @@ export class ProfilePage {
       this.data = JSON.parse(JSON.stringify(this.responseImg))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
         //this.dataImagem = this.base64Image;
-        localStorage.setItem('user', JSON.stringify(this.responseImg));
-        this.events.publish('updateUser', "user");
+        localStorage.setItem('profile', JSON.stringify(this.responseImg));
+        this.events.publish('updateProfile', "profile");
         //this.userDatails.prof_img = base64Image;
         setTimeout(() => {
           loader.dismiss();

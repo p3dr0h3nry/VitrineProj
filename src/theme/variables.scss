@@ -34,6 +34,7 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 :root{
   --ion-color-back: white;
+  --ion-color-secYellow: #ffcc00;
 }
 
 $colors: (
@@ -45,11 +46,11 @@ $colors: (
   light:      #f4f4f4,
   dark:       #222,
   button: rgb(165, 144, 134),
-  secGreen: rgb(126, 184, 116),
+  secGreen: rgb(98, 165, 86),
   secYellow: #ffcc00,
-  //secRed: rgb(189, 126, 126),
-  secPurple: rgb(140, 109, 197),
-  secBlue: rgb(121, 152, 219),
+  secRed: rgb(255, 0, 0),
+  secPurple: rgb(109, 66, 150),
+  secBlue: #488aff,
   secWhite: white,
   
 );

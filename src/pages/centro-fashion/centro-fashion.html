@@ -1,12 +1,47 @@
 <custom-header>
-  
 </custom-header>
 
+<ion-content padding id="centroFashion">
+    <div class="config-bar">
 
-
-  <ion-content padding id="centroFashion">
-
-      <div>
-        <img src="assets/imgs/logo2.png">
+        <ion-searchbar class="ion-searchbar" placeholder="Procurar Loja" [showCancelButton]="shouldShowCancel" (ionInput)="onInput($event)"
+          (ionCancel)="onCancel($event)">
+        </ion-searchbar>
+        <hr>
+        <div class="div-filter">
+            <span>Filtar por:</span>
+          </div>
       </div>
-    </ion-content>
+      <div class="conteudo">
+  <div class="posts">
+    <ion-refresher (ionRefresh)="doRefresh($event)" class="refresher">
+      <ion-refresher-content class="refresher" pullingIcon="arrow-dropdown" pullingText="Puxe para Atualizar"
+        refreshingSpinner="circles" refreshingText="Atualizando...">
+      </ion-refresher-content>
+    </ion-refresher>
+    <div *ngFor="let post of postsCF" class="card_post {{post.sector_color}}">
+      <div class="div-profileName">
+        <div class="profileName">
+          {{post.prof_name}}
+        </div>
+      </div>
+
+      <img [src]="post.post_img | showPipe" class="card_img" imageViewer>
+
+      <div class="content-card">
+
+        <div class="icon-pin">
+          <ion-icon name="pin" class="pin"></ion-icon>
+        </div>
+        <div style="float: left; margin-right: 10px; margin-top:3px;">
+          <span>{{post.prof_address}}</span>
+        </div>
+        <div class="div-sector">
+          <span style="float: left; margin-top:3px;">Setor</span>
+          <div class="color-sector borderWhite {{post.sector_color}}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</ion-content>

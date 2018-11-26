@@ -54,6 +54,7 @@ export class WelcomePage {
     this.navCtrl.push(CentroFashionPage);
     this.events.publish('root',"CentroFashionPage");
     localStorage.setItem('root',"CentroFashionPage");
+
   }
 
 }

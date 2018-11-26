@@ -19,8 +19,6 @@ export class CustomHeaderComponent {
   text: string;
   header_data: any;
   public menu:Menu;
-  private thisPlace:any;
-  private headerPlace:any;
 
   constructor(public events:Events, public navCtrl: NavController, public menuCtrl:MenuController, public app:App) {
     if(localStorage.getItem('user')){
@@ -42,11 +40,16 @@ export class CustomHeaderComponent {
     return this.header_data;
   }
   back(){
+    console.log(this.navCtrl.getPrevious().name);
     setTimeout(()=>this.navCtrl.pop(),150);
+    
   }
   backToRoot(){
-    setTimeout(()=>this.navCtrl.push(CentroFashionPage),300);
+    if(this.navCtrl.getActive().name!="CentroFashionPage"){
+      setTimeout(()=>this.navCtrl.push(CentroFashionPage),300);
+    }
     
+    //this.events.publish('root',"CentroFashionPage");
   }
   goToHome(){
     console.log("gotohome");

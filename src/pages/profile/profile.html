@@ -1,6 +1,6 @@
 <custom-header>
 </custom-header>
-<ion-content [ngClass]="profileDatails.sector_color" auto-hide>
+<ion-content class="content-profile" auto-hide>
 
   <div class="profileHeader">
 
@@ -34,7 +34,17 @@
         <ion-icon name="logo-whatsapp" class="fab fa-whatsapp fa-7x" class="twitter"></ion-icon>
       </div>
     </a>
+
   </div>
+  <div class="perfil_name">
+    <div class="icon-pin">
+      <ion-icon name="pin" class="pin"></ion-icon>
+    </div>
+    <span>{{profileDatails.prof_address}}</span>
+    <span style="margin-left: 20px;">Setor</span>
+    <div class="color-sector {{profileDatails.sector_color}}"></div>
+  </div>
+
   <div class="container-newPoste">
     <!-- <div class="div-addPost" *ngIf="addPost" [@visibilityChanged]="addPost ? 'show':'hidden'">
       <div class="addPost" *ngIf="addPost" (click)="toggle()" [@visibilityChanged]="addPost ? 'show':'hidden'">
@@ -60,40 +70,19 @@
         <ion-icon [@visibilityChanged]="!addPost ? 'show':'hidden'" name="ios-remove-circle-outline" style="font-size: 35px;"></ion-icon>
       </div>
     </div>
-
+    <ion-fab bottom right #fab>
+      <button ion-fab (click)="toggle()">
+        <ion-icon name="ios-create-outline"></ion-icon>
+      </button>
+    </ion-fab>
     <!-- Exibição de postagens -->
     <div class="posts">
       <ion-card *ngFor="let post of postsDatails" class="card_post">
-          <div class="trash" (click)="deletePost(post.post_id)">
-              <ion-icon name="ios-trash" style="font-size: 30px;"></ion-icon>
-          </div>
-        <div class="profileName">
-          {{profileDatails.prof_name}}
-        </div>
-
-        <img [src]="post.post_img | showPipe" class="card_img">
-
-        <ion-card-content class="content-card">
-
-          <div class="icon-pin">
-            <ion-icon name="pin" class="pin"></ion-icon>
-          </div>
-          <div style="float: left; margin-right: 10px;">
-            <h5>{{profileDatails.prof_address}}</h5>
-          </div>
-          <div class="div-sector">
-            <h5 style="float: left;">Setor</h5>
-            <div class="color-sector"></div>
-          </div>
-        </ion-card-content>
+        <img [src]="post.post_img | showPipe" class="card_img" imageViewer (press)="deletePost(post.post_id)">
       </ion-card>
     </div>
   </div>
-  <ion-fab bottom right #fab>
-    <button ion-fab (click)="toggle()">
-      <ion-icon name="ios-create-outline"></ion-icon>
-    </button>
-  </ion-fab>
+ <!-- Tem que tratar as permissões de edição -->
 
 
 </ion-content>

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController, LoadingController } from 'ionic-angular';
 import { MyApp } from '../../app/app.component';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { Subscription } from 'rxjs/Subscription';
 import { CentroFashionPage } from '../centro-fashion/centro-fashion';
+import { ProfilePage } from '../profile/profile';
 
 /**
  * Generated class for the CreateProfilePage page.
@@ -29,7 +30,7 @@ export class CreateProfilePage {
   sectors: any;
   checkedIdx = -1;
   checkedIdx1 = -1;
-
+  profileToGetData = { client_id: "" };
   reponseData: any;
   data: any;
   dataProfile:any;
@@ -42,12 +43,14 @@ export class CreateProfilePage {
     public authServiceProvider: AuthServiceProvider,
     private alertController: AlertController,
     private alertCtrl: AlertController,
+    private loadCtrl:LoadingController,
+    private authService: AuthServiceProvider
     ) {
 
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;
       this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
-      console.log(this.userDatails.client_name);
+      console.log(this.userDatails);
 
       this.events.subscribe('root', data=>{
           if (localStorage.getItem('user')) {
@@ -60,11 +63,9 @@ export class CreateProfilePage {
           
         
       });
+    if (localStorage.getItem('root')) {
 
-
-    if (localStorage.getItem('from')) {
-
-      this.authServiceProvider.getAllCategorys(localStorage.getItem('from')).then((result) => {
+      this.authServiceProvider.getAllCategorys(localStorage.getItem('root')).then((result) => {
         this.responseGet = result;
         //console.log(this.responseGet);
         this.responseGet = JSON.parse(JSON.stringify(this.responseGet))._body;
@@ -74,7 +75,7 @@ export class CreateProfilePage {
         //console.log(this.dataCategory);
       });
 
-      this.authServiceProvider.getSectors(localStorage.getItem('from')).then((result) => {
+      this.authServiceProvider.getSectors(localStorage.getItem('root')).then((result) => {
         this.responseGet = result;
         //console.log(this.responseGet);
         this.responseGet = JSON.parse(JSON.stringify(this.responseGet))._body;
@@ -158,45 +159,20 @@ export class CreateProfilePage {
       this.authServiceProvider.postProfile(this.formProfile.value, "signupProfile").then((result) => {
         this.reponseData = result;
         this.data = JSON.parse(JSON.stringify(this.reponseData))._body;
-        this.dataError = JSON.parse(this.data).error;
-        let status: number = this.dataError.e;
-        localStorage.clear();
-        if (status == 0) {
+        localStorage.removeItem('user');
+        if (!JSON.parse(this.data).error) {
           localStorage.setItem('user', JSON.stringify(this.reponseData));
-          let alertSignup = this.alertController.create({
-            title: "Sucesso!",
-            message:"Loja Cadastrada!",
-            buttons:[{
-                text: "Ok"
-              }]
-          });
-          alertSignup.present()
-          this.events.publish('root',"CentroFashionPage");
-          //this.navCtrl.push(CentroFashionPage);
-  
-        } else if (status == 3) {
+          setTimeout(() => {
+            this.events.publish('root', "CentroFashionPage");
+          }, 100);
+            if(localStorage.getItem('user')){
+              this.getProfileData();
+            }
+             
+        } else {
           let alertSignup = this.alertController.create({
             title: "Falha",
-            message:"CPF,Email ou Usuário já cadastrado",
-            buttons:[{
-                text: "Ok"
-              }]
-          });
-          alertSignup.present()
-        }else if(status == 1){
-          let alertSignup = this.alertController.create({
-            title: "Falha",
-            message:"Usuário já cadastrado",
-            buttons:[{
-                text: "Ok"
-              }]
-          });
-          alertSignup.present()
-        }
-        else if(status == 2){
-          let alertSignup = this.alertController.create({
-            title: "Falha",
-            message:"CPF ou Email já cadastrado",
+            message:"Algo deu errado",
             buttons:[{
                 text: "Ok"
               }]
@@ -204,12 +180,56 @@ export class CreateProfilePage {
           alertSignup.present()
         }
       }, (err) => {
-  
+        console.log(err);
       });
     }
   }
   ionViewDidLoad() {
     //console.log('ionViewDidLoad CreateProfilePage');
   }
+  getProfileData() {
+    let loader = this.loadCtrl.create({
+      content: 'Buscando perfil...'
+    });
+    loader.present();
+    this.profileToGetData.client_id = this.userDatails.client_id;
+    this.authService.post(this.profileToGetData, "getProfile").then((result) => {
+      this.reponseData = result;
+      this.data = JSON.parse(JSON.stringify(this.reponseData))._body;
+      if (!JSON.parse(this.data).error) { //Retorno ok
+        localStorage.setItem('profileData', JSON.stringify(this.reponseData));
+        this.events.publish('root', "CentroFashionPage");
+        loader.dismiss();
+        setTimeout(() => {
+          this.navCtrl.push(ProfilePage);
+        }, 200);
+      } else {
+        loader.dismiss();
+        this.data = JSON.parse(this.data).error;
+        let msg: string = this.data.e; //busca msg de erro
+        console.log(msg);
+        let alertSignup = this.alertCtrl.create({
+          title: "Ops!",
+          message: 'Esse perfil não existe!',
+          buttons: [{
+            text: "Ok"
+          }]
+        });
+        alertSignup.present()
+      }
+    }, (err) => {
+      loader.dismiss();
+      console.log(err);
+      let alertSignup = this.alertCtrl.create({
+        title: "Ops!",
+        message: 'Falha de conexão, verifique sua internet.',
+        buttons: [{
+          text: "Ok"
+        }]
+      });
+      alertSignup.present()
+    });
+    //return retorno;
 
+  }
 }

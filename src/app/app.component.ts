@@ -27,12 +27,12 @@ export class MyApp implements OnInit {
   public profileDatails: any;
   private thisPlace: any = null;
   responsePost: any;
-  data:any;
+  data: any;
   userAtive;
   profileAtive;
   //rootPage =Menu; //busca o menu na pag menu
-  profileToGetData = {client_id: "" };
-  ret:boolean;
+  profileToGetData = { client_id: "" };
+  retorno: boolean;
 
   constructor(platform: Platform,
     statusBar: StatusBar,
@@ -42,10 +42,10 @@ export class MyApp implements OnInit {
     public events: Events,
     public loadCtrl: LoadingController,
     private authService: AuthServiceProvider,
-    private alertCtrl:AlertController
-    ) {
+    private alertCtrl: AlertController
+  ) {
     this.rootPage = WelcomePage;
-    console.log(this.profileAtive);
+    //console.log(this.profileAtive);
 
 
 
@@ -89,7 +89,7 @@ export class MyApp implements OnInit {
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;
       this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
-      console.log(this.userDatails);
+      //console.log(this.userDatails);
       if (this.userDatails.profile_status == 1) {
         this.profileAtive = true;
       } else {
@@ -123,50 +123,51 @@ export class MyApp implements OnInit {
     //   console.log("Component");
     // });
   }
-  goToProfile() {
-    this.getProfileData(); //retorno esta sempre true
-    this.menuCtrl.toggle();
-    setTimeout(() => {
-      
-      this.nav.push(ProfilePage);
-    }, 500);
-  }
   getProfileData() {
-
+    let loader = this.loadCtrl.create({
+      content: 'Buscando perfil...'
+    });
+    loader.present();
     this.profileToGetData.client_id = this.userDatails.client_id;
-
     this.authService.post(this.profileToGetData, "getProfile").then((result) => {
       this.responsePost = result;
-      ////tem que revisar o retorno com erro
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
         localStorage.setItem('profileData', JSON.stringify(this.responsePost));
-        this.events.publish('local', "CentroFashionPage");
-        return true;
-        
-         } else {
-          
+        this.events.publish('root', "CentroFashionPage");
+        loader.dismiss();
+        this.menuCtrl.toggle();
+        setTimeout(() => {
+          this.nav.push(ProfilePage);
+        }, 200);
+      } else {
+        loader.dismiss();
+        this.menuCtrl.toggle();
         this.data = JSON.parse(this.data).error;
         let msg: string = this.data.e; //busca msg de erro
+        console.log(msg);
         let alertSignup = this.alertCtrl.create({
-          title: "Erro!",
-          message: msg,
+          title: "Ops!",
+          message: 'Esse perfil não existe!',
           buttons: [{
             text: "Ok"
           }]
         });
         alertSignup.present()
-        return false;
-
       }
-
     }, (err) => {
+      loader.dismiss();
       console.log(err);
-
-      alert('Falha');
-
+      let alertSignup = this.alertCtrl.create({
+        title: "Ops!",
+        message: 'Falha de conexão, verifique sua internet.',
+        buttons: [{
+          text: "Ok"
+        }]
+      });
+      alertSignup.present()
     });
-    return true;
+    //return retorno;
 
   }
   // Criação do perfil da loja
