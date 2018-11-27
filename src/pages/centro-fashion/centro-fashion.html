@@ -1,47 +1,62 @@
 <custom-header>
 </custom-header>
+<!-- <filter-bar></filter-bar> -->
+<div class="config-bar">
+  <ion-searchbar class="ion-searchbar" placeholder="Procurar Loja" (ionInput)="filterPosts($event)" no-lines>
+  </ion-searchbar>
+  <hr>
+  <div class="div-filter">
+    <span class="span-filter">Filtar por:</span>
+    <!-- <ion-item class="sector_filter" no-lines> -->
+      <ion-select no-lines interface="popover" placeholder="Setor" class="seletor_setor">
+        <ion-option (ionSelect)="selectSector('Todos')">Todos</ion-option>
+        <ion-option *ngFor="let setor of dataSectors" (ionSelect)="selectSector(setor.sector_name)">
+          {{setor.sector_name}}
+        </ion-option>
+      </ion-select>
+    <!-- </ion-item> -->
+    <!-- <ion-item class="category_filter" no-lines > -->
+        <ion-select no-lines placeholder="Categoria" class="seletor_category">
+          <ion-option (ionSelect)="selectCategory(0)">Todas</ion-option>
+          <ion-option *ngFor="let category of dataCategories" (ionSelect)="selectCategory(category.cat_id)" >
+            {{category.cat_name}}
+          </ion-option>
+        </ion-select>
+      <!-- </ion-item> -->
+  </div>
 
+</div>
 <ion-content padding id="centroFashion">
-    <div class="config-bar">
+  <ion-refresher (ionRefresh)="doRefresh($event)" class="refresher">
+    <ion-refresher-content class="refresher" pullingIcon="arrow-dropdown" pullingText="Puxe para Atualizar"
+      refreshingSpinner="circles" refreshingText="Atualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="conteudo">
+    <div class="posts">
 
-        <ion-searchbar class="ion-searchbar" placeholder="Procurar Loja" [showCancelButton]="shouldShowCancel" (ionInput)="onInput($event)"
-          (ionCancel)="onCancel($event)">
-        </ion-searchbar>
-        <hr>
-        <div class="div-filter">
-            <span>Filtar por:</span>
-          </div>
-      </div>
-      <div class="conteudo">
-  <div class="posts">
-    <ion-refresher (ionRefresh)="doRefresh($event)" class="refresher">
-      <ion-refresher-content class="refresher" pullingIcon="arrow-dropdown" pullingText="Puxe para Atualizar"
-        refreshingSpinner="circles" refreshingText="Atualizando...">
-      </ion-refresher-content>
-    </ion-refresher>
-    <div *ngFor="let post of postsCF" class="card_post {{post.sector_color}}">
-      <div class="div-profileName">
+      <div *ngFor="let post of postsFilter" class="card_post">
         <div class="profileName">
           {{post.prof_name}}
         </div>
-      </div>
 
-      <img [src]="post.post_img | showPipe" class="card_img" imageViewer>
 
-      <div class="content-card">
+        <img [src]="post.post_img | showPipe" class="card_img" imageViewer>
 
-        <div class="icon-pin">
-          <ion-icon name="pin" class="pin"></ion-icon>
-        </div>
-        <div style="float: left; margin-right: 10px; margin-top:3px;">
-          <span>{{post.prof_address}}</span>
-        </div>
-        <div class="div-sector">
-          <span style="float: left; margin-top:3px;">Setor</span>
-          <div class="color-sector borderWhite {{post.sector_color}}"></div>
+        <div class="content-card">
+
+          <div class="icon-pin">
+            <ion-icon name="pin" class="pin"></ion-icon>
+          </div>
+          <div style="float: left; margin-right: 10px; margin-top:3px;">
+            <span>{{post.prof_address}}</span>
+          </div>
+          <div class="div-sector">
+            <span style="float: left; margin-top:3px;">Setor</span>
+            <div class="color-sector borderWhite {{post.sector_color}}"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </ion-content>

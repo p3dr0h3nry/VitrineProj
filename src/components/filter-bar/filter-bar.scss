@@ -1,0 +1,42 @@
+filter-bar {
+    .searchbar-input{
+        //margin-top:-10px;
+        //width: 1;
+        height: 40px;
+        width:100%;
+    }
+    .searchbar-search-icon{
+        margin-top: 0px;
+        //background-color:red;
+        
+    }
+    .config-bar{
+        //position: relative;
+        //margin-left:-19px;
+        width: 100%;
+        //margin-top: 62px;
+        padding: 6px;
+        background-color: white;
+    }
+    .div-filter{
+        margin-top: 2px;
+        padding: 10px;
+        text-align: center;
+        //float: left;
+        width: 25%;
+        height: 100%;
+        font-size: 15px;
+        margin-right: 20px;
+    }
+    .ion-searchbar{
+        //padding: 0px;
+        padding-left: 2px;
+        padding-right: 2px;
+        //padding-top: 11px;
+        background-color: rgb(231, 231, 231);
+        //position: absolute;
+        border-radius: 5px;
+        width: 100%;
+        //float: right;
+    }
+}

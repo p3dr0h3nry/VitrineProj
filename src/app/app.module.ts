@@ -27,6 +27,7 @@ import{ShowPipe} from '../pipes/show/show';
 import{BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import{AutoHideDirective} from '../directives/auto-hide/auto-hide';
 import{IonicImageViewerModule} from 'ionic-img-viewer';
+import { FilterBarComponent } from '../components/filter-bar/filter-bar';
 @NgModule({
   declarations: [
     MyApp,
@@ -44,7 +45,8 @@ import{IonicImageViewerModule} from 'ionic-img-viewer';
     CreateProfilePage,
     ProfilePage,
     ShowPipe,
-    AutoHideDirective
+    AutoHideDirective,
+    FilterBarComponent
 
   ],
   imports: [
@@ -73,6 +75,7 @@ import{IonicImageViewerModule} from 'ionic-img-viewer';
     Menu,
     CreateProfilePage,
     ProfilePage,
+    FilterBarComponent
  
   ],
   providers: [

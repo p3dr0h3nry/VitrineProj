@@ -126,10 +126,6 @@ export class CreateProfilePage {
     
     
   }
-
-
-
-
   createProfile(item) {
     if (this.categoryChecked == 0) {
       let alertProfile = this.alertController.create({

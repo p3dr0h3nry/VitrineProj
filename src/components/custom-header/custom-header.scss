@@ -1,7 +1,12 @@
-
+    .ion-header{
+        position: relative;
+        -webkit-box-shadow: 0px 10px 16px -6px rgba(110,129,143,1);
+-moz-box-shadow: 0px 10px 16px -6px rgba(110,129,143,1);
+box-shadow: 0px 10px 16px -6px rgba(110,129,143,1);
+    }
     .header_logo{
         margin-left: 10px;
-        float: right;
+        float: left;
         width: 150px;
         margin-top: auto;
         margin-bottom: auto;

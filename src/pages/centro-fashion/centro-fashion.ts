@@ -16,12 +16,16 @@ export class CentroFashionPage {
   responsePost: any;
   data: any;
   postsCF: any;
+  postsFilter: any;
+  dataCategories: any;
+  dataSectors: any;
+  filter_sector: any;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
     private authService: AuthServiceProvider,
     private alertCtrl: AlertController) {
-
+      
     if (localStorage.getItem('user')) {
 
       if (localStorage.getItem('user')) {
@@ -35,7 +39,7 @@ export class CentroFashionPage {
         }, 50);
       }
     }
-    if(!localStorage.getItem('user')){
+    if (!localStorage.getItem('user')) {
       setTimeout(() => {
         this.currentPage = this.navCtrl.getActive().name;
         this.getAllPostsFrom(this.currentPage);
@@ -48,6 +52,8 @@ export class CentroFashionPage {
       this.postsCF = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('postsCF'))))._body;
       this.postsCF = JSON.parse(this.postsCF).success;
       this.postsCF = JSON.parse(JSON.stringify(this.postsCF)).posts;
+      this.postsFilter = this.postsCF;
+      //console.log(this.postsCF);
       // this.imgToPost = this.userDatails.prof_img;
     });
 
@@ -57,7 +63,36 @@ export class CentroFashionPage {
   }
 
   ionViewDidLoad() {
+    setTimeout(() => {
+      this.getCategories();
+      this.getSectors();
+    }, 500);
 
+  }
+
+  getCategories() {
+    console.log("buscando categoria CFPage");
+    this.authService.getAllCategorys(this.currentPage).then((result) => {
+      this.responsePost = result;
+      //console.log(this.responseGet);
+      this.dataCategories = JSON.parse(JSON.stringify(this.responsePost))._body;
+      //console.log("Parse+stringify: " + this.responseGet);
+      this.dataCategories = JSON.parse(this.dataCategories);
+      this.dataCategories = this.dataCategories.categoryData;
+      //console.log(this.dataCategory);
+    });
+  }
+  getSectors() {
+    console.log("buscando setor CFPage");
+    this.authService.getSectors(this.currentPage).then((result) => {
+      this.responsePost = result;
+      //console.log(this.responsePost);
+      this.responsePost = JSON.parse(JSON.stringify(this.responsePost))._body;
+      //console.log("Parse+stringify: " + this.responsePost);
+      this.responsePost = JSON.parse(this.responsePost);
+      this.dataSectors = this.responsePost.sectorsData;
+  
+    });
   }
   doRefresh(refresher) {
     this.getAllPostsFrom(this.currentPage);
@@ -66,6 +101,67 @@ export class CentroFashionPage {
       refresher.complete();
     }, 2000);
   }
+  initializerPosts() {
+    this.postsFilter = this.postsCF;
+  }
+
+  filterPosts(ev: any) {
+    //console.log(ev.target.value);
+    this.initializerPosts();
+    let val = ev.target.value;
+    if (val && val.trim() !== '') {
+      this.postsFilter = this.postsFilter.filter((v) => {
+        if (v.prof_name.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+          return true;
+        }
+        return false;
+      });
+    }
+  }
+  selectSector(ev: any) {
+    this.filter_sector='';
+    this.initializerPosts();
+    let evString = ev;
+    if (evString != 'Todos') {
+      this.postsFilter = this.postsFilter.filter((v) => {
+        //console.log(v.sector_name.toLowerCase() == evString.toLowerCase());
+        if (v.sector_name.toLowerCase() == evString.toLowerCase()) {
+          //this.filter_sector=this.filter_sector+JSON.stringify(v);
+          return true;
+        }
+        return false;
+      });
+    } else {
+      this.filter_sector = '';
+    }
+    //is.filter_sector=JSON.parse(this.filter_sector);
+  }
+
+  selectCategory(e: any) {
+    this.initializerPosts();
+    let eString = e;
+    if (this.filter_sector!='') {
+      this.filter_sector=JSON.parse(this.filter_sector);
+      if (eString != 0) {
+        this.filter_sector = this.filter_sector.filter((v) => {
+          if (v.post_category_id.toLowerCase() == eString.toLowerCase()) {
+            return true;
+          }
+          return false;
+        });
+      }
+    } else {
+      if (eString != 0) {
+        this.postsFilter = this.postsFilter.filter((v) => {
+          if (v.post_category_id.toLowerCase() == eString.toLowerCase()) {
+            return true;
+          }
+          return false;
+        });
+      }
+    }
+  }
+
 
   getAllPostsFrom(from) {
     //this.events.unsubscribe('newPostsCF');

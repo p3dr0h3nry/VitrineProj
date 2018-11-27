@@ -70,17 +70,18 @@
         <ion-icon [@visibilityChanged]="!addPost ? 'show':'hidden'" name="ios-remove-circle-outline" style="font-size: 35px;"></ion-icon>
       </div>
     </div>
-    <ion-fab bottom right #fab>
-      <button ion-fab (click)="toggle()">
-        <ion-icon name="ios-create-outline"></ion-icon>
-      </button>
-    </ion-fab>
+
     <!-- Exibição de postagens -->
     <div class="posts">
       <ion-card *ngFor="let post of postsDatails" class="card_post">
         <img [src]="post.post_img | showPipe" class="card_img" imageViewer (press)="deletePost(post.post_id)">
       </ion-card>
     </div>
+    <ion-fab bottom right #fab style="margin-bottom: 60px;">
+        <button ion-fab (click)="toggle()">
+          <ion-icon name="ios-create-outline"></ion-icon>
+        </button>
+      </ion-fab>
   </div>
  <!-- Tem que tratar as permissões de edição -->
 
