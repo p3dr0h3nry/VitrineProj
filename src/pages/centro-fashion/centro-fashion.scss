@@ -4,38 +4,40 @@ page-centro-fashion {
 
         }
         .searchbar-input{
-            //margin-top:-0px;
+            margin-top:4px;
             //width: 1;
-            height: 55px;
+            height: 60px;
             width:100%;
-            background-color: black;
+            //background-color: black;
             //position: absolute;
             
         }
         .searchbar-search-icon{
-            margin-top: 0px;
-            //background-color:red;
+            margin-top: 4px;
+           //background-color:red;
             //position: absolute;
             
         }
         .config-bar{
-            //position: relative;
+            position: relative;
             //margin-left:-19px;
             width: 100%;
             
             //margin-top: 62px;
             padding: 6px;
             padding-top:15px;
-            background-color: rgb(235, 235, 235);
-           
+            //background-color: rgb(235, 235, 235);
+            background: #F0F0F0;
+            background: linear-gradient(45deg, #F0F0F0 0%, rgb(2, 57, 94) 100%, #F0F0F0 100%);
+            
         }
         .div-filter{
             margin-top: -10px;
             width: 100%;
-            height: 100%;
+            height: 45px;
             font-size: 15px;
             margin-right: 20px;
-            //background-color: antiquewhite;
+     
         }
         .span-filter{
             margin-left:5px;
@@ -43,58 +45,69 @@ page-centro-fashion {
             margin-top:13px;
             //margin-bottom: auto;
             float: left;
+            
         }
         .ion-searchbar{
             padding-left: 2px;
             padding-right: 2px;
             //padding-top: 11px;
-            background-color: rgb(235, 235, 235);
+            background-color: rgb(255, 255, 255);
             //position: relative;
             border-radius: 5px;
             width: 100%;
             padding-bottom: 5px;
             //border: 1px solid rgba(2, 2, 2, 0.205);
+            -webkit-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
+            -moz-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
+            box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
+        }
+        .sector_filter{
+            border-radius: 5px;
+            float: left;
+            padding-left: 0px;
+            width: 28%;
+            //margin-right:10px; 
+            -webkit-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
+            -moz-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
+            box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
+        }
+        .category_filter{
+            border-radius: 5px;
+            margin-right: 12px;
+            float: left;
+            padding-left: 0px;
+            width: 48%;
+            -webkit-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
+            -moz-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
+            box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
         }
         .seletor_category{
-            float: right;
-            position: absolute;
-            margin-top: -45px;
-            margin-left:51%;
-            background-color: rgb(255, 255, 255);
-            max-width: 45%;
-            width: 45%;
-            //border-radius: 10px;
-            -webkit-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
-            -moz-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
-            box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
-        }
-        .seletor_setor{
-            -webkit-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
-            -moz-box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
-            box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
-            width: 29%;
-            max-width: 29%;
-            background-color: rgb(255, 255, 255);
-            //border-radius: 10px;
-        }
-        // .item-block{
-        //     width: 55%;
-        // }
-        // .select{
-        //     position: absolute;
             
-        //     width: 100%;
-        //     //margin-left: 20px;
-        //     background-color: aquamarine;
-        // }
-          
+            background-color: rgb(255, 255, 255);
+            max-width: 100%;
+            width: 100%;
+
+     
+        }
+
+        .seletor_setor{
+            float: left;
+            //position: absolute;
+
+            width: 100%;
+            max-width: 100%;
+            background-color: rgb(255, 255, 255);
+
+        }
+         
          #centroFashion{
             padding-top: 0px;
             position: relative!important;
-            background-color: rgb(255, 255, 255);
+            background: rgb(1, 37, 61);
+          
             width: 100%;
             .refresher{
-                margin-left:-15px;
+                //margin-left:-15px;
                 background-color: white;
             }
               
@@ -111,6 +124,7 @@ page-centro-fashion {
     
             }
             .card_post{
+                border-radius: 5px;
                 padding: 15px;
                 width: 100%;
                 height: 250px;
@@ -120,20 +134,21 @@ page-centro-fashion {
                 box-shadow: 2px 6px 15px 1px rgba(0,0,0,0.34);
                 margin-bottom: 20px;
                 //margin-left:-16px;
-                background-color: white;
+                background-color: rgb(248, 248, 248);
 
             }
             .card_img{
                 width: 100%;
                 height: 150px;
                 object-fit: cover;
+
                 //position: relative;
             }
             .content-card{
                 text-align: center;
                 width: 100%;
                 padding-left: -5px;
-                background-color: rgb(255, 255, 255);
+                background-color: rgb(248, 248, 248);
                 height: 47px;
                 padding-top: 17px;
                 //margin-top: -4px;

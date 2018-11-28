@@ -5,24 +5,26 @@
   <ion-searchbar class="ion-searchbar" placeholder="Procurar Loja" (ionInput)="filterPosts($event)" no-lines>
   </ion-searchbar>
   <hr>
+
   <div class="div-filter">
-    <span class="span-filter">Filtar por:</span>
-    <!-- <ion-item class="sector_filter" no-lines> -->
+    <span class="span-filter">Filtrar por:</span>
+    <ion-item class="category_filter" no-lines >
+      <ion-select no-lines placeholder="Categoria" interface="popover" class="seletor_category">
+        <ion-option (ionSelect)="selectCategory(0)">Todas</ion-option>
+        <ion-option *ngFor="let category of dataCategories" (ionSelect)="selectCategory(category.cat_id)" >
+          {{category.cat_name}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item class="sector_filter" no-lines>
       <ion-select no-lines interface="popover" placeholder="Setor" class="seletor_setor">
         <ion-option (ionSelect)="selectSector('Todos')">Todos</ion-option>
         <ion-option *ngFor="let setor of dataSectors" (ionSelect)="selectSector(setor.sector_name)">
           {{setor.sector_name}}
         </ion-option>
       </ion-select>
-    <!-- </ion-item> -->
-    <!-- <ion-item class="category_filter" no-lines > -->
-        <ion-select no-lines placeholder="Categoria" class="seletor_category">
-          <ion-option (ionSelect)="selectCategory(0)">Todas</ion-option>
-          <ion-option *ngFor="let category of dataCategories" (ionSelect)="selectCategory(category.cat_id)" >
-            {{category.cat_name}}
-          </ion-option>
-        </ion-select>
-      <!-- </ion-item> -->
+    </ion-item>
+  
   </div>
 
 </div>

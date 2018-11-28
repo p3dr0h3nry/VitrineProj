@@ -140,17 +140,17 @@ export class CentroFashionPage {
   selectCategory(e: any) {
     this.initializerPosts();
     let eString = e;
-    if (this.filter_sector!='') {
-      this.filter_sector=JSON.parse(this.filter_sector);
-      if (eString != 0) {
-        this.filter_sector = this.filter_sector.filter((v) => {
-          if (v.post_category_id.toLowerCase() == eString.toLowerCase()) {
-            return true;
-          }
-          return false;
-        });
-      }
-    } else {
+    // if (this.filter_sector!='') {
+    //   this.filter_sector=JSON.parse(this.filter_sector);
+    //   if (eString != 0) {
+    //     this.filter_sector = this.filter_sector.filter((v) => {
+    //       if (v.post_category_id.toLowerCase() == eString.toLowerCase()) {
+    //         return true;
+    //       }
+    //       return false;
+    //     });
+    //   }
+    // } else {
       if (eString != 0) {
         this.postsFilter = this.postsFilter.filter((v) => {
           if (v.post_category_id.toLowerCase() == eString.toLowerCase()) {
@@ -159,7 +159,7 @@ export class CentroFashionPage {
           return false;
         });
       }
-    }
+    // }
   }
 
 
