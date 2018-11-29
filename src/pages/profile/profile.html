@@ -5,7 +5,7 @@
   <div class="profileHeader">
 
     <!-- <ion-card-content class="content-img"> -->
-    <div right class="photo" (click)="selectImgFrom('imgProfile')">
+    <div right class="photo" (click)="selectImgFrom('imgProfile')" *ngIf="editPermission">
       <ion-icon name="md-create"></ion-icon>
     </div>
     <img *ngIf="profileDatails.prof_img" [src]="profileDatails.prof_img | showPipe" class="headerImg">
@@ -74,16 +74,17 @@
     <!-- Exibição de postagens -->
     <div class="posts">
       <ion-card *ngFor="let post of postsDatails" class="card_post">
-        <img [src]="post.post_img | showPipe" class="card_img" imageViewer (press)="deletePost(post.post_id)">
+        <img [src]="post.post_img | showPipe" class="card_img" imageViewer *ngIf="editPermission" (press)="deletePost(post.post_id)">
+        <img [src]="post.post_img | showPipe" class="card_img" imageViewer *ngIf="!editPermission">
       </ion-card>
     </div>
-    <ion-fab bottom right #fab style="margin-bottom: 60px;">
-        <button ion-fab (click)="toggle()">
-          <ion-icon name="ios-create-outline"></ion-icon>
-        </button>
-      </ion-fab>
+    <ion-fab bottom right #fab style="margin-bottom: 60px;" *ngIf="editPermission">
+      <button ion-fab (click)="toggle()">
+        <ion-icon name="ios-create-outline"></ion-icon>
+      </button>
+    </ion-fab>
   </div>
- <!-- Tem que tratar as permissões de edição -->
+  <!-- Tem que tratar as permissões de edição -->
 
 
 </ion-content>

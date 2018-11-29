@@ -15,18 +15,18 @@ let apiUrl = "http://www.prod.agesi.com.br/api_restful/api/";
 export class AuthServiceProvider {
 
   constructor(public http: Http, private alertCtrl:AlertController) {
-    console.log('Hello AuthServiceProvider Provider');
+    //console.log('Hello AuthServiceProvider Provider');
   }
 
   post(data, type) {
-    //console.log(apiUrl + type+JSON.stringify(data));
+    console.log(apiUrl + type+JSON.stringify(data));
     return new Promise((resolve, reject) => {
-      let headers = new Headers();
-      this.http.post(apiUrl + type, JSON.stringify(data)).subscribe(res => {
-        resolve(res);
-      }), (err) => {
-        reject(err);
-      }
+      // let headers = new Headers();
+      // this.http.post(apiUrl + type, JSON.stringify(data)).subscribe(res => {
+      //   resolve(res);
+      // }), (err) => {
+      //   reject(err);
+      // }
     })
   }
 
@@ -42,7 +42,8 @@ export class AuthServiceProvider {
   }
 
   postProfile(data, type) {
-     return new Promise((resolve, reject) => {
+    console.log(apiUrl + type+JSON.stringify(data)); 
+    return new Promise((resolve, reject) => {
       let headers = new Headers();
       this.http.post(apiUrl + type, JSON.stringify(data)).subscribe(res => {
         resolve(res);

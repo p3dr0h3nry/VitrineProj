@@ -2,115 +2,126 @@
 </custom-header>
 
 <ion-content padding id="profile">
-  <h3 style="text-align: center;">Criar Perfil</h3>
-  <form [formGroup]="formProfile" novalidate (ngSubmit)="createProfile(formProfile.value)">
-    <ion-list>
-      <ion-item no-lines>
-        <ion-input placeholder="Nome da loja" id="name" formControlName="name" type="text"></ion-input>
-      </ion-item>
-      <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('name').hasError('required') && formProfile.get('name').touched">
-        <div>Por favor informe o nome da loja</div>
-      </ion-item>
+  <h3 style="text-align: center;" *ngIf="!profDatails">Criar Perfil</h3>
+  <h3 style="text-align: center;" *ngIf="profDatails">Editar Perfil</h3>
+    <form [formGroup]="formProfile" novalidate (ngSubmit)="createProfile(formProfile.value)">
+      <ion-list>
+        <ion-item no-lines>
+          <ion-input placeholder="Nome da loja" id="name" [value]="profDatails ? profDatails.prof_name : null"
+            formControlName="name" type="text"></ion-input>
+        </ion-item>
+        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('name').hasError('required') && formProfile.get('name').touched">
+          <div>Por favor informe o nome da loja</div>
+        </ion-item>
 
 
-      <div class="contact">
-        <!-- <ion-item no-lines> -->
-        <!-- //<ion-card style="width: 100%;"> -->
-        <div class="title">
-          <h2>
-            Setor
-          </h2>
-        </div>
-        <hr>
-        <div *ngFor="let sec of sectors; let i=index" style="margin:10px;">
-          <ion-item class="checkBox" no-lines color="{{sec.sector_color}}" style="border-radius: 10px; ">
-            <ion-label>{{sec.sector_name}}</ion-label>
-            <ion-checkbox Name="sectorName" color="{{sec.sector_color}}" [ngModel]="checkedIdx1==i" [ngModelOptions]="{standalone: true}" (ngModelChange)="$event ? checkedIdx1 =i : checkedIdx1=-1;setSector($event,sec.sector_id)"></ion-checkbox>
+        <div class="contact">
+          <!-- <ion-item no-lines> -->
+          <!-- //<ion-card style="width: 100%;"> -->
+          <div class="title">
+            <h2>
+              Setor
+            </h2>
+          </div>
+          <hr>
+          <div *ngFor="let sec of sectors; let i=index" style="margin:10px;">
+            <ion-item class="checkBox" no-lines color="{{sec.sector_color}}" style="border-radius: 10px; ">
+              <ion-label>{{sec.sector_name}}</ion-label>
+              <ion-checkbox Name="sectorName" color="{{sec.sector_color}}" [ngModel]="checkedIdx1==i" [ngModelOptions]="{standalone: true}"
+                (ngModelChange)="$event ? checkedIdx1 =i : checkedIdx1=-1;setSector($event,sec.sector_id)"></ion-checkbox>
+            </ion-item>
+          </div>
+          <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('sectorName').hasError('required') && formProfile.get('sectorName').touched">
+            <div>Por favor informe o setor</div>
           </ion-item>
+          <hr>
+          <div style=" margin: 10px;">
+            <h5>Informe o endereço no setor</h5>
+            <ion-item no-lines style="background-color: rgb(238, 238, 238);">
+              <ion-input placeholder="Endereço" id="address" [value]="profDatails ? profDatails.prof_address : null"
+                formControlName="address" type="text"></ion-input>
+            </ion-item>
+            <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('address').hasError('required') && formProfile.get('address').touched">
+              <div>Por favor informe o endereço</div>
+            </ion-item>
+          </div>
         </div>
-        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('sectorName').hasError('required') && formProfile.get('sectorName').touched">
-          <div>Por favor informe o setor</div>
-        </ion-item>
-        <hr>
-        <div style=" margin: 10px;">
-          <h5>Informe o endereço no setor</h5>
-          <ion-item no-lines style="background-color: rgb(238, 238, 238);">
-            <ion-input placeholder="Endereço" id="address" formControlName="address" type="text"></ion-input>
+        <div class="contact">
+          <div class="title">
+            <h2>
+              Contatos
+            </h2>
+          </div>
+          <hr>
+          <ion-item no-lines>
+            <ion-label>
+              <ion-icon name="logo-instagram" color="primary"></ion-icon>
+            </ion-label>
+            <ion-input placeholder="@instagram" id="instagram" [value]="profDatails ? profDatails.prof_inst : null"
+              [brmasker]="{mask:'@'}" formControlName="instagram" type="text"></ion-input>
           </ion-item>
-          <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('address').hasError('required') && formProfile.get('address').touched">
-            <div>Por favor informe o endereço</div>
+          <ion-item no-lines>
+            <ion-label>
+              <ion-icon name="logo-twitter" color="primary"></ion-icon>
+            </ion-label>
+            <ion-input placeholder="@twitter" id="twitter" [value]="profDatails ? profDatails.prof_tw : null"
+              [brmasker]="{mask:'@'}" formControlName="twitter" type="text"></ion-input>
           </ion-item>
-        </div>
-      </div>
-      <div class="contact">
-        <div class="title">
-          <h2>
-            Contatos
-          </h2>
-        </div>
-        <hr>
-        <ion-item no-lines>
-          <ion-label>
-            <ion-icon name="logo-instagram" color="primary"></ion-icon>
-          </ion-label>
-          <ion-input placeholder="@instagram" id="instagram" [brmasker]="{mask:'@'}" formControlName="instagram" type="text"></ion-input>
-        </ion-item>
-        <ion-item no-lines>
-          <ion-label>
-            <ion-icon name="logo-twitter" color="primary"></ion-icon>
-          </ion-label>
-          <ion-input placeholder="@twitter" id="twitter" [brmasker]="{mask:'@'}" formControlName="twitter" type="text"></ion-input>
-        </ion-item>
-        <ion-item no-lines>
-          <ion-label>
-            <ion-icon name="logo-facebook" color="primary"></ion-icon>
-          </ion-label>
-          <ion-input placeholder="Facebook" id="face" formControlName="face" type="text"></ion-input>
-        </ion-item>
-        <ion-item no-lines>
-          <ion-label>
-            <ion-icon name="logo-whatsapp" color="primary"></ion-icon>
-          </ion-label>
-          <ion-input placeholder="WhatsApp" formControlName="phone" [brmasker]="{mask:'(00)00000-0000',len:14}" id="phone" type="text"></ion-input>
-        </ion-item>
-        <!-- <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('phone').hasError('pattern') && formProfile.get('phone').touched">
+          <ion-item no-lines>
+            <ion-label>
+              <ion-icon name="logo-facebook" color="primary"></ion-icon>
+            </ion-label>
+            <ion-input placeholder="Facebook" id="face" [value]="profDatails ? profDatails.prof_face : null"
+              formControlName="face" type="text"></ion-input>
+          </ion-item>
+          <ion-item no-lines>
+            <ion-label>
+              <ion-icon name="logo-whatsapp" color="primary"></ion-icon>
+            </ion-label>
+            <ion-input placeholder="WhatsApp" formControlName="phone" [value]="profDatails ? profDatails.prof_phone : null"
+              [brmasker]="{mask:'(00)00000-0000',len:14}" id="phone" type="text"></ion-input>
+          </ion-item>
+          <!-- <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('phone').hasError('pattern') && formProfile.get('phone').touched">
           <div>Informe um número válido</div>
         </ion-item> -->
-        <ion-item no-lines>
-          <ion-label>
-            <ion-icon name="at" color="primary"></ion-icon>
-          </ion-label>
-          <ion-input no-lines placeholder="Email" formControlName="email" id="email" type="text"></ion-input>
-        </ion-item>
-        <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('email').hasError('pattern') && formProfile.get('email').touched">
-          <div>Informe um email válido</div>
-        </ion-item>
-      </div>
-
-      <div class="contact">
-        <!-- <ion-item no-lines> -->
-        <!-- //<ion-card style="width: 100%;"> -->
-        <div class="title">
-          <h2>
-            Categorias
-          </h2>
-        </div>
-        <hr>
-        <div *ngFor="let cat of dataCategory; let i=index">
-          <ion-item class="checkBox" no-lines>
-            <ion-label>{{cat.cat_name}}</ion-label>
-            <ion-checkbox Name="categoryName" color="primary" [ngModel]="checkedIdx==i" [ngModelOptions]="{standalone: true}" (ionchange)="setCategory(cat_id)"
-              (ngModelChange)="$event ? checkedIdx =i : checkedIdx=-1;setCategory($event,cat.cat_id)"></ion-checkbox>
+          <ion-item no-lines>
+            <ion-label>
+              <ion-icon name="at" color="primary"></ion-icon>
+            </ion-label>
+            <ion-input no-lines placeholder="Email" formControlName="email" [value]="profDatails ? profDatails.prof_email : null"
+              id="email" type="text"></ion-input>
           </ion-item>
-          <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('categoryName').hasError('required') && formProfile.get('category').touched">
-            <div>Por favor informe uma categoria</div>
+          <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('email').hasError('pattern') && formProfile.get('email').touched">
+            <div>Informe um email válido</div>
           </ion-item>
         </div>
 
-      </div>
-      <button ion-button block color="primary" type="submit" [disabled]="!formProfile.valid">Criar perfil</button>
-      <!-- [disabled]="!formSignup.valid" -->
+        <div class="contact">
+          <!-- <ion-item no-lines> -->
+          <!-- //<ion-card style="width: 100%;"> -->
+          <div class="title">
+            <h2>
+              Categorias
+            </h2>
+          </div>
+          <hr>
+          <div *ngFor="let cat of dataCategory; let i=index">
+            <ion-item class="checkBox" no-lines>
+              <ion-label>{{cat.cat_name}}</ion-label>
+              <ion-checkbox Name="categoryName" color="primary" [ngModel]="checkedIdx==i" [ngModelOptions]="{standalone: true}"
+                (ionchange)="setCategory(cat_id)" (ngModelChange)="$event ? checkedIdx =i : checkedIdx=-1;setCategory($event,cat.cat_id)"></ion-checkbox>
+            </ion-item>
+            <ion-item no-lines style="background-color: rgba(165, 42, 42, 0.308); border-radius: 10px;" *ngIf="formProfile.get('categoryName').hasError('required') && formProfile.get('category').touched">
+              <div>Por favor informe uma categoria</div>
+            </ion-item>
+          </div>
 
-    </ion-list>
+        </div>
+        <button ion-button block color="primary" type="submit"  [disabled]="!formProfile.valid">Concluir</button>
+        <!-- [disabled]="!formSignup.valid" -->
+
+      </ion-list>
   </form>
+
+
 </ion-content>

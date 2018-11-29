@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, AlertController, LoadingController, ActionSheetController, Events } from 'ionic-angular';
 import { CameraOptions, Camera } from '@ionic-native/camera';
-import { FileTransfer, FileUploadOptions } from '@ionic-native/file-transfer';
-import { File } from '@ionic-native/file';
-import { DomSanitizer } from '@angular/platform-browser';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { HttpClient } from '@angular/common/http';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { ImageViewerController } from 'ionic-img-viewer';
 /**
@@ -50,7 +46,7 @@ export class ProfilePage {
   thisplace;
   public postsDatails: any;
   public profileDatails: any;
-
+  editPermission:boolean;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
@@ -62,11 +58,14 @@ export class ProfilePage {
     private events: Events,
     private imgViewerCtrl:ImageViewerController
   ) {
-    this.imgViewerCtrl.config
     this.imgToPost = '';
     this.addPost = true;
     this.events.unsubscribe('local');
-
+    this.editPermission=false;
+    this.userDatails='';
+    this.profileDatails='';
+    this.userDatails='';
+    this.postsDatails='';
     if (localStorage.getItem('user')) {
       
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
@@ -74,8 +73,7 @@ export class ProfilePage {
       this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
       // this.imgToPost = this.userDatails.prof_img;
       
-
-      let loader = this.loadCtrl.create({
+       let loader = this.loadCtrl.create({
         content: 'Atualizando postagens...'
       });
       loader.present();
@@ -91,7 +89,26 @@ export class ProfilePage {
       this.profileDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('profileData'))))._body;
       this.profileDatails = JSON.parse(this.profileDatails).success;
       this.profileDatails = JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(this.profileDatails)))).profileData;
-      console.log(this.profileDatails);
+      //console.log(this.profileDatails);
+      if(localStorage.getItem('user')){
+        if(this.userDatails.prof_id==this.profileDatails.prof_id){
+          this.editPermission=true;
+        }else{
+          this.editPermission=false;
+        }
+      }else{
+        let loader = this.loadCtrl.create({
+          content: 'Buscando postagens...'
+        });
+        loader.present();
+        //console.log(this.userDatails);
+        setTimeout(() => {
+          this.getAllPostsProfile();
+          loader.dismiss();
+        }, 1500);
+        this.editPermission=false;
+      }
+
     }
 
     this.events.subscribe('updateProfile', (data) => {
@@ -100,14 +117,14 @@ export class ProfilePage {
       this.profileDatails = JSON.parse(JSON.stringify(this.profileDatails)).profile;
     });
 
-    if (localStorage.getItem('posts')) {
-      // console.log(localStorage.getItem('posts'));
-      this.postsDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('posts'))))._body;
-      this.postsDatails = JSON.parse(this.postsDatails).success;
-      this.postsDatails = JSON.parse(JSON.stringify(this.postsDatails)).posts;
-      // this.imgToPost = this.userDatails.prof_img;
-      //console.log(this.postsDatails);
-    }
+    // if (localStorage.getItem('posts')) {
+    //   // console.log(localStorage.getItem('posts'));
+    //   this.postsDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('posts'))))._body;
+    //   this.postsDatails = JSON.parse(this.postsDatails).success;
+    //   this.postsDatails = JSON.parse(JSON.stringify(this.postsDatails)).posts;
+    //   // this.imgToPost = this.userDatails.prof_img;
+    //   //console.log(this.postsDatails);
+    // }
 
     this.events.subscribe('newPosts', (data) => {
       this.postsDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('posts'))))._body;
@@ -115,6 +132,7 @@ export class ProfilePage {
       this.postsDatails = JSON.parse(JSON.stringify(this.postsDatails)).posts;
       // this.imgToPost = this.userDatails.prof_img;
       console.log(this.postsDatails);
+      this.events.unsubscribe('newPosts');
 
     });
     

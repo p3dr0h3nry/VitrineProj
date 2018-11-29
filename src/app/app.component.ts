@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Platform, App, MenuController, Events, Nav, LoadingController, AlertController } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { TabsPage } from '../pages/tabs/tabs';
+import { App, MenuController, Events, Nav, LoadingController, AlertController } from 'ionic-angular';
 //Modulo do sistema
 import { WelcomePage } from '../pages/welcome/welcome';
 import { CentroFashionPage } from '../pages/centro-fashion/centro-fashion';
@@ -31,12 +28,10 @@ export class MyApp implements OnInit {
   userAtive;
   profileAtive;
   //rootPage =Menu; //busca o menu na pag menu
-  profileToGetData = { client_id: "" };
+  profileToGetData = { prof_id: "" };
   retorno: boolean;
 
-  constructor(platform: Platform,
-    statusBar: StatusBar,
-    splashScreen: SplashScreen,
+  constructor(
     public app: App,
     public menuCtrl: MenuController,
     public events: Events,
@@ -45,10 +40,6 @@ export class MyApp implements OnInit {
     private alertCtrl: AlertController
   ) {
     this.rootPage = WelcomePage;
-    //console.log(this.profileAtive);
-
-
-
     this.events.subscribe('root', data => {
       if (data == "CentroFashionPage") {
         this.thisPlace = "CentroFashionPage";
@@ -62,7 +53,7 @@ export class MyApp implements OnInit {
           } else {
             this.profileAtive = false;
           }
-          //console.log(this.userDatails.client_name);          
+          console.log(this.userDatails);          
         }
         if (this.rootPage == CentroFashionPage) {
           this.nav.push(CentroFashionPage);
@@ -119,16 +110,52 @@ export class MyApp implements OnInit {
 
   }
   ngOnInit() {
-    // this.viewCtrl.didEnter.subscribe(()=>{
-    //   console.log("Component");
-    // });
   }
+  editProfile(){
+    console.log(this.userDatails.prof_id);
+    this.profileToGetData.prof_id=this.userDatails.prof_id;
+    this.authService.post(this.profileToGetData, "getProfile").then((result) => {
+      this.responsePost = result;
+      this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
+      if (!JSON.parse(this.data).error) { //Retorno ok
+        localStorage.setItem('editProfile', JSON.stringify(this.responsePost));
+        this.menuCtrl.toggle();
+        setTimeout(() => {
+          this.nav.push(CreateProfilePage);
+        }, 200);
+      } else {
+        this.menuCtrl.toggle();
+        this.data = JSON.parse(this.data).error;
+        let msg: string = this.data.e; //busca msg de erro
+        console.log(msg);
+        let alertSignup = this.alertCtrl.create({
+          title: "Ops!",
+          message: 'Esse perfil não existe!',
+          buttons: [{
+            text: "Ok"
+          }]
+        });
+        alertSignup.present()
+      }
+    }, (err) => {
+      console.log(err);
+      let alertSignup = this.alertCtrl.create({
+        title: "Ops!",
+        message: 'Falha de conexão, verifique sua internet.',
+        buttons: [{
+          text: "Ok"
+        }]
+      });
+      alertSignup.present()
+    });
+  }
+
   getProfileData() {
     let loader = this.loadCtrl.create({
       content: 'Buscando perfil...'
     });
     loader.present();
-    this.profileToGetData.client_id = this.userDatails.client_id;
+    this.profileToGetData.prof_id = this.userDatails.prof_id;
     this.authService.post(this.profileToGetData, "getProfile").then((result) => {
       this.responsePost = result;
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
@@ -172,43 +199,22 @@ export class MyApp implements OnInit {
   }
   // Criação do perfil da loja
   createProfile() {
-    ///this.navCtrl.push(Menu);
     this.menuCtrl.toggle();
-    //localStorage.setItem('from', this.thisPlace);
     this.nav.push(CreateProfilePage);
-    // setTimeout(() => {
-    this.events.publish('Headerlocal', "CentroFashionPage");
-
-    //}, 500);
-    //this.nav.push(CreateProfilePage);
-
-
   }
 
   login(page: any) {
-
     this.menuCtrl.toggle();
-
     this.app.getActiveNav().setRoot(LoginPage);
-    //this.navCtrl.push(LoginPage);
-    //this.menuCtrl.close();
-
   }
   signup() {
-
     this.app.getActiveNav().setRoot(SignupPage);
     //this.menuCtrl.toggle();
   }
-
   logout(page: any) {
     localStorage.clear();
     this.menuCtrl.toggle();
     window.location.reload();
-
-    //this.nav.setRoot(WelcomePage, {}, { animate: true, direction: "back" });
-
-
-
   }
   backToWelcome() {
     this.menuCtrl.toggle();

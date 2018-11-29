@@ -1,31 +1,52 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController, LoadingController, InfiniteScroll } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-
+import { ProfilePage } from '../profile/profile';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import { getLocaleDateTimeFormat, getLocaleTimeFormat } from '@angular/common';
 
 
 @IonicPage()
 @Component({
   selector: 'page-centro-fashion',
   templateUrl: 'centro-fashion.html',
+  animations: [
+    trigger('searchStatusChanged', [
+      // state('shown', style({ opacity: 1 })),
+      // state('hidden', style({ opacity: 0 })),
+      state('shown', style({ opacity: 1 })),
+      state('hidden', style({ width: '0px', opacity: 0 })),
+      transition('show => hidden', animate('0ms')),
+      transition('hidden => show', animate('300ms'))
+    ])
+  ]
 })
 export class CentroFashionPage {
   public userDatails: any;
   currentPage: String;
-  postsFrom = { from: "" };
+  postsFrom = { from: "", dateTime: "",sector:"",category:"" };
+  postsFilterFrom = { from: "" };
   responsePost: any;
   data: any;
   postsCF: any;
   postsFilter: any;
   dataCategories: any;
   dataSectors: any;
-  filter_sector: any;
+  show_Image: any;
+  profileToGetData = { prof_id: "" };
+  filterProfileData: any;
+  profileF: any;
+  searchStatus: Boolean;
+  scrollNumber: number = 0;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
     private authService: AuthServiceProvider,
-    private alertCtrl: AlertController) {
-      
+    private alertCtrl: AlertController,
+    private loadCtrl: LoadingController) {
+    this.searchStatus = false;
+
+
     if (localStorage.getItem('user')) {
 
       if (localStorage.getItem('user')) {
@@ -35,32 +56,47 @@ export class CentroFashionPage {
         this.currentPage = this.navCtrl.getActive().name;
         setTimeout(() => {
           this.currentPage = this.navCtrl.getActive().name;
-          this.getAllPostsFrom(this.currentPage);
+          this.getAllPostsFrom(this.currentPage, new Date);
+          //console.log(new Date().toDateString());
         }, 50);
       }
     }
+    setTimeout(() => {
+      this.filterProfile(this.currentPage);
+    }, 200);
+
     if (!localStorage.getItem('user')) {
       setTimeout(() => {
         this.currentPage = this.navCtrl.getActive().name;
-        this.getAllPostsFrom(this.currentPage);
+        this.getAllPostsFrom(this.currentPage, new Date());
+
       }, 50);
     }
 
 
-    this.events.subscribe('newPostsCF', (data) => {
-      //console.log("evento newPostsCF");
-      this.postsCF = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('postsCF'))))._body;
-      this.postsCF = JSON.parse(this.postsCF).success;
-      this.postsCF = JSON.parse(JSON.stringify(this.postsCF)).posts;
-      this.postsFilter = this.postsCF;
-      //console.log(this.postsCF);
-      // this.imgToPost = this.userDatails.prof_img;
+    this.events.subscribe('filterProfile', (data) => {
+      this.filterProfileData = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('filterProfile'))))._body;
+      this.filterProfileData = JSON.parse(this.filterProfileData).success;
+      this.filterProfileData = JSON.parse(JSON.stringify(this.filterProfileData)).filterProfile;
+      this.profileF = this.filterProfileData;
+      setTimeout(() => {
+        this.events.unsubscribe('filterProfile');
+      });
     });
 
+    // this.events.subscribe('newPostsCF', (data) => {
+    //   this.postsCF = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('postsCF'))))._body;
+    //   this.postsCF = JSON.parse(this.postsCF).success;
+    //   this.postsCF = JSON.parse(JSON.stringify(this.postsCF)).posts;
+    //   if (this.postsFilter) {
+    //     this.postsFilter = this.postsFilter + this.postsCF;
+    //   } else {
+    //     this.postsFilter = this.postsCF;
+    //   }
+    // });
 
-
-    //getPostsFrom(); implementar
   }
+
 
   ionViewDidLoad() {
     setTimeout(() => {
@@ -69,115 +105,156 @@ export class CentroFashionPage {
     }, 500);
 
   }
-
+  openProfile(prof_id) {
+    console.log(prof_id);
+    let loader = this.loadCtrl.create({
+      content: 'Buscando perfil...'
+    });
+    loader.present();
+    this.profileToGetData.prof_id = prof_id;
+    this.authService.post(this.profileToGetData, "getProfile").then((result) => {
+      this.responsePost = result;
+      this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
+      if (!JSON.parse(this.data).error) { //Retorno ok
+        localStorage.setItem('profileData', JSON.stringify(this.responsePost));
+        loader.dismiss();
+        setTimeout(() => {
+          this.navCtrl.push(ProfilePage);
+        }, 200);
+      } else {
+        loader.dismiss();
+        this.data = JSON.parse(this.data).error;
+        let msg: string = this.data.e; //busca msg de erro
+        console.log(msg);
+        let alertSignup = this.alertCtrl.create({
+          title: "Ops!",
+          message: 'Esse perfil não existe!',
+          buttons: [{
+            text: "Ok"
+          }]
+        });
+        alertSignup.present()
+      }
+    }, (err) => {
+      loader.dismiss();
+      console.log(err);
+      let alertSignup = this.alertCtrl.create({
+        title: "Ops!",
+        message: 'Falha de conexão, verifique sua internet.',
+        buttons: [{
+          text: "Ok"
+        }]
+      });
+      alertSignup.present()
+    });
+  }
   getCategories() {
-    console.log("buscando categoria CFPage");
     this.authService.getAllCategorys(this.currentPage).then((result) => {
       this.responsePost = result;
-      //console.log(this.responseGet);
       this.dataCategories = JSON.parse(JSON.stringify(this.responsePost))._body;
-      //console.log("Parse+stringify: " + this.responseGet);
       this.dataCategories = JSON.parse(this.dataCategories);
       this.dataCategories = this.dataCategories.categoryData;
-      //console.log(this.dataCategory);
     });
   }
   getSectors() {
-    console.log("buscando setor CFPage");
+
     this.authService.getSectors(this.currentPage).then((result) => {
       this.responsePost = result;
-      //console.log(this.responsePost);
       this.responsePost = JSON.parse(JSON.stringify(this.responsePost))._body;
-      //console.log("Parse+stringify: " + this.responsePost);
       this.responsePost = JSON.parse(this.responsePost);
       this.dataSectors = this.responsePost.sectorsData;
-  
+
     });
   }
+  showImage() {
+    this.show_Image = "imageViewer";
+  }
   doRefresh(refresher) {
-    this.getAllPostsFrom(this.currentPage);
+    this.getAllPostsFrom(this.currentPage, new Date);
 
     setTimeout(() => {
       refresher.complete();
     }, 2000);
   }
+
   initializerPosts() {
     this.postsFilter = this.postsCF;
   }
-
+  initializerProfiles() {
+    this.profileF = this.filterProfileData;
+  }
   filterPosts(ev: any) {
-    //console.log(ev.target.value);
-    this.initializerPosts();
+    this.initializerProfiles();
     let val = ev.target.value;
+    //console.log(val);
     if (val && val.trim() !== '') {
-      this.postsFilter = this.postsFilter.filter((v) => {
+      this.profileF = this.profileF.filter((v) => {
         if (v.prof_name.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+          this.searchStatus = true;
           return true;
         }
+
         return false;
       });
+    } else {
+      this.searchStatus = false;
     }
   }
+
+  doInfinite(infiniteScroll) {
+    this.scrollNumber = this.scrollNumber + 10;
+    this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
+    this.events.subscribe('closeInfinitScroll', (data) => {
+      infiniteScroll.complete();
+    });
+  }
+
   selectSector(ev: any) {
-    this.filter_sector='';
+    this.postsFrom.sector=ev;
     this.initializerPosts();
     let evString = ev;
-    if (evString != 'Todos') {
+    if (evString != 0) {
       this.postsFilter = this.postsFilter.filter((v) => {
-        //console.log(v.sector_name.toLowerCase() == evString.toLowerCase());
-        if (v.sector_name.toLowerCase() == evString.toLowerCase()) {
-          //this.filter_sector=this.filter_sector+JSON.stringify(v);
+        if (v.sector_id.toLowerCase() == evString.toLowerCase()) {
           return true;
         }
         return false;
       });
     } else {
-      this.filter_sector = '';
+      this.postsFrom.sector='';
     }
-    //is.filter_sector=JSON.parse(this.filter_sector);
   }
 
   selectCategory(e: any) {
+    this.postsFrom.category=e;
     this.initializerPosts();
     let eString = e;
-    // if (this.filter_sector!='') {
-    //   this.filter_sector=JSON.parse(this.filter_sector);
-    //   if (eString != 0) {
-    //     this.filter_sector = this.filter_sector.filter((v) => {
-    //       if (v.post_category_id.toLowerCase() == eString.toLowerCase()) {
-    //         return true;
-    //       }
-    //       return false;
-    //     });
-    //   }
-    // } else {
-      if (eString != 0) {
-        this.postsFilter = this.postsFilter.filter((v) => {
-          if (v.post_category_id.toLowerCase() == eString.toLowerCase()) {
-            return true;
-          }
-          return false;
-        });
-      }
+    if (eString != 0) {
+      this.postsFilter = this.postsFilter.filter((v) => {
+        if (v.post_category_id.toLowerCase() == eString.toLowerCase()) {
+          return true;
+        }
+        return false;
+      });
+    }else{
+      this.postsFrom.category='';
+
+    }
     // }
   }
 
+  filterProfile(toFrom) {
 
-  getAllPostsFrom(from) {
-    //this.events.unsubscribe('newPostsCF');
-    //console.log(from);
     this.responsePost = '';
     this.data = '';
-    this.postsFrom.from = from;
-    //console.log(this.postsFrom);
-    this.authService.post(this.postsFrom, "getAllPostsFrom").then((result) => {
-      //console.log(result);
+    this.postsFilterFrom.from = toFrom;
+    this.authService.post(this.postsFilterFrom, "filterProfile").then((result) => {
       this.responsePost = result;
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
-        localStorage.removeItem('postsCF');
-        localStorage.setItem('postsCF', JSON.stringify(this.responsePost));
-        this.events.publish('newPostsCF', "newPostsCF");
+        localStorage.removeItem('filterProfile');
+        localStorage.setItem('filterProfile', JSON.stringify(this.responsePost));
+        this.events.publish('filterProfile', "filterProfile");
       } else {
         this.data = JSON.parse(this.data).error;
         let msg: string = this.data.e; //busca msg de erro
@@ -194,6 +271,57 @@ export class CentroFashionPage {
     }, (err) => {
       console.log(err);
 
+      alert('Falha');
+
+    });
+  }
+
+  getAllPostsFrom(from, date) {
+
+    this.responsePost = '';
+    this.data = '';
+    this.postsFrom.from = from;
+    this.postsFrom.dateTime = date;
+    this.authService.post(this.postsFrom, "getAllPostsFrom").then((result) => {
+      this.responsePost = result;
+      this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
+      if (!JSON.parse(this.data).error) { //Retorno ok
+
+        this.postsCF = JSON.stringify(this.responsePost);
+        this.postsCF = JSON.parse(JSON.stringify(JSON.parse(this.postsCF)))._body;
+        this.postsCF = JSON.parse(this.postsCF).success;
+        this.postsCF = JSON.parse(JSON.stringify(this.postsCF)).posts;
+        if (this.postsFilter) {
+          for (var i = 0; i < this.postsCF.length; i++) {
+            if (this.postsCF[i]) {
+              this.postsFilter[this.scrollNumber + i] = this.postsCF[i];
+            }
+          }
+          
+          this.events.publish('closeInfinitScroll', "");
+        } else if (!this.postsFilter) {
+          this.postsFilter = this.postsCF;
+        }
+        //tem que esvaziar this.postsCF
+      } else {
+        this.events.publish('closeInfinitScroll', "");
+        if (!this.postsFilter) {
+          this.data = JSON.parse(this.data).error;
+          let msg: string = this.data.e; //busca msg de erro
+          let alertSignup = this.alertCtrl.create({
+            title: "Ops!!",
+            message: msg,
+            buttons: [{
+              text: "Ok"
+            }]
+          });
+          alertSignup.present()
+        }
+      }
+
+    }, (err) => {
+      this.events.publish('closeInfinitScroll', "");
+      console.log(err);
       alert('Falha');
 
     });

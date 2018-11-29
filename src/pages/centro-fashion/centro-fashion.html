@@ -1,16 +1,22 @@
 <custom-header>
 </custom-header>
 <!-- <filter-bar></filter-bar> -->
+<ion-list  class="search-list" [@searchStatusChanged]="searchStatus ? 'show':'hidden'">
+  <ion-item *ngFor="let prof of profileF" (click)="openProfile(prof.prof_id)">
+    <span  >{{prof.prof_name }}</span>
+  </ion-item>
+</ion-list>
 <div class="config-bar">
   <ion-searchbar class="ion-searchbar" placeholder="Procurar Loja" (ionInput)="filterPosts($event)" no-lines>
   </ion-searchbar>
+  
   <hr>
 
   <div class="div-filter">
     <span class="span-filter">Filtrar por:</span>
     <ion-item class="category_filter" no-lines >
       <ion-select no-lines placeholder="Categoria" interface="popover" class="seletor_category">
-        <ion-option (ionSelect)="selectCategory(0)">Todas</ion-option>
+        <ion-option (ionSelect)="selectCategory(0)" placeholder="Categoria"></ion-option>
         <ion-option *ngFor="let category of dataCategories" (ionSelect)="selectCategory(category.cat_id)" >
           {{category.cat_name}}
         </ion-option>
@@ -18,8 +24,8 @@
     </ion-item>
     <ion-item class="sector_filter" no-lines>
       <ion-select no-lines interface="popover" placeholder="Setor" class="seletor_setor">
-        <ion-option (ionSelect)="selectSector('Todos')">Todos</ion-option>
-        <ion-option *ngFor="let setor of dataSectors" (ionSelect)="selectSector(setor.sector_name)">
+        <ion-option (ionSelect)="selectSector(0)" placeholder="Setor"></ion-option>
+        <ion-option *ngFor="let setor of dataSectors" (ionSelect)="selectSector(setor.sector_id)">
           {{setor.sector_name}}
         </ion-option>
       </ion-select>
@@ -43,7 +49,7 @@
         </div>
 
 
-        <img [src]="post.post_img | showPipe" class="card_img" imageViewer>
+        <img [src]="post.post_img | showPipe" class="card_img" (click)="openProfile(post.post_prof_id)">
 
         <div class="content-card">
 
@@ -60,5 +66,9 @@
         </div>
       </div>
     </div>
+
   </div>
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </ion-content>

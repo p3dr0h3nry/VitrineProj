@@ -30,11 +30,12 @@ export class CreateProfilePage {
   sectors: any;
   checkedIdx = -1;
   checkedIdx1 = -1;
-  profileToGetData = { client_id: "" };
+  profileToGetData = { prof_id: "" };
   reponseData: any;
   data: any;
-  dataProfile:any;
-  dataError:any;
+  dataProfile: any;
+  dataError: any;
+  profDatails: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -43,26 +44,35 @@ export class CreateProfilePage {
     public authServiceProvider: AuthServiceProvider,
     private alertController: AlertController,
     private alertCtrl: AlertController,
-    private loadCtrl:LoadingController,
+    private loadCtrl: LoadingController,
     private authService: AuthServiceProvider
-    ) {
+  ) {
 
-      this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
-      this.userDatails = JSON.parse(this.userDatails).success;
-      this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
-      console.log(this.userDatails);
+    this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
+    this.userDatails = JSON.parse(this.userDatails).success;
+    this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
+    console.log(this.userDatails);
 
-      this.events.subscribe('root', data=>{
-          if (localStorage.getItem('user')) {
+    this.events.subscribe('root', data => {
+      if (localStorage.getItem('user')) {
 
-            this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
-            this.userDatails = JSON.parse(this.userDatails).success;
-            this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
-            console.log(this.userDatails.client_name);
-          }
-          
-        
-      });
+        this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
+        this.userDatails = JSON.parse(this.userDatails).success;
+        this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
+
+      }
+
+
+    });
+
+    if (localStorage.getItem('editProfile')) {
+      console.log('editProfile');
+      this.profDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('editProfile'))))._body;
+      this.profDatails = JSON.parse(this.profDatails).success;
+      this.profDatails = JSON.parse(JSON.stringify(this.profDatails)).profileData;
+      console.log(this.profDatails);
+    }
+
     if (localStorage.getItem('root')) {
 
       this.authServiceProvider.getAllCategorys(localStorage.getItem('root')).then((result) => {
@@ -90,7 +100,7 @@ export class CreateProfilePage {
 
   ngOnInit() {
     let EMAILPATTERN = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-    
+
     this.formProfile = this.fBuilder.group({
       name: new FormControl('', [Validators.required]),
       categoryName: [''],
@@ -101,6 +111,8 @@ export class CreateProfilePage {
       phone: [''], //inserir um pattern de validação
       address: new FormControl('', [Validators.required]),
       sectorName: [''],
+      from: [''],
+      prof_id:[''],
       email: new FormControl('', [Validators.required, Validators.pattern(EMAILPATTERN)]),
 
       // repassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
@@ -109,22 +121,22 @@ export class CreateProfilePage {
     });
 
   }
-  setCategory(ev,id) {
+  setCategory(ev, id) {
 
-    if(ev==true){
+    if (ev == true) {
       this.categoryChecked = id;
-    }else{
+    } else {
       this.categoryChecked = 0;
     }
   }
-  setSector(ev,id) {
-    if(ev==true){
+  setSector(ev, id) {
+    if (ev == true) {
       this.sectorChecked = id;
-    }else{
+    } else {
       this.sectorChecked = 0;
     }
-    
-    
+
+
   }
   createProfile(item) {
     if (this.categoryChecked == 0) {
@@ -147,37 +159,67 @@ export class CreateProfilePage {
       alertProfile.present()
     } else {
 
+      this.thisPlace;
+      this.formProfile.controls['from'].setValue('CentroFashionPage');
       this.formProfile.controls['categoryName'].setValue(this.categoryChecked);
       this.formProfile.controls['sectorName'].setValue(this.sectorChecked);
       this.formProfile.controls['client_id'].setValue(this.userDatails.client_id);
       //////////////////////////////////////////////////////////////////////////////////////////////////
-
-      this.authServiceProvider.postProfile(this.formProfile.value, "signupProfile").then((result) => {
-        this.reponseData = result;
-        this.data = JSON.parse(JSON.stringify(this.reponseData))._body;
-        localStorage.removeItem('user');
-        if (!JSON.parse(this.data).error) {
-          localStorage.setItem('user', JSON.stringify(this.reponseData));
-          setTimeout(() => {
-            this.events.publish('root', "CentroFashionPage");
-          }, 100);
-            if(localStorage.getItem('user')){
+      if (!this.profDatails) {
+        console.log("criar perfil");
+        this.authServiceProvider.postProfile(this.formProfile.value, "signupProfile").then((result) => {
+          this.reponseData = result;
+          this.data = JSON.parse(JSON.stringify(this.reponseData))._body;
+          
+          if (!JSON.parse(this.data).error) {
+            localStorage.removeItem('user');
+            localStorage.setItem('user', JSON.stringify(this.reponseData));
+            setTimeout(() => {
+              this.events.publish('root', "CentroFashionPage");
+            }, 100);
+            if (localStorage.getItem('user')) {
               this.getProfileData();
             }
-             
-        } else {
-          let alertSignup = this.alertController.create({
-            title: "Falha",
-            message:"Algo deu errado",
-            buttons:[{
+
+          } else {
+            let alertSignup = this.alertController.create({
+              title: "Falha",
+              message: "Algo deu errado",
+              buttons: [{
                 text: "Ok"
               }]
-          });
-          alertSignup.present()
-        }
-      }, (err) => {
-        console.log(err);
-      });
+            });
+            alertSignup.present()
+          }
+        }, (err) => {
+          console.log(err);
+        });
+      }else if(this.profDatails){
+        console.log("editar perfil");
+        this.formProfile.controls['prof_id'].setValue(this.profDatails.prof_id);
+        this.authServiceProvider.postProfile(this.formProfile.value, "updateProfile").then((result) => {
+          this.reponseData = result;
+          this.data = JSON.parse(JSON.stringify(this.reponseData))._body;
+          if (!JSON.parse(this.data).error) {
+            setTimeout(() => {
+              console.log("edição ok");
+              this.getProfileData();
+            }, 500);
+              
+          } else {
+            let alertSignup = this.alertController.create({
+              title: "Falha",
+              message: "Algo deu errado",
+              buttons: [{
+                text: "Ok"
+              }]
+            });
+            alertSignup.present()
+          }
+        }, (err) => {
+          console.log(err);
+        });
+      }
     }
   }
   ionViewDidLoad() {
@@ -188,9 +230,11 @@ export class CreateProfilePage {
       content: 'Buscando perfil...'
     });
     loader.present();
-    this.profileToGetData.client_id = this.userDatails.client_id;
+    this.profileToGetData.prof_id= this.userDatails.prof_id;
+    console.log(this.userDatails.client_id);
     this.authService.post(this.profileToGetData, "getProfile").then((result) => {
       this.reponseData = result;
+      console.log(this.reponseData);
       this.data = JSON.parse(JSON.stringify(this.reponseData))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
         localStorage.setItem('profileData', JSON.stringify(this.reponseData));
