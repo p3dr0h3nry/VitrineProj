@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, AlertController, LoadingController, InfiniteScroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController, LoadingController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { ProfilePage } from '../profile/profile';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { getLocaleDateTimeFormat, getLocaleTimeFormat } from '@angular/common';
 
 
 @IonicPage()
@@ -38,6 +37,8 @@ export class CentroFashionPage {
   profileF: any;
   searchStatus: Boolean;
   scrollNumber: number = 0;
+  filtred:Boolean;
+  counter:number;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
@@ -45,8 +46,8 @@ export class CentroFashionPage {
     private alertCtrl: AlertController,
     private loadCtrl: LoadingController) {
     this.searchStatus = false;
-
-
+      this.filtred=false;
+      this.counter=1;
     if (localStorage.getItem('user')) {
 
       if (localStorage.getItem('user')) {
@@ -69,7 +70,6 @@ export class CentroFashionPage {
       setTimeout(() => {
         this.currentPage = this.navCtrl.getActive().name;
         this.getAllPostsFrom(this.currentPage, new Date());
-
       }, 50);
     }
 
@@ -83,18 +83,6 @@ export class CentroFashionPage {
         this.events.unsubscribe('filterProfile');
       });
     });
-
-    // this.events.subscribe('newPostsCF', (data) => {
-    //   this.postsCF = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('postsCF'))))._body;
-    //   this.postsCF = JSON.parse(this.postsCF).success;
-    //   this.postsCF = JSON.parse(JSON.stringify(this.postsCF)).posts;
-    //   if (this.postsFilter) {
-    //     this.postsFilter = this.postsFilter + this.postsCF;
-    //   } else {
-    //     this.postsFilter = this.postsCF;
-    //   }
-    // });
-
   }
 
 
@@ -171,7 +159,6 @@ export class CentroFashionPage {
   }
   doRefresh(refresher) {
     this.getAllPostsFrom(this.currentPage, new Date);
-
     setTimeout(() => {
       refresher.complete();
     }, 2000);
@@ -203,44 +190,59 @@ export class CentroFashionPage {
 
   doInfinite(infiniteScroll) {
     this.scrollNumber = this.scrollNumber + 10;
-    this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
+    if(this.filtred){
+      this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
+    }else if(!this.filtred && this.counter==0){
+      this.counter++;
+      this.getAllPostsFrom(this.currentPage, new Date());
+    }else if(!this.filtred){
+      this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
+    }
+    
     this.events.subscribe('closeInfinitScroll', (data) => {
       infiniteScroll.complete();
     });
   }
 
   selectSector(ev: any) {
+    console.log();
     this.postsFrom.sector=ev;
-    this.initializerPosts();
+    if(ev==0){
+      this.counter=0;
+      this.filtred=false;
+    }
+    //this.initializerPosts();
     let evString = ev;
     if (evString != 0) {
+      this.filtred=true;
       this.postsFilter = this.postsFilter.filter((v) => {
         if (v.sector_id.toLowerCase() == evString.toLowerCase()) {
           return true;
         }
         return false;
       });
-    } else {
-      this.postsFrom.sector='';
     }
   }
 
   selectCategory(e: any) {
     this.postsFrom.category=e;
-    this.initializerPosts();
+    if(e==0){
+      this.counter=0;
+      this.filtred=false;
+    }
+    //this.initializerPosts();
     let eString = e;
     if (eString != 0) {
+      this.filtred=true;
       this.postsFilter = this.postsFilter.filter((v) => {
+        
         if (v.post_category_id.toLowerCase() == eString.toLowerCase()) {
           return true;
         }
         return false;
       });
-    }else{
-      this.postsFrom.category='';
-
     }
-    // }
+
   }
 
   filterProfile(toFrom) {
@@ -284,24 +286,29 @@ export class CentroFashionPage {
     this.postsFrom.dateTime = date;
     this.authService.post(this.postsFrom, "getAllPostsFrom").then((result) => {
       this.responsePost = result;
+
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
-
+        
         this.postsCF = JSON.stringify(this.responsePost);
         this.postsCF = JSON.parse(JSON.stringify(JSON.parse(this.postsCF)))._body;
         this.postsCF = JSON.parse(this.postsCF).success;
         this.postsCF = JSON.parse(JSON.stringify(this.postsCF)).posts;
+        
+        
         if (this.postsFilter) {
+          let x= this.postsFilter.length;
           for (var i = 0; i < this.postsCF.length; i++) {
             if (this.postsCF[i]) {
-              this.postsFilter[this.scrollNumber + i] = this.postsCF[i];
+              this.postsFilter[x + i] = this.postsCF[i];
             }
           }
-          
+          console.log(this.postsFilter);
           this.events.publish('closeInfinitScroll', "");
         } else if (!this.postsFilter) {
           this.postsFilter = this.postsCF;
         }
+        console.log(this.postsFilter);
         //tem que esvaziar this.postsCF
       } else {
         this.events.publish('closeInfinitScroll', "");

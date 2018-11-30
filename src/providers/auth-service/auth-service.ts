@@ -21,12 +21,12 @@ export class AuthServiceProvider {
   post(data, type) {
     console.log(apiUrl + type+JSON.stringify(data));
     return new Promise((resolve, reject) => {
-      // let headers = new Headers();
-      // this.http.post(apiUrl + type, JSON.stringify(data)).subscribe(res => {
-      //   resolve(res);
-      // }), (err) => {
-      //   reject(err);
-      // }
+      let headers = new Headers();
+      this.http.post(apiUrl + type, JSON.stringify(data)).subscribe(res => {
+        resolve(res);
+      }), (err) => {
+        reject(err);
+      }
     })
   }
 
