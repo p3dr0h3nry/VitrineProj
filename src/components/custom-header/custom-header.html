@@ -1,12 +1,15 @@
 
-<ion-header class="ion-header">
-  <ion-toolbar>
-    <div class="icon-back" (click)="back()">
-      <ion-icon name="ios-arrow-back-outline"></ion-icon>
-    </div>
+<ion-header class="ionheader">
+  <ion-toolbar class="toolbar">
+    
     <button ion-button menuToggle right icon-only persistent="true" [disabled]="!userDatails">
         <ion-icon name="menu"></ion-icon>
     </button>
+    <!-- <div class="div_header_logo">
+        <div class="div-icon-back" (click)="back()"> -->
+            <ion-icon (click)="back()" class="icon-back" name="ios-arrow-back-outline"></ion-icon>
+          <!-- </div> -->
       <img class="header_logo" src="assets/imgs/cf_index_logo.png" (click)="backToRoot()">
+    <!-- </div> -->
   </ion-toolbar>
 </ion-header>

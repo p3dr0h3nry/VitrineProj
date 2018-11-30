@@ -11,43 +11,53 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   templateUrl: 'centro-fashion.html',
   animations: [
     trigger('searchStatusChanged', [
-      // state('shown', style({ opacity: 1 })),
-      // state('hidden', style({ opacity: 0 })),
       state('shown', style({ opacity: 1 })),
       state('hidden', style({ width: '0px', opacity: 0 })),
       transition('show => hidden', animate('0ms')),
       transition('hidden => show', animate('300ms'))
-    ])
+    ]),
+    // trigger('filterDiv', [
+    //   state('shown', style({ opacity: 1 })),
+    //   state('hidden', style({ close: 1, opacity: 0 })),
+    //   transition('show => hidden', animate('0ms')),
+    //   transition('hidden => show', animate('300ms'))
+    // ])
   ]
 })
 export class CentroFashionPage {
   public userDatails: any;
-  currentPage: String;
-  postsFrom = { from: "", dateTime: "",sector:"",category:"" };
+  currentPage: String; //Armazena a pagina corrente
+  postsFrom = { from: "", dateTime: "", sector: "", category: "" };
   postsFilterFrom = { from: "" };
-  responsePost: any;
-  data: any;
-  postsCF: any;
-  postsFilter: any;
-  dataCategories: any;
-  dataSectors: any;
-  show_Image: any;
+  responsePost: any; //resposta do banco
+  data: any; 
+  postsCF: any; //Armazena a ulta busca no banco
+  postsFilter: any; //Armazena a lista completa já buscada
+  dataCategories: any; // Armazena as categorias vindas do banco
+  dataSectors: any;// Armazena os setores vindas do banco
+  //show_Image: any; //Flag para imageviewer
   profileToGetData = { prof_id: "" };
   filterProfileData: any;
-  profileF: any;
-  searchStatus: Boolean;
-  scrollNumber: number = 0;
-  filtred:Boolean;
-  counter:number;
+  profileF: any; //Lista de nomes de todos os profiles cadastrados
+  searchStatus: Boolean; //Flag de exibição da lista de busca das lojas
+  filtred: Boolean; //Flag caso algum seletor de filtro esteja marcado
+  counter: number; 
+  filterDiv; //Define se a DIV de filtro será exibida
+  refresher; //Caso tenha dado refresh
+  searchFilterStatus; //flag de ação para buscar os filtros
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
     private authService: AuthServiceProvider,
     private alertCtrl: AlertController,
     private loadCtrl: LoadingController) {
+    this.filterDiv = false;
     this.searchStatus = false;
-      this.filtred=false;
-      this.counter=1;
+    this.filtred = false;
+    this.counter = 1;
+    this.refresher=false;
+    this.searchFilterStatus=true; //flag invertida
+
     if (localStorage.getItem('user')) {
 
       if (localStorage.getItem('user')) {
@@ -57,20 +67,28 @@ export class CentroFashionPage {
         this.currentPage = this.navCtrl.getActive().name;
         setTimeout(() => {
           this.currentPage = this.navCtrl.getActive().name;
-          this.getAllPostsFrom(this.currentPage, new Date);
+          if (!this.postsFilter) {
+            this.getAllPostsFrom(this.currentPage, new Date);
+          }
           //console.log(new Date().toDateString());
         }, 50);
       }
     }
     setTimeout(() => {
-      this.filterProfile(this.currentPage);
+      if (!this.filterProfileData) {
+        this.filterProfile(this.currentPage);
+      } else {
+        this.profileF = this.filterProfileData;
+      }
     }, 200);
 
     if (!localStorage.getItem('user')) {
-      setTimeout(() => {
-        this.currentPage = this.navCtrl.getActive().name;
-        this.getAllPostsFrom(this.currentPage, new Date());
-      }, 50);
+      if (!this.postsFilter) {
+        setTimeout(() => {
+          this.currentPage = this.navCtrl.getActive().name;
+          this.getAllPostsFrom(this.currentPage, new Date());
+        }, 50);
+      }
     }
 
 
@@ -85,13 +103,18 @@ export class CentroFashionPage {
     });
   }
 
+  toggle() {
+    this.filterDiv = !this.filterDiv;
+  }
+
 
   ionViewDidLoad() {
-    setTimeout(() => {
-      this.getCategories();
-      this.getSectors();
-    }, 500);
-
+    if (!this.dataCategories || !this.dataSectors) {
+      setTimeout(() => {
+        this.getCategories();
+        this.getSectors();
+      }, 500);
+    }
   }
   openProfile(prof_id) {
     console.log(prof_id);
@@ -154,10 +177,11 @@ export class CentroFashionPage {
 
     });
   }
-  showImage() {
-    this.show_Image = "imageViewer";
-  }
+  // showImage() {
+  //   this.show_Image = "imageViewer";
+  // }
   doRefresh(refresher) {
+    this.refresher=true;
     this.getAllPostsFrom(this.currentPage, new Date);
     setTimeout(() => {
       refresher.complete();
@@ -170,7 +194,7 @@ export class CentroFashionPage {
   initializerProfiles() {
     this.profileF = this.filterProfileData;
   }
-  filterPosts(ev: any) {
+  searchStores(ev: any) {
     this.initializerProfiles();
     let val = ev.target.value;
     //console.log(val);
@@ -189,66 +213,101 @@ export class CentroFashionPage {
   }
 
   doInfinite(infiniteScroll) {
-    this.scrollNumber = this.scrollNumber + 10;
-    if(this.filtred){
+
+    if (this.filtred) {
       this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
-    }else if(!this.filtred && this.counter==0){
+    } else if (!this.filtred && this.counter == 0) {
       this.counter++;
       this.getAllPostsFrom(this.currentPage, new Date());
-    }else if(!this.filtred){
+    } else if (!this.filtred) {
       this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
     }
-    
+    this.filterDiv = false;
     this.events.subscribe('closeInfinitScroll', (data) => {
       infiniteScroll.complete();
     });
   }
 
   selectSector(ev: any) {
-    console.log();
-    this.postsFrom.sector=ev;
-    if(ev==0){
-      this.counter=0;
-      this.filtred=false;
+    
+    if (ev == 0) {
+      this.postsFrom.sector='';
+      this.counter = 0;
+      if(this.postsFrom.category==''){
+        this.filtred = false;
+      }
+      if(this.postsCF[0].prof_id!=this.postsFilter[0].prof_id){
+        this.postsFilter = this.postsFilter.filter((v) => {
+          return false;
+        });
+        this.getAllPostsFrom(this.currentPage,new Date());
+      }
+ 
+    } else {
+      this.postsFrom.sector = ev;
+      this.counter++;
+      this.filtred = true;
     }
+    
     //this.initializerPosts();
-    let evString = ev;
-    if (evString != 0) {
-      this.filtred=true;
-      this.postsFilter = this.postsFilter.filter((v) => {
-        if (v.sector_id.toLowerCase() == evString.toLowerCase()) {
-          return true;
-        }
-        return false;
-      });
-    }
+    // let evString = ev;
+    // if (evString != 0) {
+    //   this.filtred = true;
+    //   this.postsFilter = this.postsFilter.filter((v) => {
+    //     if (v.sector_id.toLowerCase() == evString.toLowerCase()) {
+    //       return true;
+    //     }
+    //     return false;
+    //   });
+    // }
   }
 
   selectCategory(e: any) {
-    this.postsFrom.category=e;
-    if(e==0){
-      this.counter=0;
-      this.filtred=false;
+    
+    if (e == 0) {
+      this.postsFrom.category ='';
+      this.counter = 0;
+      if(this.postsFrom.sector==''){
+        this.filtred = false;
+      }
+      
+      if(this.postsCF[0].prof_id!=this.postsFilter[0].prof_id){
+        this.postsFilter = this.postsFilter.filter((v) => {
+          return false;
+        });
+        this.getAllPostsFrom(this.currentPage,new Date());
+      }
+    } else {
+      this.postsFrom.category = e;
+      this.counter++;
+      this.filtred = true;
     }
     //this.initializerPosts();
-    let eString = e;
-    if (eString != 0) {
-      this.filtred=true;
-      this.postsFilter = this.postsFilter.filter((v) => {
-        
-        if (v.post_category_id.toLowerCase() == eString.toLowerCase()) {
-          return true;
-        }
-        return false;
-      });
-    }
+    // let eString = e;
+    // if (eString != 0) {
+    //   this.filtred=true;
+    //   this.postsFilter = this.postsFilter.filter((v) => {
 
+    //     if (v.post_category_id.toLowerCase() == eString.toLowerCase()) {
+    //       return true;
+    //     }
+    //     return false;
+    //   });
+    // }
+
+  }
+  searchFilter() {
+    this.searchFilterStatus=false; //flag invertida
+     setTimeout(() => {
+      this.getAllPostsFrom(this.currentPage, new Date);
+    }, 500);
+    // this.postsFilter = this.postsFilter.filter((v) => {
+    //   return false;
+    // });
   }
 
   filterProfile(toFrom) {
 
-    this.responsePost = '';
-    this.data = '';
     this.postsFilterFrom.from = toFrom;
     this.authService.post(this.postsFilterFrom, "filterProfile").then((result) => {
       this.responsePost = result;
@@ -279,7 +338,6 @@ export class CentroFashionPage {
   }
 
   getAllPostsFrom(from, date) {
-
     this.responsePost = '';
     this.data = '';
     this.postsFrom.from = from;
@@ -289,26 +347,28 @@ export class CentroFashionPage {
 
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
-        
+
         this.postsCF = JSON.stringify(this.responsePost);
         this.postsCF = JSON.parse(JSON.stringify(JSON.parse(this.postsCF)))._body;
         this.postsCF = JSON.parse(this.postsCF).success;
         this.postsCF = JSON.parse(JSON.stringify(this.postsCF)).posts;
-        
-        
-        if (this.postsFilter) {
-          let x= this.postsFilter.length;
+
+        if (this.postsFilter && !this.refresher && this.searchFilterStatus) {
+          let x = this.postsFilter.length;
           for (var i = 0; i < this.postsCF.length; i++) {
             if (this.postsCF[i]) {
               this.postsFilter[x + i] = this.postsCF[i];
             }
           }
-          console.log(this.postsFilter);
           this.events.publish('closeInfinitScroll', "");
-        } else if (!this.postsFilter) {
+        } else if (!this.postsFilter ) {
+          this.refresher=false;
+          this.postsFilter = this.postsCF;
+        }else if(!this.searchFilterStatus){ //entra caso esteja com filtro ativo
+          this.searchFilterStatus=true; //flag invertida
           this.postsFilter = this.postsCF;
         }
-        console.log(this.postsFilter);
+        //console.log(this.postsFilter);
         //tem que esvaziar this.postsCF
       } else {
         this.events.publish('closeInfinitScroll', "");

@@ -1,27 +1,50 @@
-    .ion-header{
-        position: relative;
-//         -webkit-box-shadow: 0px 10px 16px -6px rgba(110,129,143,1);
-// -moz-box-shadow: 0px 10px 16px -6px rgba(110,129,143,1);
-// box-shadow: 0px 10px 16px -6px rgba(110,129,143,1);
--webkit-box-shadow: 1px 11px 31px -5px rgba(0,0,0,0.67); 
-box-shadow: 1px 11px 31px -5px rgba(0,0,0,0.67);
-    }
-    .header_logo{
-        margin-left: 10px;
-        float: left;
-        width: 150px;
-        margin-top: auto;
-        margin-bottom: auto;
-    }
-    .icon{
-        size: 80px;
-    }
-    .icon-back{
-        float: left;
-        font-size: 35px;
-        height: 100%;
-        margin-top: 2%;
-        margin-left: 10px;
-        margin-right: 10px;
+    .ionheader{
+        
+        position: relative!important;
+        box-shadow: 1px 11px 31px -5px rgba(0,0,0,0.67);
+        height: 8%;
+        background-color: black;
     }
 
+    .div_header_logo{
+        position: absolute;
+        height: 100%;
+    }
+    .header_logo{
+       
+        height: 100%;
+        //margin-bottom: 1%;
+        vertical-align: middle;
+    }
+    .toolbar{
+        padding: 0px;
+
+        height: 100%;
+        
+    }
+    .toolbar-ios{
+        padding: 5px;
+        height: 100%;
+    }
+    .toolbar-content{
+        height: 100%;
+    }
+    .toolbar-content-ios{
+        height: 100%;
+    }
+    .div-icon-back{
+        float: left;
+        font-size: 35px;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding: 0px;
+        
+        
+    }
+    .icon-back{
+        vertical-align: middle;
+        margin-left: 2%;
+        margin-right: 2%;
+        font-size: 35px;
+        
+    }

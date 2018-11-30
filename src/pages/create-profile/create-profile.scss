@@ -1,10 +1,12 @@
 page-create-profile {
+    
 
     #profile{
         background-color: rgb(238, 238, 238);
         height: 100%;
         width: 100%;
-        margin-top: 60px;
+        position: relative;
+        //margin-top: 60px;
         .logo_system{
             width: 100px;
             margin-left: 35%;
@@ -66,17 +68,5 @@ page-create-profile {
         }
     
     }
-    ion-header{
-        ion-toolbar{
-            .header_logo{
-                float: left;
-                //margin-left: 10px;
-                width: 150px;
-                margin-top: auto;
-                margin-bottom: auto;
-            }
-        }
-    }
-
 }
 

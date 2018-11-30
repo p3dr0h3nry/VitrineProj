@@ -52,8 +52,20 @@
         <span>Editar Perfil</span>
       </button>
     </div>
+    <div>
+        <button  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editUser()" detail-none>
+          <ion-icon name="md-settings"></ion-icon>
+          <span style="padding-bottom: 15px;">Editar Conta</span>
+        </button>
+      </div>
+      <div>
+          <button  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editUser()" detail-none>
+            <ion-icon name="md-lock"></ion-icon>
+            <span>Alterar senha</span>
+          </button>
+        </div>
       <button style="color:rgb(66, 66, 66);" ion-item (click)="logout()" detail-none>
-        <ion-icon name="log-out"></ion-icon>
+        <ion-icon name="md-log-out"></ion-icon>
         <span>Logout</span>
       </button>
 

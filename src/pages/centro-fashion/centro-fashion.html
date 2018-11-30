@@ -6,18 +6,17 @@
     <span>{{prof.prof_name }}</span>
   </ion-item>
 </ion-list>
-<div class="config-bar">
-  <ion-searchbar class="ion-searchbar" placeholder="Procurar Loja" (ionInput)="filterPosts($event)" no-lines>
+<div class="config-bar" *ngIf="filterDiv">
+  <ion-searchbar class="ion-searchbar" placeholder="Procurar Loja" (ionInput)="searchStores($event)" no-lines>
   </ion-searchbar>
-
   <hr>
-
   <div class="div-filter">
     <span class="span-filter">Filtrar por:</span>
     <ion-item class="category_filter" no-lines>
       <ion-select no-lines placeholder="Categoria" interface="popover" class="seletor_category">
         <ion-option (ionSelect)="selectCategory(0)" placeholder="Categoria"></ion-option>
-        <ion-option *ngFor="let category of dataCategories" (ionSelect)="selectCategory(category.cat_id)">
+        <ion-option *ngFor="let category of dataCategories" [selected]="category.cat_id == postsFrom.category"
+          (ionSelect)="selectCategory(category.cat_id)">
           {{category.cat_name}}
         </ion-option>
       </ion-select>
@@ -25,55 +24,75 @@
     <ion-item class="sector_filter" no-lines>
       <ion-select no-lines interface="popover" placeholder="Setor" class="seletor_setor">
         <ion-option (ionSelect)="selectSector(0)" placeholder="Setor"></ion-option>
-        <ion-option *ngFor="let setor of dataSectors" (ionSelect)="selectSector(setor.sector_id)">
+        <ion-option *ngFor="let setor of dataSectors" [selected]="setor.sector_id == postsFrom.sector" (ionSelect)="selectSector(setor.sector_id)">
           {{setor.sector_name}}
         </ion-option>
       </ion-select>
     </ion-item>
-
+    <button class="div-ok" [disabled]="!filtred" (click)="searchFilter()">
+      <span>Ok</span>
+    </button>
   </div>
 
 </div>
 <ion-content padding id="centroFashion">
-  <ion-refresher (ionRefresh)="doRefresh($event)" class="refresher">
-    <ion-refresher-content class="refresher" pullingIcon="arrow-dropdown" pullingText="Puxe para Atualizar"
-      refreshingSpinner="circles" refreshingText="Atualizando...">
-    </ion-refresher-content>
-  </ion-refresher>
-  <div class="conteudo">
-    <div class="posts">
 
-      <div *ngFor="let post of postsFilter" class="card_post">
+    <div ion-fixed class="balloon">
+      <img src="../../assets/imgs/logo_natal2.png">
+    </div>
+    <ion-refresher (ionRefresh)="doRefresh($event)" class="refresher">
+      <ion-refresher-content class="refresher" pullingIcon="arrow-dropdown" pullingText="Puxe para Atualizar"
+        refreshingSpinner="circles" refreshingText="Atualizando...">
+      </ion-refresher-content>
+    </ion-refresher>
 
-        <img [src]="post.post_img | showPipe" class="card_img" (click)="openProfile(post.post_prof_id)">
+    <ion-fab ion-fixed (click)="toggle()" top left #fabCF *ngIf="!searchStatus">
+      <button ion-fab color="light" class="ion-fab" *ngIf="!filterDiv">
+        <ion-icon style="font-size: 20px; " name="md-search"></ion-icon>
+        <span>Buscar</span>
+      </button>
+      <button ion-fab color="light" class="ion-fab" *ngIf="filterDiv">
+        <ion-icon style="font-size: 20px; " name="md-close"></ion-icon>
+        <span>Fechar</span>
+      </button>
+    </ion-fab>
 
-        <div class="content-card">
-          <div class="profileName">
-            {{post.prof_name}}
-          </div>
-          <div class="inst">
-            <span>@{{post.prof_inst}}</span>
-          </div>
-          <div class="infor">
-            <div class="icon-pin">
-              <ion-icon name="pin" class="pin"></ion-icon>
+    <div class="conteudo">
+      <div class="posts">
+
+        <div *ngFor="let post of postsFilter" class="card_post">
+
+          <img [src]="post.post_img | showPipe" class="card_img" (click)="openProfile(post.post_prof_id)">
+
+          <div class="content-card">
+            <div class="profileName">
+              {{post.prof_name}}
             </div>
-            <div style="float: left; margin-right: 10px; margin-top:3px;">
-              <span>{{post.prof_address}}</span>
+            <div class="inst">
+              <span>@{{post.prof_inst}}</span>
             </div>
-            <div class="div-sector">
-              <span style="float: left; margin-top:3px;">Setor</span>
-              <div class="color-sector {{post.sector_color}}"></div>
+            <div class="infor">
+              <div class="icon-pin">
+                <ion-icon name="pin" class="pin"></ion-icon>
+              </div>
+              <div style="float: left; margin-right: 10px; margin-top:3px;">
+                <span>{{post.prof_address}}</span>
+              </div>
+              <div class="div-sector">
+                <span style="float: left; margin-top:3px;">Setor</span>
+                <div class="color-sector {{post.sector_color}}"></div>
+              </div>
             </div>
+
+
           </div>
-
-
         </div>
       </div>
+
     </div>
 
-  </div>
-  <ion-infinite-scroll class="infiniteScroll" (ionInfinite)="doInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+    <ion-infinite-scroll class="infiniteScroll" (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
 </ion-content>
