@@ -75,7 +75,7 @@ export class MyApp implements OnInit {
     this.events.unsubscribe('local');
     //console.log(localStorage.getItem('user'));
     if (localStorage.getItem('user')) {
-
+      
       this.userAtive = true;
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;

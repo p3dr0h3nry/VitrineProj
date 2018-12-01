@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, Events, AlertController, LoadingCo
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { ProfilePage } from '../profile/profile';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { _ParseAST } from '@angular/compiler';
+import { ScrollHideConfig } from '../../directives/hide-search/hide-search';
 
 
 @IonicPage()
@@ -25,12 +27,15 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   ]
 })
 export class CentroFashionPage {
+
+  searchScrollConfig: ScrollHideConfig = { cssProperty: 'margin-top', maxValue: 150 };
+
   public userDatails: any;
   currentPage: String; //Armazena a pagina corrente
-  postsFrom = { from: "", dateTime: "", sector: "", category: "" };
+  postsFrom = { from: "", dateTime: "", last_dateTime: "", sector: "", category: "" };
   postsFilterFrom = { from: "" };
   responsePost: any; //resposta do banco
-  data: any; 
+  data: any;
   postsCF: any; //Armazena a ulta busca no banco
   postsFilter: any; //Armazena a lista completa já buscada
   dataCategories: any; // Armazena as categorias vindas do banco
@@ -40,11 +45,12 @@ export class CentroFashionPage {
   filterProfileData: any;
   profileF: any; //Lista de nomes de todos os profiles cadastrados
   searchStatus: Boolean; //Flag de exibição da lista de busca das lojas
-  filtred: Boolean; //Flag caso algum seletor de filtro esteja marcado
-  counter: number; 
+  filterReset: Boolean; //Flag caso algum seletor de filtro esteja marcado
+  counter: number;
   filterDiv; //Define se a DIV de filtro será exibida
   refresher; //Caso tenha dado refresh
   searchFilterStatus; //flag de ação para buscar os filtros
+  flagButtonFilter;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
@@ -53,11 +59,11 @@ export class CentroFashionPage {
     private loadCtrl: LoadingController) {
     this.filterDiv = false;
     this.searchStatus = false;
-    this.filtred = false;
+    this.filterReset = false;
     this.counter = 1;
-    this.refresher=false;
-    this.searchFilterStatus=true; //flag invertida
-
+    this.refresher = false;
+    this.searchFilterStatus = true; //flag invertida
+    // this.flagButtonFilter=false;
     if (localStorage.getItem('user')) {
 
       if (localStorage.getItem('user')) {
@@ -181,11 +187,15 @@ export class CentroFashionPage {
   //   this.show_Image = "imageViewer";
   // }
   doRefresh(refresher) {
-    this.refresher=true;
+
+    this.postsFrom.last_dateTime = this.postsFilter[0].post_created_at;
+    this.refresher = true;
     this.getAllPostsFrom(this.currentPage, new Date);
     setTimeout(() => {
       refresher.complete();
+      this.postsFrom.last_dateTime = '';
     }, 2000);
+
   }
 
   initializerPosts() {
@@ -213,42 +223,57 @@ export class CentroFashionPage {
   }
 
   doInfinite(infiniteScroll) {
+    infiniteScroll.enable(false);
 
-    if (this.filtred) {
-      this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
-    } else if (!this.filtred && this.counter == 0) {
-      this.counter++;
-      this.getAllPostsFrom(this.currentPage, new Date());
-    } else if (!this.filtred) {
+    if (!this.filterReset) {
+      console.log("scroll sem filterReset");
       this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
     }
-    this.filterDiv = false;
+    else if (this.filterReset) {
+      console.log("scroll com filterReset");
+      this.getAllPostsFrom(this.currentPage, new Date());
+    }
+    // else if (!this.filterReset && this.counter == 0) {
+    //   this.counter++;
+    //   this.getAllPostsFrom(this.currentPage, new Date());
+    // } else if (!this.filterReset) {
+    //   this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
+    // }
+    // this.filterDiv = false;
     this.events.subscribe('closeInfinitScroll', (data) => {
       infiniteScroll.complete();
     });
+    setTimeout(() => {
+      infiniteScroll.enable(true);
+    }, 5000);
   }
 
   selectSector(ev: any) {
-    
     if (ev == 0) {
-      this.postsFrom.sector='';
+      this.postsFrom.sector = '';
       this.counter = 0;
-      if(this.postsFrom.category==''){
-        this.filtred = false;
-      }
-      if(this.postsCF[0].prof_id!=this.postsFilter[0].prof_id){
+      if (this.postsFrom.category == '') {
+        this.filterReset = true;
+        this.flagButtonFilter=false;
         this.postsFilter = this.postsFilter.filter((v) => {
           return false;
         });
-        this.getAllPostsFrom(this.currentPage,new Date());
+        this.getAllPostsFrom(this.currentPage, new Date());
       }
- 
+      // if (this.postsCF[0].prof_id != this.postsFilter[0].prof_id) {
+      //   this.postsFilter = this.postsFilter.filter((v) => {
+      //     return false;
+      //   });
+      //   this.getAllPostsFrom(this.currentPage, new Date());
+      // }
+
     } else {
+      this.flagButtonFilter=true;
       this.postsFrom.sector = ev;
       this.counter++;
-      this.filtred = true;
+      this.filterReset = false;
     }
-    
+
     //this.initializerPosts();
     // let evString = ev;
     // if (evString != 0) {
@@ -263,24 +288,25 @@ export class CentroFashionPage {
   }
 
   selectCategory(e: any) {
-    
+
     if (e == 0) {
-      this.postsFrom.category ='';
+
+      this.postsFrom.category = '';
       this.counter = 0;
-      if(this.postsFrom.sector==''){
-        this.filtred = false;
-      }
-      
-      if(this.postsCF[0].prof_id!=this.postsFilter[0].prof_id){
+      if (this.postsFrom.sector == '') {
+        this.filterReset = true;
+        this.flagButtonFilter=false;
         this.postsFilter = this.postsFilter.filter((v) => {
           return false;
         });
-        this.getAllPostsFrom(this.currentPage,new Date());
+        this.getAllPostsFrom(this.currentPage, new Date());
       }
+
     } else {
+      this.flagButtonFilter=true;
       this.postsFrom.category = e;
       this.counter++;
-      this.filtred = true;
+      this.filterReset = false;
     }
     //this.initializerPosts();
     // let eString = e;
@@ -297,13 +323,37 @@ export class CentroFashionPage {
 
   }
   searchFilter() {
-    this.searchFilterStatus=false; //flag invertida
-     setTimeout(() => {
-      this.getAllPostsFrom(this.currentPage, new Date);
+    if (this.postsFrom.sector != '' && this.postsFrom.category=='') {
+      this.postsFilter = this.postsFilter.filter((v) => {
+        if (v.post_sector_id.toLowerCase() == this.postsFrom.sector.toLowerCase()) {
+          return true;
+        }
+        return false;
+      });
+    }else if(this.postsFrom.sector == '' && this.postsFrom.category!=''){
+      this.postsFilter = this.postsFilter.filter((v) => {
+        if (v.post_category_id.toLowerCase() == this.postsFrom.category.toLowerCase()) {
+          return true;
+        }
+        return false;
+      });
+    }else if(this.postsFrom.sector!='' && this.postsFrom.category!=''){
+      this.postsFilter = this.postsFilter.filter((v) => {
+        if ((v.post_category_id.toLowerCase() == this.postsFrom.category.toLowerCase()) && (v.post_sector_id.toLowerCase() == this.postsFrom.sector.toLowerCase())) {
+          return true;
+        }
+        return false;
+      });
+    }
+    setTimeout(() => {
+      //this.postsFrom.last_dateTime=this.postsFilter[this.postsFilter.length-1].post_created_at;
+      if(this.postsFilter){
+        this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length-1].post_created_at);
+      }else{
+        this.getAllPostsFrom(this.currentPage, new Date());
+      }
+      
     }, 500);
-    // this.postsFilter = this.postsFilter.filter((v) => {
-    //   return false;
-    // });
   }
 
   filterProfile(toFrom) {
@@ -342,9 +392,11 @@ export class CentroFashionPage {
     this.data = '';
     this.postsFrom.from = from;
     this.postsFrom.dateTime = date;
+    console.log("getAllPostsFrom-log: Status PostFilter: " + this.postsFilter + " Status refresher: " + this.refresher
+      + " status searchFilterStatus: " + this.searchFilterStatus + " filterReset: " + this.filterReset);
     this.authService.post(this.postsFrom, "getAllPostsFrom").then((result) => {
       this.responsePost = result;
-
+      console.log(this.responsePost);
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
 
@@ -352,22 +404,58 @@ export class CentroFashionPage {
         this.postsCF = JSON.parse(JSON.stringify(JSON.parse(this.postsCF)))._body;
         this.postsCF = JSON.parse(this.postsCF).success;
         this.postsCF = JSON.parse(JSON.stringify(this.postsCF)).posts;
+        if (!this.postsFilter && !this.refresher) { // contempla a primeira entrada
+          console.log("1");
+          this.postsFilter = this.postsCF;
+        } else if (this.postsFilter && this.refresher && this.postsCF[0].post_id != this.postsFilter[0].post_id) { // contempla refresh e testa para nao duplicar
+          this.refresher = false;
+          console.log("2");
+          let x = this.postsCF.length;
+          for (var i = 0; i < this.postsFilter.length; i++) { //concatena encima
 
-        if (this.postsFilter && !this.refresher && this.searchFilterStatus) {
+            this.postsCF[x + i] = this.postsFilter[i];
+
+          }
+          this.postsFilter = this.postsCF;
+          this.postsCF = '';
+
+        } else if (this.postsFilter && !this.refresher && this.postsCF[this.postsCF.length - 1].post_id != this.postsFilter[this.postsFilter.length - 1].post_id) { // scroll infinito
+          console.log("3");
+          this.events.publish('closeInfinitScroll', "");
           let x = this.postsFilter.length;
-          for (var i = 0; i < this.postsCF.length; i++) {
+          for (var i = 0; i < this.postsCF.length; i++) { //concatena embaixo
             if (this.postsCF[i]) {
               this.postsFilter[x + i] = this.postsCF[i];
             }
           }
-          this.events.publish('closeInfinitScroll', "");
-        } else if (!this.postsFilter ) {
-          this.refresher=false;
-          this.postsFilter = this.postsCF;
-        }else if(!this.searchFilterStatus){ //entra caso esteja com filtro ativo
-          this.searchFilterStatus=true; //flag invertida
+
+        } else if (this.postsFilter && this.filterReset) {
+          console.log("4");
+          this.filterReset = false;
           this.postsFilter = this.postsCF;
         }
+
+        // if (this.postsFilter && !this.refresher) { 
+        //   console.log("entrou teste: 1");
+        //   let x = this.postsFilter.length;
+        //   for (var i = 0; i < this.postsCF.length; i++) { //concatena embaixo
+        //     if (this.postsCF[i]) {
+        //       this.postsFilter[x + i] = this.postsCF[i];
+        //     }
+        //   }
+        //   this.events.publish('closeInfinitScroll', "");
+        // } else if (!this.postsFilter && !this.refresher && !this.searchFilterStatus) { //tem que entrar a primeira vez e o refresher
+        //   console.log("entrou teste: 2");
+        //   this.refresher=false;
+        //   this.postsFilter = this.postsCF;
+        // }else if(){
+
+        // }else if(!this.searchFilterStatus){ //entra caso esteja com filtro ativo
+        //   console.log("entrou teste: 3");
+        //   this.refresher=false;
+        //   this.searchFilterStatus=true; //flag invertida
+        //   this.postsFilter = this.postsCF;
+        // }
         //console.log(this.postsFilter);
         //tem que esvaziar this.postsCF
       } else {

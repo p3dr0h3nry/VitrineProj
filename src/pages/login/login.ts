@@ -61,9 +61,7 @@ export class LoginPage {
         localStorage.setItem('user', JSON.stringify(this.responseLogin));
         this.events.publish('Headerlocal',"WelcomePage");
         this.navCtrl.setRoot(WelcomePage,{},{animate: true, direction: "back"});
-
         } else { //fail
-
         this.data = JSON.parse(this.data).error;
         let msg: string = this.data.e; //busca msg de erro
         let alertSignup = this.alertCtrl.create({

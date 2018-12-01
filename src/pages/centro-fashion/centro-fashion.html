@@ -6,7 +6,7 @@
     <span>{{prof.prof_name }}</span>
   </ion-item>
 </ion-list>
-<div class="config-bar" *ngIf="filterDiv">
+<div class="config-bar"  [scrollHide]="searchScrollConfig" [scrollContent]="pageContent">
   <ion-searchbar class="ion-searchbar" placeholder="Procurar Loja" (ionInput)="searchStores($event)" no-lines>
   </ion-searchbar>
   <hr>
@@ -29,13 +29,13 @@
         </ion-option>
       </ion-select>
     </ion-item>
-    <button class="div-ok" [disabled]="!filtred" (click)="searchFilter()">
+    <button class="div-ok" [disabled]="!flagButtonFilter" (click)="searchFilter()">
       <span>Ok</span>
     </button>
   </div>
 
 </div>
-<ion-content padding id="centroFashion">
+<ion-content #pageContent padding id="centroFashion" fullscreen >
 
     <div ion-fixed class="balloon">
       <img src="../../assets/imgs/logo_natal2.png">
@@ -46,7 +46,7 @@
       </ion-refresher-content>
     </ion-refresher>
 
-    <ion-fab ion-fixed (click)="toggle()" top left #fabCF *ngIf="!searchStatus">
+    <!-- <ion-fab ion-fixed (click)="toggle()" top left #fabCF *ngIf="!searchStatus">
       <button ion-fab color="light" class="ion-fab" *ngIf="!filterDiv">
         <ion-icon style="font-size: 20px; " name="md-search"></ion-icon>
         <span>Buscar</span>
@@ -55,7 +55,7 @@
         <ion-icon style="font-size: 20px; " name="md-close"></ion-icon>
         <span>Fechar</span>
       </button>
-    </ion-fab>
+    </ion-fab> -->
 
     <div class="conteudo">
       <div class="posts">

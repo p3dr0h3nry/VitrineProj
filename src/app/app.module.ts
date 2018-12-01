@@ -26,6 +26,7 @@ import {HttpClientModule} from '@angular/common/http';
 import{ShowPipe} from '../pipes/show/show';
 import{BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import{AutoHideDirective} from '../directives/auto-hide/auto-hide';
+import{HideSearchDirective} from '../directives/hide-search/hide-search';
 import{IonicImageViewerModule} from 'ionic-img-viewer';
 import { FilterBarComponent } from '../components/filter-bar/filter-bar';
 @NgModule({
@@ -46,7 +47,8 @@ import { FilterBarComponent } from '../components/filter-bar/filter-bar';
     ProfilePage,
     ShowPipe,
     AutoHideDirective,
-    FilterBarComponent
+    FilterBarComponent,
+    HideSearchDirective
 
   ],
   imports: [
