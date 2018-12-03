@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, AlertController, LoadingController } from 'ionic-angular';
-import { MyApp } from '../../app/app.component';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { Subscription } from 'rxjs/Subscription';
-import { CentroFashionPage } from '../centro-fashion/centro-fashion';
 import { ProfilePage } from '../profile/profile';
 
 /**

@@ -28,7 +28,7 @@ import { ScrollHideConfig } from '../../directives/hide-search/hide-search';
 })
 export class CentroFashionPage {
 
-  searchScrollConfig: ScrollHideConfig = { cssProperty: 'margin-top', maxValue: 150 };
+  searchScrollConfig: ScrollHideConfig = { cssProperty: 'margin-top', maxValue: 130 };
 
   public userDatails: any;
   currentPage: String; //Armazena a pagina corrente
@@ -109,11 +109,10 @@ export class CentroFashionPage {
         } else {
           setTimeout(() => {
   
-            this.postsVariable= JSON.parse(sessionStorage.getItem('postsFilter'));
             // this.postsVariable = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('postsFilter'))))._body;
             // this.postsVariable = JSON.parse(this.postsVariable).success;
             // this.postsVariable = JSON.parse(JSON.stringify(this.postsVariable)).posts;
-            this.postsFilter = this.postsVariable;
+            this.postsFilter = JSON.parse(sessionStorage.getItem('postsFilter'));
           }, 100);
 
 
@@ -213,13 +212,21 @@ export class CentroFashionPage {
   // }
   doRefresh(refresher) {
 
-    this.postsFrom.last_dateTime = this.postsFilter[0].post_created_at;
-    this.refresher = true;
-    this.getAllPostsFrom(this.currentPage, new Date);
-    setTimeout(() => {
-      refresher.complete();
-      this.postsFrom.last_dateTime = '';
-    }, 2000);
+    if(this.postsFilter[0]!=undefined){
+      this.postsFrom.last_dateTime = this.postsFilter[0].post_created_at;
+      this.refresher = true;
+      this.getAllPostsFrom(this.currentPage, new Date);
+      setTimeout(() => {
+        refresher.complete();
+        this.postsFrom.last_dateTime = '';
+      }, 2000);
+    }else{
+      this.getAllPostsFrom(this.currentPage, new Date);
+      setTimeout(() => {
+        refresher.complete();
+        //this.postsFrom.last_dateTime = '';
+      }, 2000);
+    }
 
   }
 
@@ -248,8 +255,10 @@ export class CentroFashionPage {
   }
 
   doInfinite(infiniteScroll) {
+    setTimeout(() => {
+      this.refresher=false;
+    }, 100);
     infiniteScroll.enable(false);
-
     if (!this.filterReset) {
       console.log("scroll sem filterReset");
       this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
@@ -369,16 +378,17 @@ export class CentroFashionPage {
         if ((v.post_category_id.toLowerCase() == this.postsFrom.category.toLowerCase()) && (v.post_sector_id.toLowerCase() == this.postsFrom.sector.toLowerCase())) {
           return true;
         }
+        
         return false;
       });
     }
     setTimeout(() => {
       //this.postsFrom.last_dateTime=this.postsFilter[this.postsFilter.length-1].post_created_at;
-      if (this.postsFilter) {
+      if (!this.postsFilter[0]==undefined) {
+        //console.log(this.postsFilter);
         this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
       } else {
         this.postsFrom.last_dateTime='';
-        console.log("Buscando posts após zerar filtros: this.postFilter=:"+this.postsFilter);
         this.getAllPostsFrom(this.currentPage, new Date());
       }
 
@@ -421,11 +431,11 @@ export class CentroFashionPage {
     this.data = '';
     this.postsFrom.from = from;
     this.postsFrom.dateTime = date;
-    console.log("getAllPostsFrom-log: Status PostFilter: " + this.postsFilter + " Status refresher: " + this.refresher
-      + " status searchFilterStatus: " + this.searchFilterStatus + " filterReset: " + this.filterReset);
+    //console.log("getAllPostsFrom-log: Status PostFilter: " + this.postsFilter + " Status refresher: " + this.refresher
+      //+ " status searchFilterStatus: " + this.searchFilterStatus + " filterReset: " + this.filterReset);
     this.authService.post(this.postsFrom, "getAllPostsFrom").then((result) => {
       this.responsePost = result;
-      console.log(this.responsePost);
+      //console.log(this.responsePost);
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
 
@@ -435,13 +445,13 @@ export class CentroFashionPage {
         this.postsCF = JSON.parse(JSON.stringify(this.postsCF)).posts;
 
         if (!this.postsFilter && !this.refresher) { // contempla a primeira entrada
-          console.log("1");
+          //console.log("1");
           this.postsFilter = this.postsCF;
           sessionStorage.setItem('postsFilter', JSON.stringify(this.postsCF));
 
         } else if (this.postsFilter && this.refresher && this.postsCF[0].post_id != this.postsFilter[0].post_id) { // contempla refresh e testa para nao duplicar
           this.refresher = false;
-          console.log("2");
+          //console.log("2");
           let x = this.postsCF.length;
           for (var i = 0; i < this.postsFilter.length; i++) { //concatena encima
 
@@ -451,8 +461,8 @@ export class CentroFashionPage {
           this.postsFilter = this.postsCF;
           this.postsCF = '';
           sessionStorage.setItem('postsFilter', JSON.stringify(this.postsFilter));
-        } else if (this.postsFilter && !this.refresher && this.postsCF[this.postsCF.length - 1].post_id != this.postsFilter[this.postsFilter.length - 1].post_id) { // scroll infinito
-          console.log("3");
+        } else if (this.postsFilter[0]!=undefined && !this.refresher && this.postsCF[this.postsCF.length - 1].post_id != this.postsFilter[this.postsFilter.length - 1].post_id) { // scroll infinito
+          //console.log("3");
           this.events.publish('closeInfinitScroll', "");
           let x = this.postsFilter.length;
           for (var i = 0; i < this.postsCF.length; i++) { //concatena embaixo
@@ -462,14 +472,15 @@ export class CentroFashionPage {
           }
           sessionStorage.setItem('postsFilter', JSON.stringify(this.postsFilter));
         } else if (this.postsFilter && this.filterReset) {
-          console.log("4");
+          //console.log("4");
           this.filterReset = false;
           this.postsFilter = this.postsCF;
           sessionStorage.setItem('postsFilter', JSON.stringify(this.postsFilter));
         }
       } else {
+        //console.log(this.postsFilter);
         this.events.publish('closeInfinitScroll', "");
-        if (!this.postsFilter) {
+        if (this.postsFilter[0]==undefined) {
           this.data = JSON.parse(this.data).error;
           let msg: string = this.data.e; //busca msg de erro
           let alertSignup = this.alertCtrl.create({

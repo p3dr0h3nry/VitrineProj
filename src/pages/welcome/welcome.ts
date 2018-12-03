@@ -24,7 +24,7 @@ export class WelcomePage {
   page:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public app:App) {
-
+    
     if(localStorage.getItem('user')){
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;

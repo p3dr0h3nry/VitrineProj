@@ -19,14 +19,15 @@ export class AutoHideDirective {
  
   }
   onContentScroll(ev) {
+    
     if (this.element.nativeElement.getElementsByClassName('fab')[0]) {
       if (ev.scrollTop - this.oldScrollTop > 10) {
-
+        console.log(ev.scrollTop - this.oldScrollTop);
         this.renderer.setElementStyle(this.fabToHide, "opacity", "0");
         this.renderer.setElementStyle(this.fabToHide, "webkitTransform", "scale3d(.1,.1,.1)");
       } else if (ev.scrollTop - this.oldScrollTop < 0) {
-
-        this.renderer.setElementStyle(this.fabToHide, "opacity", "0.5");
+        console.log(ev.scrollTop - this.oldScrollTop);
+        this.renderer.setElementProperty(this.fabToHide, "opacity", "0.5");
         this.renderer.setElementStyle(this.fabToHide, "webkitTransform", "scale3d(1,1,1)");
       }
       this.oldScrollTop = ev.scrollTop;

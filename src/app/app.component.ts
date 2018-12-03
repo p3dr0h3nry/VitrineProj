@@ -29,6 +29,8 @@ export class MyApp implements OnInit {
   profileAtive;
   //rootPage =Menu; //busca o menu na pag menu
   profileToGetData = { prof_id: "" };
+  passValidation = { user_id: "",password:"" };
+  updateDataPassword = { user_id: "",old_password:"",new_password:"" };
   retorno: boolean;
 
   constructor(
@@ -110,6 +112,103 @@ export class MyApp implements OnInit {
 
   }
   ngOnInit() {
+  }
+  changePassword(){
+
+    let alert = this.alertCtrl.create({
+      title: 'Alterar senha',
+      inputs: [
+        {
+          name: 'old_password',
+          placeholder: 'Senha antiga',
+          type: 'password'
+        },
+        {
+          name: 'new_password',
+          placeholder: 'Nova senha ',
+          type: 'password'
+        },
+        {
+          name: 're_password',
+          placeholder: 'Repetir senha ',
+          type: 'password'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {
+            //console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Validar',
+          handler: data => {
+            if(data.new_password!=data.re_password){
+              let alertSignup = this.alertCtrl.create({
+                title: "Ops!",
+                message: 'As senhas não conferem, tente novamente!',
+                buttons: [{
+                  text: "Ok"
+                }]
+              });
+              alertSignup.present()
+            }else{
+              this.updatePassword(data.old_password,data.new_password);
+            }
+            //this.verifyPassword(data.password)
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+  updatePassword(old_password,new_password){
+    this.updateDataPassword.user_id=this.userDatails.user_id;
+    this.updateDataPassword.old_password=old_password;
+    this.updateDataPassword.new_password=new_password;
+
+    this.authService.post(this.updateDataPassword, "updatePassword").then((result) => {
+      this.responsePost = result;
+      
+      this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
+      if (!JSON.parse(this.data).error) { //Retorno ok
+        let alertSignup = this.alertCtrl.create({
+          title: "Sucesso!",
+          message: 'Senha alterada',
+          buttons: [{
+            text: "Ok"
+          }]
+        });
+        alertSignup.present()
+      } else {
+
+        this.data = JSON.parse(this.data).error;
+        let msg: string = this.data.e; //busca msg de erro
+        console.log(msg);
+        let alertSignup = this.alertCtrl.create({
+          title: "Ops!",
+          message: msg,
+          buttons: [{
+            text: "Ok"
+          }]
+        });
+        alertSignup.present()
+      }
+    }, (err) => {
+      console.log(err);
+      let alertSignup = this.alertCtrl.create({
+        title: "Ops!",
+        message: 'Falha de conexão, verifique sua internet.',
+        buttons: [{
+          text: "Ok"
+        }]
+      });
+      alertSignup.present()
+    });
+
+
   }
   editProfile(){
     console.log(this.userDatails.prof_id);
@@ -222,6 +321,74 @@ export class MyApp implements OnInit {
       this.events.publish('Headerlocal', "WelcomePage");
       this.nav.setRoot(WelcomePage, {}, { animate: true, direction: "back" });
     }, 300);
+
+  }
+  editClient(){
+    let alert = this.alertCtrl.create({
+      title: 'Confirme sua senha',
+      inputs: [
+        {
+          name: 'password',
+          placeholder: 'Senha',
+          type: 'password'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {
+            //console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Validar',
+          handler: data => {
+            this.verifyPassword(data.password)
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  verifyPassword(password){
+
+    this.passValidation.password=password;
+    this.passValidation.user_id=this.userDatails.user_id;
+
+    this.authService.post(this.passValidation, "passValidation").then((result) => {
+      this.responsePost = result;
+      this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
+      if (!JSON.parse(this.data).error) { //Retorno ok
+        this.menuCtrl.toggle();
+        this.nav.push(SignupPage);
+      } else {
+        this.data = JSON.parse(this.data).error;
+        let msg: string = this.data.e; //busca msg de erro
+        //console.log(msg);
+        let alertSignup = this.alertCtrl.create({
+          title: "Ops!",
+          message: msg,
+          buttons: [{
+            text: "Ok"
+          }]
+        });
+        alertSignup.present()
+ 
+      }
+    }, (err) => {
+      
+      let alertSignup = this.alertCtrl.create({
+        title: "Ops!",
+        message: 'Falha de conexão, verifique sua internet.',
+        buttons: [{
+          text: "Ok"
+        }]
+      });
+      alertSignup.present()
+
+    });
 
   }
 

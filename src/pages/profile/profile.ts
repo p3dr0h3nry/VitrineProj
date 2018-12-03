@@ -66,18 +66,16 @@ export class ProfilePage {
     this.profileDatails='';
     this.userDatails='';
     this.postsDatails='';
+
     if (localStorage.getItem('user')) {
       
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;
       this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
-      // this.imgToPost = this.userDatails.prof_img;
-      
-       let loader = this.loadCtrl.create({
+      let loader = this.loadCtrl.create({
         content: 'Atualizando postagens...'
       });
       loader.present();
-      console.log(this.userDatails);
       setTimeout(() => {
         this.getAllPostsProfile();
         loader.dismiss();
@@ -89,7 +87,8 @@ export class ProfilePage {
       this.profileDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('profileData'))))._body;
       this.profileDatails = JSON.parse(this.profileDatails).success;
       this.profileDatails = JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(this.profileDatails)))).profileData;
-      //console.log(this.profileDatails);
+      //this.imgToPost = this.profileDatails.prof_img;
+      console.log(this.profileDatails);
       if(localStorage.getItem('user')){
         if(this.userDatails.prof_id==this.profileDatails.prof_id){
           this.editPermission=true;
@@ -112,6 +111,7 @@ export class ProfilePage {
     }
 
     this.events.subscribe('updateProfile', (data) => {
+      
       this.profileDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('profile'))))._body;
       this.profileDatails = JSON.parse(this.profileDatails).success;
       this.profileDatails = JSON.parse(JSON.stringify(this.profileDatails)).profile;
@@ -126,15 +126,15 @@ export class ProfilePage {
     //   //console.log(this.postsDatails);
     // }
 
-    this.events.subscribe('newPosts', (data) => {
-      this.postsDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('posts'))))._body;
-      this.postsDatails = JSON.parse(this.postsDatails).success;
-      this.postsDatails = JSON.parse(JSON.stringify(this.postsDatails)).posts;
-      // this.imgToPost = this.userDatails.prof_img;
-      console.log(this.postsDatails);
-      this.events.unsubscribe('newPosts');
+    // this.events.subscribe('newPosts', (data) => {
+    //   this.postsDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('posts'))))._body;
+    //   this.postsDatails = JSON.parse(this.postsDatails).success;
+    //   this.postsDatails = JSON.parse(JSON.stringify(this.postsDatails)).posts;
+    //   // this.imgToPost = this.userDatails.prof_img;
+    //   console.log(this.postsDatails);
+    //   //this.events.unsubscribe('newPosts');
 
-    });
+    // });
     
     if(localStorage.getItem('root')){
       console.log(localStorage.getItem('root'))
@@ -157,8 +157,13 @@ export class ProfilePage {
       this.responsePost = result;
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
-        localStorage.setItem('posts', JSON.stringify(this.responsePost));
-        this.events.publish('newPosts', "newPosts");
+
+        this.postsDatails = JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(this.responsePost))))._body;
+        this.postsDatails = JSON.parse(this.postsDatails).success;
+        this.postsDatails = JSON.parse(JSON.stringify(this.postsDatails)).posts;
+
+        // localStorage.setItem('posts', JSON.stringify(this.responsePost));
+        // this.events.publish('newPosts', "newPosts");
       } else {
         this.data = JSON.parse(this.data).error;
         let msg: string = this.data.e; //busca msg de erro
@@ -209,14 +214,16 @@ export class ProfilePage {
       this.newPost.post_sector_id = this.profileDatails.sector_id;
       this.newPost.post_category_id = this.profileDatails.prof_category_id;
       this.newPost.post_from = this.thisplace;
-
+      
       this.authService.newPost(this.newPost, "newPost").then((result) => {
         this.responsePost = result;
         this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
         if (!JSON.parse(this.data).error) { //Retorno ok
-          this.postsDatails = null;
-          localStorage.setItem('posts', JSON.stringify(this.responsePost));
-          this.events.publish('newPosts', "newPosts");
+          // this.postsDatails = null;
+          this.postsDatails = JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(this.responsePost))))._body;
+          this.postsDatails = JSON.parse(this.postsDatails).success;
+          this.postsDatails = JSON.parse(JSON.stringify(this.postsDatails)).posts;
+
           this.addPost = !this.addPost; //Fecha as opções de postagem
           this.imgToPost = '';
           setTimeout(() => {
