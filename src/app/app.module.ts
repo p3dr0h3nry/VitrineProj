@@ -29,6 +29,9 @@ import{AutoHideDirective} from '../directives/auto-hide/auto-hide';
 import{HideSearchDirective} from '../directives/hide-search/hide-search';
 import{IonicImageViewerModule} from 'ionic-img-viewer';
 import { FilterBarComponent } from '../components/filter-bar/filter-bar';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -48,7 +51,8 @@ import { FilterBarComponent } from '../components/filter-bar/filter-bar';
     ShowPipe,
     AutoHideDirective,
     FilterBarComponent,
-    HideSearchDirective
+    HideSearchDirective,
+    
 
   ],
   imports: [
@@ -89,7 +93,8 @@ import { FilterBarComponent } from '../components/filter-bar/filter-bar';
     CreateProfilePage,
     Camera,
     FileTransfer,
-    File
+    File,
+    Facebook
     
   ]
 })

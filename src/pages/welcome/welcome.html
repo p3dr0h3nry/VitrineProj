@@ -1,8 +1,10 @@
 <ion-content padding id="welcome">
-
+        
     <div class="menu">
+        <img class="imgUser" *ngIf="userDatails" [src]="userDatails.user_img" alt="">
         <div class="tag_name" *ngIf="userDatails">
-            <h5>Olá, {{userDatails.client_name}} ! </h5>
+            <h5>Olá, {{userDatails.user_firstname}} ! </h5>
+            
         </div>
         <div class="login" *ngIf="!userDatails" (click)="login()">
             <ion-icon class="icon-sign-in" name="md-log-in"></ion-icon>

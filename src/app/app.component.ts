@@ -41,11 +41,13 @@ export class MyApp implements OnInit {
     private authService: AuthServiceProvider,
     private alertCtrl: AlertController
   ) {
+    //localStorage.clear();
     this.rootPage = WelcomePage;
     this.events.subscribe('root', data => {
       if (data == "CentroFashionPage") {
         this.thisPlace = "CentroFashionPage";
         if (localStorage.getItem('user')) {
+          //console.log(localStorage.getItem('user'));
           this.userAtive = true;
           this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
           this.userDatails = JSON.parse(this.userDatails).success;
@@ -73,7 +75,7 @@ export class MyApp implements OnInit {
         //console.log(this.userDatails);
       }
     });
-
+    
     this.events.unsubscribe('local');
     //console.log(localStorage.getItem('user'));
     if (localStorage.getItem('user')) {

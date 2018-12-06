@@ -58,6 +58,7 @@ export class CentroFashionPage {
     private authService: AuthServiceProvider,
     private alertCtrl: AlertController,
     private loadCtrl: LoadingController) {
+      
     this.filterDiv = false;
     this.searchStatus = false;
     this.filterReset = false;

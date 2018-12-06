@@ -3,10 +3,16 @@ page-welcome {
         background-color: color($colors,wel_orange)!important;
         width: 100%;
         height: 100%;
+        .imgUser{
+            float: left;
+            border-radius: 30px;
+            margin-right: 10px;
+        }
         .mid_align{
             //margin-bottom: 60%;
             margin-top: 50%;
             display: block;
+            
         }
         .welcome_logo{
             margin-left: auto;
@@ -27,9 +33,9 @@ page-welcome {
             }
         }
         .tag_name{
+            margin-top:30px;
             //width: 100%;
             float: left;
-            padding: 5px;
             color: rgb(243, 213, 199);
             //text-align: right;
             //background-color: rgb(224, 185, 167);
@@ -80,6 +86,32 @@ page-welcome {
             color: rgb(243, 213, 199);
         }
 
+
     }
 
+   
+
 }
+
+.alert-wrapper{
+    border-radius: 0px;
+    background-color: antiquewhite;
+}
+.alert-head{
+    text-align: left;
+    padding: 0;
+    margin: 0px;
+}
+.alert-title{
+    margin-top: -10px;
+    float: left;
+    height: 20px;
+}
+.alert-button-group .alert-button{
+    background-color: #3b5998;
+    color: white;
+  }
+  .modalLogin .modalContent{
+      width: 100px;
+      height: 300px;
+  }
