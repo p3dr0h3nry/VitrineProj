@@ -30,7 +30,18 @@ import{HideSearchDirective} from '../directives/hide-search/hide-search';
 import{IonicImageViewerModule} from 'ionic-img-viewer';
 import { FilterBarComponent } from '../components/filter-bar/filter-bar';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { EmailComposer } from '@ionic-native/email-composer';
+import firebase from 'firebase';
 
+firebase.initializeApp({
+  apiKey: "AIzaSyCXJ65SwL_GtN1g8dRs5OPqcY0YMWb8wsc",
+  authDomain: "vitrineapp-a7a67.firebaseapp.com",
+  databaseURL: "https://vitrineapp-a7a67.firebaseio.com",
+  projectId: "vitrineapp-a7a67",
+  storageBucket: "vitrineapp-a7a67.appspot.com",
+  messagingSenderId: "777132893216"
+});
 
 @NgModule({
   declarations: [
@@ -53,6 +64,7 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
     FilterBarComponent,
     HideSearchDirective,
     
+    
 
   ],
   imports: [
@@ -62,7 +74,7 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
     HttpModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    IonicImageViewerModule
+    IonicImageViewerModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -81,8 +93,8 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
     Menu,
     CreateProfilePage,
     ProfilePage,
-    FilterBarComponent
- 
+    FilterBarComponent,
+    
   ],
   providers: [
     StatusBar,
@@ -94,7 +106,10 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
     Camera,
     FileTransfer,
     File,
-    Facebook
+    Facebook,
+    GooglePlus,
+    EmailComposer,
+    
     
   ]
 })

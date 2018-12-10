@@ -1,15 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { HttpClient } from '@angular/common/http';
-
-/**
- * Generated class for the ModalLoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { GooglePlus } from '@ionic-native/google-plus';
+import firebase from 'firebase';
+import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({
@@ -17,55 +13,107 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: 'modal-login.html',
 })
 export class ModalLoginPage {
-  userfb:any={};
-  userData:string;
-  userToken:any;
-  public events: Events;
+
+  userData: string;
+  userToken: any;
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private viewCtrl: ViewController,
     private fb: Facebook,
-    private http: HttpClient) {
+    private googlePlus: GooglePlus,
+    private http: HttpClient,
+    private platform: Platform,
+    private events: Events, ) {
+
+
+    platform.registerBackButtonAction(() => { }); //Não  permite fechar o modal pelo backbutton
   }
 
   ionViewDidLoad() {
 
   }
   ionViewWillLoad() {
+
     const data = this.navParams.get('data');
-    console.log(data);
+    //console.log(data);
   }
   close(x) {
-    if(x==1){
-      this.viewCtrl.dismiss(null,null,null);
-    }else{
-      this.viewCtrl.dismiss(this.userData,this.userfb.img);
+    if (x == 1) {
+      this.viewCtrl.dismiss(null);
+    } else {
+      this.viewCtrl.dismiss(this.userData);
     }
-   
-  }
-  loginfb() {
-    
-    this.fb.login(['public_profile', 'email'])
-      .then((res: FacebookLoginResponse) => {
-        if(res.status==='connected'){
-         this.userfb.img ='https://graph.facebook.com/'+res.authResponse.userID+'/picture?type=square';
-         this.getData(res.authResponse.accessToken);
-        }else{
-          alert('Falha no login');
-        }
-      }).catch(e => 
-        console.log('Error logging into Facebook', e));
+
   }
 
-  getData(token:string){
-    let url= 'https://graph.facebook.com/me?fields=id,name,first_name,last_name,email&access_token='+token;
-    this.http.get(url).subscribe(data =>{
-      this.userData=JSON.stringify(data);
-      this.events.publish('accessToken',token);
+  loginGoogle() {
+    if (this.platform.is('cordova')) {
+      this.nativeGooleLogin();
+    } else {
+      this.webGoogleLogin();
+    }
+  }
+
+  async nativeGooleLogin(): Promise<void> {
+    try {
+      this.googlePlus.login({
+        'webClientId': '777132893216-dq0qrl67fq9107gnh51a825e5n3thcec.apps.googleusercontent.com',
+        'offline': true,
+      }).then(res => {
+        firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken)).then(response => {
+          this.userData = JSON.stringify(response);
+            this.close(0);
+        });
+      }, err => {
+        console.error("Error: ", err);
+      });
+    } catch (err) {
+      alert(err)
+    }
+  }
+  async webGoogleLogin(): Promise<void> {
+    console.log("login web");
+    try {
+
+      const provider = new firebase.auth.GoogleAuthProvider();
+      const credential = await firebase.auth().signInWithPopup(provider).then(result => {
+        alert(result);
+        this.userData = JSON.stringify(result);
+          this.close(0);
+      });
+    } catch (err) {
+      alert("FireBase error:" + err);
+    }
+  }
+
+  loginfb() { //usando Firebase
+
+    // this.fb.login(['email']).then(res => {
+    //   const fc = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+    //   firebase.auth().signInWithCredential(fc).then(response => {
+    //     this.userData = JSON.stringify(response);
+    //     this.close(0);
+    //   }).catch(err => {
+    //     alert("FireBase error:" + err);
+    //   })
+    // }).catch(e => {
+    //   alert(JSON.stringify(e));
+    // });
+
+
+    let provider = new firebase.auth.FacebookAuthProvider().setCustomParameters({ auth_type: 'reauthenticate' });
+    firebase.auth().signInWithPopup(provider).then((result) => {
+      this.userData = JSON.stringify(result);
       setTimeout(() => {
         this.close(0);
       }, 500);
-      
+    }).catch(e => {
+      console.log('Erro login facebook: ' + e);
     });
+
+
+
+
   }
 }

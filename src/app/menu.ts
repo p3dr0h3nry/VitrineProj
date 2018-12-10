@@ -3,7 +3,6 @@ import { NavController, MenuController, App, ViewController, Events } from 'ioni
 import { WelcomePage } from '../pages/welcome/welcome';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
-import { CentroFashionPage } from '../pages/centro-fashion/centro-fashion';
 import { CreateProfilePage } from '../pages/create-profile/create-profile';
 
 

@@ -29,6 +29,17 @@ export class AuthServiceProvider {
       }
     })
   }
+  post1(data, type) {
+    //console.log(type+JSON.stringify(data));
+    return new Promise((resolve, reject) => {
+      let headers = new Headers();
+      this.http.post(apiUrl + type, JSON.stringify(data)).subscribe(res => {
+        resolve(res);
+      }), (err) => {
+        reject(err);
+      }
+    })
+  }
 
   postClient(data, type) {
     return new Promise((resolve, reject) => {

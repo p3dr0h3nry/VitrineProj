@@ -61,7 +61,6 @@ export class CreateProfilePage {
 
 
     });
-
     if (localStorage.getItem('editProfile')) {
       console.log('editProfile');
       this.profDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('editProfile'))))._body;
@@ -71,7 +70,6 @@ export class CreateProfilePage {
     }
 
     if (localStorage.getItem('root')) {
-
       this.authServiceProvider.getAllCategorys(localStorage.getItem('root')).then((result) => {
         this.responseGet = result;
         //console.log(this.responseGet);

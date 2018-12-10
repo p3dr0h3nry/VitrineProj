@@ -1,8 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.vitrineshop.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.vitrine.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>MyApp</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <universal-links>
+        <host name="vitrineapp.page.link/" scheme="https" />
+        <host name="vitrineapp-a7a67.firebaseapp.com" scheme="https">
+            <path url="/__/auth/callback" />
+        </host>
+    </universal-links>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -91,6 +97,9 @@
         <variable name="APP_ID" value="290774194890068" />
         <variable name="APP_NAME" value="vitrineproj" />
         <variable name="FACEBOOK_ANDROID_SDK_VERSION" value="4.38.1" />
+    </plugin>
+    <plugin name="cordova-plugin-googleplus" spec="5.3.2">
+        <variable name="REVERSED_CLIENT_ID" value="777132893216-s2ekt8nf08l9d8ebeer3o1rpghipjfq1.apps.googleusercontent.com" />
     </plugin>
     <engine name="android" spec="7.1.2" />
     <engine name="browser" spec="5.0.4" />

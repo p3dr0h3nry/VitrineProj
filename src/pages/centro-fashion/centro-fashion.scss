@@ -160,6 +160,8 @@ page-centro-fashion {
             .card_post{
                 
                 //padding: 15px;
+                
+                border-radius: 3px;
                 width: 100%;
                 height: 270px;
                 //padding-top: 0px;
@@ -171,6 +173,8 @@ page-centro-fashion {
 
             }
             .card_img{
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
                 width: 100%;
                 height: 170px;
                 object-fit: cover;

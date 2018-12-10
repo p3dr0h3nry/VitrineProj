@@ -1,69 +1,108 @@
-<!-- Conteudo do menuToggle -->
-<!-- <ion-nav [root]="WelcomePage"></ion-nav> -->
 
-<ion-menu [content]="conteudo" side="right" *ngIf="userAtive==false" cache-view="false">
-  
 
-  <div>
-    <img src="assets/imgs/cf_simbolo.png">
-  </div>
+<!-- Menu de user comum -->
+<ion-menu class="cf_menu" [content]="conteudo" side="right" *ngIf="!userAdmin">
   <ion-content>
 
-    <!-- <img src="assets/imgs/cf_simbolo.png"> -->
-    <ion-list>
-      <button style="color:rgb(66, 66, 66);" ion-item (click)="login()" detail-none>
-        <ion-icon name="log-in"></ion-icon>Login
-      </button>
-      <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="signup()" detail-none>
-        <ion-icon name="contact"></ion-icon> Cadastro
-      </button>
-    </ion-list>
-  </ion-content>
-</ion-menu>
-
-<ion-menu class="cf_menu" [content]="conteudo" side="right" *ngIf="userAtive">
-  <ion-content>
-
-    <div *ngIf='thisPlace=="CentroFashionPage"'>
+    <!-- <div *ngIf='thisPlace=="CentroFashionPage"'>
       <img src="assets/imgs/cf_simbolo.png">
       <div style="padding: 10px;">
         <Span>Olá, {{userDatails.client_name}}!!</Span>
       </div>
 
+    </div> -->
+    <div *ngIf="userDatails">
+      <img class="avatar" [src]="userDatails.user_img">
+      <div style="padding: 10px;">
+        <Span>Olá, {{userDatails.user_firstname}}!!</Span>
+      </div>
     </div>
     <!-- <img src="assets/imgs/cf_simbolo.png"> -->
     <ion-list>
-        <!-- *ngIf="profileAtive" -->
-      <div  *ngIf="!profileAtive">
-      <button  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="createProfile()" detail-none>
-        <ion-icon name="ios-add-circle-outline"></ion-icon>
-        <span>Cadastrar Loja</span>
+      <!-- *ngIf="profileAtive" -->
+      <div *ngIf="!profileAtive">
+        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="checkToken()" detail-none>
+          <ion-icon name="md-create"></ion-icon>
+          <span>Sou Lojista</span>
+        </button>
+      </div>
+      <div *ngIf="profileAtive">
+        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="getProfileData()" detail-none>
+          <ion-icon name="logo-buffer"></ion-icon>
+          <span>Perfil</span>
+        </button>
+      </div>
+      <div *ngIf="profileAtive">
+        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editProfile()" detail-none>
+          <ion-icon name="md-create"></ion-icon>
+          <span>Editar Perfil</span>
+        </button>
+      </div>
+      <div *ngIf="!tokenAtive">
+        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editClient()" detail-none>
+          <ion-icon name="md-settings"></ion-icon>
+          <span style="padding-bottom: 15px;">Editar Conta</span>
+        </button>
+      </div>
+      <div *ngIf="!tokenAtive">
+        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="changePassword()" detail-none>
+          <ion-icon name="md-lock"></ion-icon>
+          <span>Alterar senha</span>
+        </button>
+      </div>
+      <button style="color:rgb(66, 66, 66);" ion-item (click)="logout()" detail-none>
+        <ion-icon name="md-log-out"></ion-icon>
+        <span>Logout</span>
       </button>
-    </div>
-    <div  *ngIf="profileAtive">
-      <button  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="getProfileData()" detail-none>
-        <ion-icon name="logo-buffer"></ion-icon>
-        <span>Perfil</span>
-      </button>
-    </div>
-    <div  *ngIf="profileAtive">
-      <button  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editProfile()" detail-none>
-        <ion-icon name="md-create"></ion-icon>
-        <span>Editar Perfil</span>
-      </button>
-    </div>
+
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<!-- Menu de admin -->
+<ion-menu class="cf_menu" [content]="conteudo" side="right" *ngIf="userAdmin">
+  <ion-content>
+    <!-- <div *ngIf='thisPlace=="CentroFashionPage"'> -->
     <div>
-        <button  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editClient()" detail-none>
+      <img class="avatar" [src]="userDatails.user_img">
+      <div style="padding: 10px;">
+        <Span>Olá, {{userDatails.user_firstname}}!!</Span>
+      </div>
+    </div>
+    <!-- <img src="assets/imgs/cf_simbolo.png"> -->
+    <ion-list>
+      <!-- *ngIf="profileAtive" -->
+      <div>
+        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="keyGenAlert()" detail-none>
+          <ion-icon name="md-key"></ion-icon>
+          <span>Gerar chave</span>
+        </button>
+      </div>
+      <div>
+        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="getProfileData()" detail-none>
+          <ion-icon name="logo-buffer"></ion-icon>
+          <span>Perfil</span>
+        </button>
+      </div>
+      <div>
+        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editProfile()" detail-none>
+          <ion-icon name="md-create"></ion-icon>
+          <span>Editar Perfil</span>
+        </button>
+      </div>
+      <div>
+        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editClient()" detail-none>
           <ion-icon name="md-settings"></ion-icon>
           <span style="padding-bottom: 15px;">Editar Conta</span>
         </button>
       </div>
       <div>
-          <button  style="color:rgb(66, 66, 66);" ion-item menu-close (click)="changePassword()" detail-none>
-            <ion-icon name="md-lock"></ion-icon>
-            <span>Alterar senha</span>
-          </button>
-        </div>
+        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="changePassword()" detail-none>
+          <ion-icon name="md-lock"></ion-icon>
+          <span>Alterar senha</span>
+        </button>
+      </div>
       <button style="color:rgb(66, 66, 66);" ion-item (click)="logout()" detail-none>
         <ion-icon name="md-log-out"></ion-icon>
         <span>Logout</span>

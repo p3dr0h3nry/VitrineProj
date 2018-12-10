@@ -37,9 +37,9 @@ export class WelcomePage {
     private loadCtrl: LoadingController,
     private fb: Facebook
   ) {
-    this.events.subscribe('accessToken',(data)=>{
-      localStorage.setItem('accessToken',data);
-    });
+    // this.events.subscribe('accessToken',(data)=>{
+    //   localStorage.setItem('accessToken',data);
+    // });
     if (localStorage.getItem('user')) {
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;
@@ -58,12 +58,11 @@ export class WelcomePage {
   }
   
   popUpLogin() {
+    console.log(localStorage.getItem('user'));
     if (!localStorage.getItem('user')) {
-
       const myModalOptions: ModalOptions = {
         showBackdrop: true,
         enableBackdropDismiss: false,
-
       };
       const myModalData = { //isso é passado pra dentro do modal
         name: 'teste',
@@ -72,35 +71,62 @@ export class WelcomePage {
       const loginModal: Modal = this.modalCtrl.create('ModalLoginPage', { data: myModalData }, myModalOptions);
       loginModal.present();
 
-      loginModal.onDidDismiss((userData, userImg) => { //obtem o retorno quando o modal é fechado
+      loginModal.onDidDismiss((userData) => { //obtem o retorno quando o modal é fechado
+        //alert(userData);
         if (userData != null) {
-          this.createNewUser(userData, userImg);
-          this.userFbImg = userImg;
+          this.parseData= JSON.parse(userData);
+          
+          if(JSON.parse(JSON.stringify(this.parseData)).providerData){ //Logado pelo google
+            
+            let x =JSON.stringify(JSON.parse(JSON.stringify(this.parseData)).providerData);
+            x = x.replace('[','');
+            x = x.replace(']','');
+            let data = JSON.parse(x);
+            this.newUserData.name = this.parseData.displayName;
+            this.newUserData.email = this.parseData.email;
+            this.newUserData.img = this.parseData.photoURL;
+            this.newUserData.type = '1';
+            this.newUserData.key_token = data.uid;
+            this.newUserData.firstName = this.parseData.displayName;
+            this.createNewUser();
+            this.userFbImg = this.parseData.photoURL;
+
+          }else if(this.parseData.additionalUserInfo.providerId=="facebook.com"){ //Logado pelo Facebook
+            console.log("logado com face");
+            this.newUserData.name = this.parseData.user.displayName;
+            this.newUserData.email = this.parseData.user.email;
+            this.newUserData.img = this.parseData.user.photoURL;
+            this.newUserData.type = '1';
+            this.newUserData.key_token = this.parseData.additionalUserInfo.profile.id;
+            this.newUserData.firstName = this.parseData.additionalUserInfo.profile.first_name;
+            this.createNewUser();
+            this.userFbImg = this.parseData.user.photoURL;
+
+          }
+          
         }
 
       });
 
     }
   }
-  createNewUser(userData, userImg) {
-    this.parseData = JSON.parse(userData);
-    this.newUserData.name = this.parseData.name;
-    this.newUserData.email = this.parseData.email;
-    this.newUserData.img = userImg;
-    this.newUserData.type = '1';
-    this.newUserData.key_token = this.parseData.id;
-    this.newUserData.firstName = this.parseData.first_name;
-
+  createNewUser() {
+    //alert(JSON.stringify(this.newUserData));
     this.authService.post(this.newUserData, "signupNewUser").then((result) => {
       this.response = JSON.parse(JSON.stringify(result))._body;
+      //alert(JSON.stringify(this.response));
       if (!JSON.parse(this.response).error) { //Retorno ok
         this.userDatails = JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(result))))._body;
         this.userDatails = JSON.parse(this.userDatails).success;
         this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
-
         localStorage.setItem('user', JSON.stringify(result));
+        setTimeout(() => {
+          this.events.publish('updateUserData',JSON.stringify(result));
+        }, 50);
+        
 
       } else {
+        this.popUpLogin();
         this.response = JSON.parse(this.response).error;
         let msg: string = this.response.e; //busca msg de erro
         console.log(msg);
@@ -117,25 +143,15 @@ export class WelcomePage {
   signup() {
     this.navCtrl.push(SignupPage);
   }
-
   logout() {
-    if (this.userDatails.user_type == '1') {
-      console.log("1");
-      this.fb.logout().then(function(response){
-        this.popUpLogin();
-        localStorage.clear();
-        this.userDatails = '';
-      });
-      
-    } else if (this.userDatails.user_type == '0') {
-      console.log("2");
-      localStorage.clear();
-      this.userDatails = '';
-    }
-
+    localStorage.clear();
+    this.userDatails = '';
+    setTimeout(() => {
+      this.popUpLogin();
+    }, 100);
+          
   }
   goTo() {
-    alert("Goto");
     this.navCtrl.push(CentroFashionPage);
     this.events.publish('root', "CentroFashionPage");
     localStorage.setItem('root', "CentroFashionPage");

@@ -1,10 +1,9 @@
 <ion-content padding id="welcome">
-        
-    <div class="menu">
+
+    <div class="menu" *ngIf="userDatails">
         <img class="imgUser" *ngIf="userDatails" [src]="userDatails.user_img" alt="">
         <div class="tag_name" *ngIf="userDatails">
             <h5>Olá, {{userDatails.user_firstname}} ! </h5>
-            
         </div>
         <div class="login" *ngIf="!userDatails" (click)="login()">
             <ion-icon class="icon-sign-in" name="md-log-in"></ion-icon>
@@ -18,12 +17,15 @@
                 <span>Cadastro</span>
             </div>
         </div>
-        <div class="logout" *ngIf="userDatails" (click)="logout()">
-                <ion-icon class="icon-logout" name="md-log-out"></ion-icon>
-                <div class="span-log-out">
-                    <span>Sair</span>
-                </div>
+        <!-- <div class="logout" *ngIf="userDatails" (click)="logout()">
+            <ion-icon class="icon-logout" name="md-log-out"></ion-icon>
+            <div class="span-log-out">
+                <span>Sair</span>
             </div>
+        </div> -->
+            <button  ion-button menuToggle icon-only persistent="true">
+                <ion-icon name="menu"></ion-icon>
+            </button>
         <!-- <button ion-button menuToggle right icon-only>
             <ion-icon name="menu"></ion-icon>
         </button> -->
