@@ -27,7 +27,7 @@ export class CreateProfilePage {
   sectors: any;
   checkedIdx = -1;
   checkedIdx1 = -1;
-  profileToGetData = { prof_id: "" };
+  profileToGetData = { client_id: "" };
   reponseData: any;
   data: any;
   dataProfile: any;
@@ -50,17 +50,15 @@ export class CreateProfilePage {
     this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
     console.log(this.userDatails);
 
-    this.events.subscribe('root', data => {
-      if (localStorage.getItem('user')) {
+    // this.events.subscribe('root', data => {
+    //   if (localStorage.getItem('user')) {
 
-        this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
-        this.userDatails = JSON.parse(this.userDatails).success;
-        this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
+    //     this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
+    //     this.userDatails = JSON.parse(this.userDatails).success;
+    //     this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
 
-      }
-
-
-    });
+    //   }
+    // });
     if (localStorage.getItem('editProfile')) {
       console.log('editProfile');
       this.profDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('editProfile'))))._body;
@@ -72,19 +70,14 @@ export class CreateProfilePage {
     if (localStorage.getItem('root')) {
       this.authServiceProvider.getAllCategorys(localStorage.getItem('root')).then((result) => {
         this.responseGet = result;
-        //console.log(this.responseGet);
         this.responseGet = JSON.parse(JSON.stringify(this.responseGet))._body;
-        //console.log("Parse+stringify: " + this.responseGet);
         this.responseGet = JSON.parse(this.responseGet);
         this.dataCategory = this.responseGet.categoryData;
-        //console.log(this.dataCategory);
       });
 
       this.authServiceProvider.getSectors(localStorage.getItem('root')).then((result) => {
         this.responseGet = result;
-        //console.log(this.responseGet);
         this.responseGet = JSON.parse(JSON.stringify(this.responseGet))._body;
-        //console.log("Parse+stringify: " + this.responseGet);
         this.responseGet = JSON.parse(this.responseGet);
         this.sectors = this.responseGet.sectorsData;
       });
@@ -107,7 +100,7 @@ export class CreateProfilePage {
       address: new FormControl('', [Validators.required]),
       sectorName: [''],
       from: [''],
-      prof_id:[''],
+      prof_id: [''],
       email: new FormControl('', [Validators.required, Validators.pattern(EMAILPATTERN)]),
 
       // repassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
@@ -165,13 +158,16 @@ export class CreateProfilePage {
         this.authServiceProvider.postProfile(this.formProfile.value, "signupProfile").then((result) => {
           this.reponseData = result;
           this.data = JSON.parse(JSON.stringify(this.reponseData))._body;
-          
+
           if (!JSON.parse(this.data).error) {
             localStorage.removeItem('user');
             localStorage.setItem('user', JSON.stringify(this.reponseData));
             setTimeout(() => {
-              this.events.publish('root', "CentroFashionPage");
-            }, 100);
+              this.events.publish('updateUserData', "CentroFashionPage"); //verificar
+              this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
+              this.userDatails = JSON.parse(this.userDatails).success;
+              this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
+            }, 50);
             if (localStorage.getItem('user')) {
               this.getProfileData();
             }
@@ -189,7 +185,7 @@ export class CreateProfilePage {
         }, (err) => {
           console.log(err);
         });
-      }else if(this.profDatails){
+      } else if (this.profDatails) {
         console.log("editar perfil");
         this.formProfile.controls['prof_id'].setValue(this.profDatails.prof_id);
         this.authServiceProvider.postProfile(this.formProfile.value, "updateProfile").then((result) => {
@@ -200,7 +196,7 @@ export class CreateProfilePage {
               console.log("edição ok");
               this.getProfileData();
             }, 500);
-              
+
           } else {
             let alertSignup = this.alertController.create({
               title: "Falha",
@@ -225,7 +221,7 @@ export class CreateProfilePage {
       content: 'Buscando perfil...'
     });
     loader.present();
-    this.profileToGetData.prof_id= this.userDatails.prof_id;
+    this.profileToGetData.client_id = this.userDatails.client_id;
     console.log(this.userDatails.client_id);
     this.authService.post(this.profileToGetData, "getProfile").then((result) => {
       this.reponseData = result;

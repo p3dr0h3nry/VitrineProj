@@ -44,7 +44,7 @@ export class WelcomePage {
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;
       this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
-      console.log(this.userDatails);
+      //console.log(this.userDatails);
     } else {
       this.popUpLogin();
       this.userDatails = '';

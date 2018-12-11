@@ -78,7 +78,7 @@
         <img [src]="post.post_img | showPipe" class="card_img" imageViewer *ngIf="!editPermission">
       </ion-card>
     </div>
-    <ion-fab bottom right #fab style="margin-bottom: 60px;" *ngIf="editPermission">
+    <ion-fab bottom right #fab  *ngIf="editPermission">
       <button ion-fab (click)="toggle()">
         <ion-icon name="ios-create-outline"></ion-icon>
       </button>

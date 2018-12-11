@@ -111,9 +111,5 @@ export class ModalLoginPage {
     }).catch(e => {
       console.log('Erro login facebook: ' + e);
     });
-
-
-
-
   }
 }

@@ -27,7 +27,7 @@ export class MyApp implements OnInit {
   data: any;
   userAtive;
   profileAtive;
-  profileToGetData = { prof_id: "" };
+  profileToGetData = { client_id: "" };
   passValidation = { user_id: "", password: "" };
   updateDataPassword = { user_id: "", old_password: "", new_password: "" };
   keyGenData = { id: "", email: "", created_by: "" };
@@ -48,34 +48,34 @@ export class MyApp implements OnInit {
   ) {
     //localStorage.clear();
     this.rootPage = WelcomePage;
-    console.log("Component Carregado");
+    //console.log("Component Carregado");
     this.tokenAtive = false;
 
     this.events.subscribe('root', data => {
       if (data == "CentroFashionPage") {
         this.thisPlace = "CentroFashionPage";
-        if (localStorage.getItem('user')) {
-          //console.log(localStorage.getItem('user'));
-          this.userAtive = true;
-          this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
-          this.userDatails = JSON.parse(this.userDatails).success;
-          this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
-          if (this.userDatails.user_token != '0') {
-            this.tokenAtive = true;
-          }
-          if (this.userDatails.profile_status != null && this.userDatails.profile_status == 1) {
-            this.profileAtive = true;
-          } else {
-            this.profileAtive = false;
-          }
+        // if (localStorage.getItem('user')) {
+        //   //console.log(localStorage.getItem('user'));
+        //   this.userAtive = true;
+        //   this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
+        //   this.userDatails = JSON.parse(this.userDatails).success;
+        //   this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
+        //   if (this.userDatails.user_token != '0') {
+        //     this.tokenAtive = true;
+        //   }
+        //   if (this.userDatails.profile_status != null && this.userDatails.profile_status == 1) {
+        //     this.profileAtive = true;
+        //   } else {
+        //     this.profileAtive = false;
+        //   }
     
-          if (this.userDatails.user_lvl != null && this.userDatails.user_lvl == 1) { // Login de admin de shopping
-            this.userAdmin = true;
-          }
-        }
-        if (this.rootPage == CentroFashionPage) {
-          this.nav.push(CentroFashionPage);
-        } else {
+        //   if (this.userDatails.user_lvl != null && this.userDatails.user_lvl == 1) { // Login de admin de shopping
+        //     this.userAdmin = true;
+        //   }
+        // }
+        // if (this.rootPage == CentroFashionPage) {
+        //   this.nav.push(CentroFashionPage);
+        // } else {
           let load = this.loadCtrl.create({
             content: 'Carregando...'
           });
@@ -84,11 +84,12 @@ export class MyApp implements OnInit {
             load.dismiss();
             //this.rootPage = CentroFashionPage;
           }, 1000);
-        }
+        // }
 
         //console.log(this.userDatails);
       }
     });
+
     this.events.unsubscribe('local');
 
     this.events.subscribe('updateUserData', data => { //O evento vai atualizar a variável user do app e modificar o menu
@@ -111,6 +112,7 @@ export class MyApp implements OnInit {
         this.userAdmin = true;
       }
     });
+
     if (localStorage.getItem('user')) {
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;
@@ -129,6 +131,7 @@ export class MyApp implements OnInit {
         this.userAdmin = true;
       }
     }
+
     this.events.subscribe('Headerlocal', (data) => {
       if (localStorage.getItem('user')) {
         this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
@@ -157,7 +160,6 @@ export class MyApp implements OnInit {
   ionViewWillLoad() {
     console.log("ionViewWillLoad");
   }
-
   ngOnInit() {
   }
   keyGenAlert() {
@@ -305,10 +307,11 @@ export class MyApp implements OnInit {
       this.responsePost = result;
       
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
-      console.log(this.data);
       if (!JSON.parse(this.data).error) { //Retorno ok
-        alert("chamando createProfile");
-        this.createProfile();
+        //this.events.publish('root','CentroFashionPage');
+        this.menuCtrl.toggle();
+        this.nav.push(SignupPage);
+        //this.createProfile();
       } else {
 
         this.data = JSON.parse(this.data).error;
@@ -436,7 +439,7 @@ export class MyApp implements OnInit {
   }
   editProfile() {
     console.log(this.userDatails.prof_id);
-    this.profileToGetData.prof_id = this.userDatails.prof_id;
+    this.profileToGetData.client_id = this.userDatails.client_id;
     this.authService.post(this.profileToGetData, "getProfile").then((result) => {
       this.responsePost = result;
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
@@ -478,13 +481,14 @@ export class MyApp implements OnInit {
       content: 'Buscando perfil...'
     });
     loader.present();
-    this.profileToGetData.prof_id = this.userDatails.prof_id;
+    this.profileToGetData.client_id = this.userDatails.client_id;
     this.authService.post(this.profileToGetData, "getProfile").then((result) => {
       this.responsePost = result;
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
         localStorage.setItem('profileData', JSON.stringify(this.responsePost));
         this.events.publish('root', "CentroFashionPage");
+        localStorage.setItem('root',"CentroFashionPage");
         loader.dismiss();
         this.menuCtrl.toggle();
         setTimeout(() => {
@@ -523,6 +527,7 @@ export class MyApp implements OnInit {
   // Criação do perfil da loja
   createProfile() {
     this.menuCtrl.toggle();
+    localStorage.setItem('root','CentroFashionPage');
     this.nav.push(CreateProfilePage);
   }
 

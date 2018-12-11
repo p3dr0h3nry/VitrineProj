@@ -34,6 +34,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { EmailComposer } from '@ionic-native/email-composer';
 import firebase from 'firebase';
 
+
 firebase.initializeApp({
   apiKey: "AIzaSyCXJ65SwL_GtN1g8dRs5OPqcY0YMWb8wsc",
   authDomain: "vitrineapp-a7a67.firebaseapp.com",

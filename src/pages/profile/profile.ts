@@ -46,7 +46,7 @@ export class ProfilePage {
   thisplace;
   public postsDatails: any;
   public profileDatails: any;
-  editPermission:boolean;
+  editPermission: boolean;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
@@ -56,16 +56,16 @@ export class ProfilePage {
     private authService: AuthServiceProvider,
     private actionsheetCtrl: ActionSheetController,
     private events: Events,
-    private imgViewerCtrl:ImageViewerController
+    private imgViewerCtrl: ImageViewerController
   ) {
     this.imgToPost = '';
     this.addPost = true;
     this.events.unsubscribe('local');
-    this.editPermission=false;
-    this.userDatails='';
-    this.profileDatails='';
-    this.userDatails='';
-    this.postsDatails='';
+    this.editPermission = false;
+    this.userDatails = '';
+    this.profileDatails = '';
+    this.userDatails = '';
+    this.postsDatails = '';
 
     if (localStorage.getItem('user')) {
       
@@ -83,19 +83,18 @@ export class ProfilePage {
 
     }
 
-    if(localStorage.getItem('profileData')) {  //busca os dados do perfil
+    if (localStorage.getItem('profileData')) {  //busca os dados do perfil
       this.profileDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('profileData'))))._body;
       this.profileDatails = JSON.parse(this.profileDatails).success;
       this.profileDatails = JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(this.profileDatails)))).profileData;
       //this.imgToPost = this.profileDatails.prof_img;
-      console.log(this.profileDatails);
-      if(localStorage.getItem('user')){
-        if(this.userDatails.prof_id==this.profileDatails.prof_id){
-          this.editPermission=true;
-        }else{
-          this.editPermission=false;
+      if (localStorage.getItem('user')) {
+        if (this.userDatails.client_id == this.profileDatails.prof_client_id) {
+          this.editPermission = true;
+        } else {
+          this.editPermission = false;
         }
-      }else{
+      } else {
         let loader = this.loadCtrl.create({
           content: 'Buscando postagens...'
         });
@@ -105,13 +104,13 @@ export class ProfilePage {
           this.getAllPostsProfile();
           loader.dismiss();
         }, 1500);
-        this.editPermission=false;
+        this.editPermission = false;
       }
 
     }
 
     this.events.subscribe('updateProfile', (data) => {
-      
+
       this.profileDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('profile'))))._body;
       this.profileDatails = JSON.parse(this.profileDatails).success;
       this.profileDatails = JSON.parse(JSON.stringify(this.profileDatails)).profile;
@@ -135,9 +134,9 @@ export class ProfilePage {
     //   //this.events.unsubscribe('newPosts');
 
     // });
-    
-    if(localStorage.getItem('root')){
-      console.log(localStorage.getItem('root'))
+
+    if (localStorage.getItem('root')) {
+      //console.log(localStorage.getItem('root'))
       this.thisplace = localStorage.getItem('root');
     }
 
@@ -146,10 +145,10 @@ export class ProfilePage {
     console.log('ionViewDidLoad ProfilePage');
   }
 
-  
+
   getAllPostsProfile() {
     this.getPostsFrom.post_prof_id = this.profileDatails.prof_id;
-    
+
     this.getPostsFrom.post_from = this.thisplace;
     //console.log(this.thisplace);
     //console.log(this.getPostsFrom);
@@ -161,20 +160,28 @@ export class ProfilePage {
         this.postsDatails = JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(this.responsePost))))._body;
         this.postsDatails = JSON.parse(this.postsDatails).success;
         this.postsDatails = JSON.parse(JSON.stringify(this.postsDatails)).posts;
-
-        // localStorage.setItem('posts', JSON.stringify(this.responsePost));
-        // this.events.publish('newPosts', "newPosts");
       } else {
-        this.data = JSON.parse(this.data).error;
-        let msg: string = this.data.e; //busca msg de erro
-        let alertSignup = this.alertCtrl.create({
-          title: "Ops!!",
-          message: msg,
-          buttons: [{
-            text: "Ok"
-          }]
-        });
-        alertSignup.present()
+        if (this.userDatails.client_id == this.profileDatails.prof_client_id) {
+          this.data = JSON.parse(this.data).error;
+          let msg: string = this.data.e; //busca msg de erro
+          let alertSignup = this.alertCtrl.create({
+            title: "Ops!!",
+            message: msg,
+            buttons: [{
+              text: "Ok"
+            }]
+          });
+          alertSignup.present()
+        }else{
+          let alertSignup = this.alertCtrl.create({
+            title: "Ops!!",
+            message: "Nenhuma postagem encontrada nesse perfil.",
+            buttons: [{
+              text: "Ok"
+            }]
+          });
+          alertSignup.present()
+        }
       }
 
     }, (err) => {
@@ -214,7 +221,7 @@ export class ProfilePage {
       this.newPost.post_sector_id = this.profileDatails.sector_id;
       this.newPost.post_category_id = this.profileDatails.prof_category_id;
       this.newPost.post_from = this.thisplace;
-      
+      console.log(this.newPost);
       this.authService.newPost(this.newPost, "newPost").then((result) => {
         this.responsePost = result;
         this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
@@ -364,8 +371,10 @@ export class ProfilePage {
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-      targetHeight: 500,
-      targetWidth: 600,
+     // targetHeight: 500,
+      // targetWidth: 600,
+      targetHeight: 600,
+      targetWidth: 800,
 
       saveToPhotoAlbum: true,
     }
@@ -389,8 +398,10 @@ export class ProfilePage {
       quality: 70,
       destinationType: this.camera.DestinationType.DATA_URL,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      targetHeight: 500,
-      targetWidth: 600,
+      // targetHeight: 500,
+      // targetWidth: 600,
+      targetHeight: 600,
+      targetWidth: 800,
       saveToPhotoAlbum: true,
       allowEdit: true
     }
