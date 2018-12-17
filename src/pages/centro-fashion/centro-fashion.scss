@@ -1,5 +1,5 @@
 .scroll-content{
-    height: 92%;
+    height: 94%;
 }
 page-centro-fashion {
         :root{
@@ -14,6 +14,7 @@ page-centro-fashion {
         .config-bar{
             
             position: relative;
+           // z-index: 4;
             width: 100%;
             padding: 6px;
             padding-top:18px;
@@ -54,13 +55,16 @@ page-centro-fashion {
             
         }
         .search-list{
-            border-radius: 20px;
+            //border-radius: 20px;
             margin-top: 50px;
             position: absolute!important;
             z-index: 6;
-            width: 96%;
-            margin-left:2%;
+            width: 96.6%;
+            margin-left:1.6%;
             box-shadow: 2px 6px 15px 1px rgba(0,0,0,0.34);
+        }
+        .select_profile{
+            border-radius: 0px;
         }
         .searchbar-input-container{
             position: absolute;
@@ -152,6 +156,9 @@ page-centro-fashion {
                 
 
             // }
+            .select{
+                z-index: 6px;
+            }
             .posts{
                 position: relative!important;
                 margin-top:25px;
@@ -166,7 +173,7 @@ page-centro-fashion {
                 
                 border-radius: 3px;
                 width: 100%;
-                height: 270px;
+                height: 295px;
                 //padding-top: 0px;
                 box-shadow: 2px 6px 15px 1px rgba(0,0,0,0.34);
                 margin-bottom: 30px;
@@ -202,16 +209,29 @@ page-centro-fashion {
 
             }
             .favorite_uncheck{
-                float: right;
-                font-size: 25px;
+                //float: right;
+                font-size: 30px;
                 color: rgb(189, 189, 189);
-                margin-top: 5px; 
+                margin-top: -50px; 
+                margin-left: 4px;  
+                position: absolute;
             }
             .favorite_check{
-                float: right;
-                font-size: 25px;
+                //float: right;
+                font-size: 30px;
                 color: rgb(255, 166, 0);
-                margin-top: 5px; 
+                margin-top: -50px; 
+                margin-left: 4px; 
+                position: absolute;
+            }
+            .flag_bookmark{
+                
+                float: right;
+                font-size: 60px;
+                margin-top: -15px;
+                 //position: absolute;
+                color: rgb(209, 209, 209);
+                //box-shadow: 2px 6px 15px 1px rgba(0,0,0,0.34);
             }
             .inst{
                 margin-bottom: 10px;
@@ -241,60 +261,73 @@ page-centro-fashion {
             }
             .div-sector{
                 float: right;
-                margin-right: 10px;
-                //width: 60px;
-                margin-left: 20px;
-
-            }
-            .color-sector{
-                width: 20px; 
-                height: 20px; 
-                border-radius: 4px;
-                //background-color: var (--cor);
-                margin-top: -5px; 
-                margin-left: 5px;
-                float: left;
-    
-            }
-            .secYellow{
-                //background-color: color($colors,secYellow);
-                border: 5px solid color($colors,secYellow);
-                border-color: color($colors,secYellow);
-                box-shadow: 10px 14px 10px 2px color($colors,secYellow);
-            }
-            .secGreen{
-                //background-color: color($colors,secGreen);
-                border: 5px solid color($colors,secGreen);
-                border-color:color($colors,secGreen);
-                box-shadow: 10px 14px 10px 2px color($colors,secGreen);
-            }
-            .secRed{
-                border: 5px solid color($colors,secRed);
-                border-color:color($colors,secRed);
-                box-shadow: 10px 14px 10px 2px color($colors,secRed);
-            }
-            .secPurple{
-               // background-color: color($colors,secPurple);
-               border: 5px solid color($colors,secPurple);
-                border-color:color($colors,secPurple);
-                box-shadow: 10px 14px 10px 2px color($colors,secPurple);
-            }
-            .secBlue{
-               // background-color: color($colors,secBlue);
-               border: 5px solid color($colors,secBlue);
-                border-color:color($colors,secBlue);
-                box-shadow: 10px 14px 10px 2px color($colors,secBlue);
-            }
-            .secWhite{
-               // background-color: color($colors,secWhite);
-               border: 5px solid color($colors,secWhite);
-                border-color:color($colors,secWhite);
-                box-shadow: 10px 14px 10px 2px rgb(219, 219, 219);
-            }
-            .borderWhite{
-                border: 1px dashed rgba(2, 2, 2, 0.205);
-            }
-       
-           
+                margin-right: 0px;
+                //background-color: aqua;
+                //width: 100%;
+                margin-top: 0px;
+            
+              }
+              .color-sector{
+                  width: 20px; 
+                  height: 20px; 
+                  border-radius: 4px;
+                  //background-color: var (--cor);
+                //   margin-top: -5px; 
+                  margin-left: 5px;
+                  float: left;
+            
+              }
+              .sector_name{
+                  margin-left: 5px;
+                  margin-top: 3px;
+                  //position: absolute;
+                  float: right;
+              }
+              .secYellow{
+                  //background-color: color($colors,secYellow);
+                  border: 1px solid color($colors,secYellow);
+                //   border-color: color($colors,secYellow);
+                  box-shadow: 7px 7px 15px 0px color($colors,secYellow);
+              }
+              .secGreen{
+                  //background-color: color($colors,secGreen);
+                  border: 1px solid color($colors,secGreen);
+                //   border-color:color($colors,secGreen);
+                  box-shadow: 7px 7px 15px 0px color($colors,secGreen);
+              }
+              .secRed{
+                  border: 1px solid color($colors,secRed);
+                //   border-color:color($colors,secRed);
+                  box-shadow: 7px 7px 15px 0px color($colors,secRed);
+              }
+              .secPurple{
+                // background-color: color($colors,secPurple);
+                border: 1px solid color($colors,secPurple);
+                //   border-color:color($colors,secPurple);
+                  box-shadow: 7px 7px 15px 0px color($colors,secPurple);
+              }
+              .secBlue{
+                // background-color: color($colors,secBlue);
+                border: 1px solid color($colors,secBlue);
+                //   border-color:color($colors,secBlue);
+                  box-shadow: 7px 7px 15px 0px color($colors,secBlue);
+              }
+              .secWhite{
+                // background-color: color($colors,secWhite);
+                  border: 10px solid rgb(255, 255, 255);
+                  //border-color:color($colors,secWhite);
+                  box-shadow: 7px 7px 15px 0px rgb(255, 255, 255);
+              }
+              .borderWhite{
+                  border: 1px dashed rgb(255, 255, 255);
+              }
+        
         }//Fim centroFashion
+        .fab-bookmark{
+            width: 40px; 
+            height: 40px; 
+            border-radius: 10px; 
+            background-color: rgb(255, 166, 0); 
+            margin-left: -15px;
+        }
 }

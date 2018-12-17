@@ -1,6 +1,6 @@
 page-profile {
     .scroll-content{
-        height: 92%;
+        height: 95%;
     }
 
      #profile{
@@ -62,11 +62,14 @@ page-profile {
         position: relative!important;
 
         .profileHeader{
-            margin-top: 10px;
+            
+            margin-top: 5px;
             //position: relative;
-            width: 100%;
+            //width: 100%;
             height: 140px;
             margin-left: 0px;
+            background-color: #25d366;
+            
             // -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
             // -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
             // box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
@@ -80,11 +83,14 @@ page-profile {
             
         // }
         .headerImg{
-            //object-fit: cover;
+            //object-position: 10% 50%;
+            object-fit: fill;
             width: 100%;
-            height: 140px;
+            height: 100%;
             //position: relative;
             overflow: hidden;
+            
+            
         }
         .photo{
             background-color: rgba(255, 255, 255, 0.301); 
@@ -111,7 +117,7 @@ page-profile {
 
         }
         .instagram{
-            float: left;
+            //float: left;
             //display: inline-block;
             width: 30px;
             height: 30px;
@@ -125,13 +131,28 @@ page-profile {
             background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
             box-shadow: 0px 3px 10px rgba(0,0,0,.25);
             font-size: 25px;
-            margin-right: 10px;
+            //margin-right: 10px;
             -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
             -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
             box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+            margin-top:10px;
+            margin-bottom: -10px;
+            
         }
-
+        .whatsApp{
+            width: 30px;
+            height: 30px;
+            float: left;
+            background-color: #25d366;
+            border-radius: 5px;
+            padding-top: 3px;
+            padding-left: 5px;
+            -webkit-box-shadow: 0px 12px 25px -11px rgba(0, 0, 0, 1);
+            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+            box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+        }
         .outFace{
+            margin-top: 10px;
             background-color: #43609C; 
             padding-top: 4px;
             padding-left: 4px;
@@ -141,7 +162,7 @@ page-profile {
             //display: block;
             float: left;
             border-radius: 12%;
-            margin-right: 10px;
+            //margin-right: 10px;
             -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
             -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
             box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
@@ -158,6 +179,7 @@ page-profile {
             //top: 50%;
             width: 22px; 
             padding-top: 5px;
+            
         }
         .facebook:after {
             color: #43609C;
@@ -175,10 +197,11 @@ page-profile {
             padding-top: 3px;
             width: 30px;
             height: 30px;
+            margin-top:10px;
             background-color:  #2daae1;
             border-radius: 5px;
             float: left;
-            margin-right: 10px;
+            //margin-right: 10px;
             -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
             -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
             box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
@@ -191,7 +214,10 @@ page-profile {
         .perfil_name{
             font-size: 15px;
             float: left;
-            margin: 10px;
+            //margin: 10px;
+            width: 100%;
+            padding: 10px;
+            //background-color: #285AEB;
             
         }
         .div-h6{
@@ -235,7 +261,7 @@ page-profile {
         }
         .container-newPoste{
             padding: 10px;
-            margin-top: -10px;
+            margin-top: 20px;
             //background-color: white;
 
         }
@@ -282,6 +308,7 @@ page-profile {
             //position: relative;
             //margin-top: -150px;
             font-size: 25px;
+            
             margin-bottom: 10px;
             
         }
@@ -307,57 +334,95 @@ page-profile {
             float: left;
             font-size: 24px;
         }
-        .div-sector{
-            float: left;
-            margin-right: 10px;
-            //width: 60px;
-        }
-        .color-sector{
-            width: 20px; 
-            height: 20px; 
-            border-radius: 20px;
-            //background-color: color($colors,secYellow);
-            margin-top: -1px; 
-            margin-left: 5px;
-            float: right;
+        // .div-sector{
+        //     float: left;
+        //     margin-right: 10px;
+        //     //width: 60px;
+        // }
+        // .color-sector{
+        //     width: 20px; 
+        //     height: 20px; 
+        //     border-radius: 20px;
+        //     //background-color: color($colors,secYellow);
+        //     margin-top: -1px; 
+        //     margin-left: 5px;
+        //     float: right;
 
-        }
-        .whatsApp{
-            width: 30px;
-            height: 30px;
-            float: left;
-            background-color: #25d366;
-            border-radius: 5px;
-            padding-top: 3px;
-            padding-left: 5px;
-            margin-right: 10px;
-            -webkit-box-shadow: 0px 12px 25px -11px rgba(0, 0, 0, 1);
-            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-            box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-        }
+        // }
+       
         .fa-whatsapp  {
             color:#fff;
             
           
           }
-        .secYellow{
-            background-color: color($colors,secYellow);
-        }
-        .secGreen{
-            background-color: color($colors,secGreen);
-        }
-        .secRed{
-            background-color: color($colors,secRed);
-        }
-        .secPurple{
-            background-color: color($colors,secPurple);
-        }
-        .secBlue{
-            background-color: color($colors,secBlue);
-        }
-        .secWhite{
-            background-color: color($colors,secWhite);
-        }
+          .div-sector{
+            float: left;
+            margin-top: 5px;
+            margin-right: 2%;
+            //background-color: aqua;
+            width: 100%;
+
+            //margin-left: 20px;
+        
+          }
+          .fab-share{
+              margin-top: 150px;
+              margin-right: 10px;
+          }
+          .color-sector{
+              width: 20px; 
+              height: 20px; 
+              border-radius: 4px;
+              //background-color: var (--cor);
+            //   margin-top: -5px; 
+              margin-left: 5px;
+              float: left;
+        
+          }
+          .sector_name{
+            margin-left: 8px;
+            margin-top: 2px;
+              //position: absolute;
+            float: left;
+          }
+          .secYellow{
+              //background-color: color($colors,secYellow);
+              border: 1px solid color($colors,secYellow);
+            //   border-color: color($colors,secYellow);
+              box-shadow: 7px 7px 15px 0px color($colors,secYellow);
+          }
+          .secGreen{
+              //background-color: color($colors,secGreen);
+              border: 1px solid color($colors,secGreen);
+            //   border-color:color($colors,secGreen);
+              box-shadow: 7px 7px 15px 0px color($colors,secGreen);
+          }
+          .secRed{
+              border: 1px solid color($colors,secRed);
+            //   border-color:color($colors,secRed);
+              box-shadow: 7px 7px 15px 0px color($colors,secRed);
+          }
+          .secPurple{
+            // background-color: color($colors,secPurple);
+            border: 1px solid color($colors,secPurple);
+            //   border-color:color($colors,secPurple);
+              box-shadow: 7px 7px 15px 0px color($colors,secPurple);
+          }
+          .secBlue{
+            // background-color: color($colors,secBlue);
+            border: 1px solid color($colors,secBlue);
+            //   border-color:color($colors,secBlue);
+              box-shadow: 7px 7px 15px 0px color($colors,secBlue);
+          }
+          .secWhite{
+            // background-color: color($colors,secWhite);
+              border: 1px solid rgb(214, 214, 214);
+              //border-color:color($colors,secWhite);
+              box-shadow: 7px 7px 15px 0px rgb(214, 214, 214);
+          }
+          .borderWhite{
+              border: 1px dashed rgba(2, 2, 2, 0.205);
+          }
       
     }
 }

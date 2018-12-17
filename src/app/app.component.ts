@@ -35,9 +35,12 @@ export class MyApp implements OnInit {
   retorno: boolean;
   userAdmin: boolean;
   tokenAtive;
+  dataFavorites:any;
+  dataFavProfiles:any;
+
   constructor(
     public app: App,
-    public menuCtrl: MenuController,
+    //public menuCtrl: MenuController,
     public events: Events,
     public loadCtrl: LoadingController,
     private authService: AuthServiceProvider,
@@ -46,6 +49,7 @@ export class MyApp implements OnInit {
     private fb: Facebook,
     private gplus:GooglePlus
   ) {
+    //this.logout();
     //localStorage.clear();
     this.rootPage = WelcomePage;
     //console.log("Component Carregado");
@@ -91,6 +95,21 @@ export class MyApp implements OnInit {
     });
 
     this.events.unsubscribe('local');
+    if(sessionStorage.getItem('favorites')){
+      this.dataFavorites = JSON.parse(JSON.stringify(JSON.parse(sessionStorage.getItem('favorites'))))._body;
+      this.dataFavorites = JSON.parse(this.dataFavorites).success;
+      this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
+      this.getBookmarkData(this.dataFavorites.fav_clients_id);
+    }
+
+    this.events.subscribe('favorites', data =>{
+      console.log("evento favorito");
+      this.dataFavorites = JSON.parse(JSON.stringify(JSON.parse(data)))._body;
+      this.dataFavorites = JSON.parse(this.dataFavorites).success;
+      this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
+      this.getBookmarkData(this.dataFavorites.fav_clients_id);
+    });
+    
 
     this.events.subscribe('updateUserData', data => { //O evento vai atualizar a variável user do app e modificar o menu
       if (localStorage.getItem('user')) {
@@ -102,7 +121,7 @@ export class MyApp implements OnInit {
         if (this.userDatails.user_token != '0') {
           this.tokenAtive = true;
         }
-        if (this.userDatails.profile_status != null && this.userDatails.profile_status == 1) {
+        if (this.userDatails.profile_status == 1) {
           this.profileAtive = true;
         } else {
           this.profileAtive = false;
@@ -156,12 +175,83 @@ export class MyApp implements OnInit {
 
 
   }
+  openProfile(prof_id) {
+    console.log("openprofile");
+    let loader = this.loadCtrl.create({
+      content: 'Buscando perfil...'
+    });
+    loader.present();
+    this.profileToGetData.client_id = prof_id;
+    //console.log(this.profileToGetData.client_id);
+    this.authService.post(this.profileToGetData, "getProfile").then((result) => {
+      this.responsePost = result;
+      this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
+      if (!JSON.parse(this.data).error) { //Retorno ok
+        localStorage.setItem('profileData', JSON.stringify(this.responsePost));
+        loader.dismiss();
+        //this.menuCtrl.toggle();
+        setTimeout(() => {
+          this.nav.push(ProfilePage);
+        }, 200);
+      } else {
+        loader.dismiss();
+        this.data = JSON.parse(this.data).error;
+        let msg: string = this.data.e; //busca msg de erro
+        console.log(msg);
+        let alertSignup = this.alertCtrl.create({
+          title: "Ops!",
+          message: 'Esse perfil não existe!',
+          buttons: [{
+            text: "Ok"
+          }]
+        });
+        alertSignup.present()
+      }
+    }, (err) => {
+      loader.dismiss();
+      console.log(err);
+      let alertSignup = this.alertCtrl.create({
+        title: "Ops!",
+        message: 'Falha de conexão, verifique sua internet.',
+        buttons: [{
+          text: "Ok"
+        }]
+      });
+      alertSignup.present()
+    });
+  }
+
+  getBookmarkData(data){
+
+    this.profileToGetData.client_id= data;
+    //console.log(this.profileToGetData.client_id);
+    this.authService.post(this.profileToGetData, "getBookmarkProfile").then((result) => {
+      this.responsePost = result;
+      //console.log(result);
+      this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
+      if (!JSON.parse(this.data).error) { //Retorno ok
+
+        this.dataFavProfiles = JSON.stringify(this.responsePost);
+        this.dataFavProfiles = JSON.parse(JSON.stringify(JSON.parse(this.dataFavProfiles)))._body;
+        this.dataFavProfiles = JSON.parse(this.dataFavProfiles).success;
+        this.dataFavProfiles = JSON.parse(JSON.stringify(this.dataFavProfiles)).profiles;
+      } else {
+      }
+
+    }, (err) => {
+      console.log(err);
+
+      alert('Falha');
+
+    });
+  }
 
   ionViewWillLoad() {
     console.log("ionViewWillLoad");
   }
   ngOnInit() {
   }
+
   keyGenAlert() {
     let alert = this.alertCtrl.create({
       title: 'Gerar Chave de acesso',
@@ -309,7 +399,7 @@ export class MyApp implements OnInit {
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
         //this.events.publish('root','CentroFashionPage');
-        this.menuCtrl.toggle();
+        //this.menuCtrl.toggle();
         this.nav.push(SignupPage);
         //this.createProfile();
       } else {
@@ -445,12 +535,12 @@ export class MyApp implements OnInit {
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
         localStorage.setItem('editProfile', JSON.stringify(this.responsePost));
-        this.menuCtrl.toggle();
+        //this.menuCtrl.toggle();
         setTimeout(() => {
           this.nav.push(CreateProfilePage);
         }, 200);
       } else {
-        this.menuCtrl.toggle();
+        //this.menuCtrl.toggle();
         this.data = JSON.parse(this.data).error;
         let msg: string = this.data.e; //busca msg de erro
         console.log(msg);
@@ -490,13 +580,13 @@ export class MyApp implements OnInit {
         this.events.publish('root', "CentroFashionPage");
         localStorage.setItem('root',"CentroFashionPage");
         loader.dismiss();
-        this.menuCtrl.toggle();
+        //this.menuCtrl.toggle();
         setTimeout(() => {
           this.nav.push(ProfilePage);
         }, 200);
       } else {
         loader.dismiss();
-        this.menuCtrl.toggle();
+        //this.menuCtrl.toggle();
         this.data = JSON.parse(this.data).error;
         let msg: string = this.data.e; //busca msg de erro
         console.log(msg);
@@ -526,26 +616,27 @@ export class MyApp implements OnInit {
   }
   // Criação do perfil da loja
   createProfile() {
-    this.menuCtrl.toggle();
+    //this.menuCtrl.toggle();
     localStorage.setItem('root','CentroFashionPage');
     this.nav.push(CreateProfilePage);
   }
 
   login(page: any) {
-    this.menuCtrl.toggle();
+    //this.menuCtrl.toggle();
     this.app.getActiveNav().setRoot(LoginPage);
   }
   signup() {
     this.app.getActiveNav().setRoot(SignupPage);
     //this.menuCtrl.toggle();
   }
-  logout(page: any) {
-    
+  logout() {
+    sessionStorage.clear();
+    localStorage.clear();
     firebase.auth().signOut().then(() => {
       this.fb.logout();
       this.gplus.logout();
-      localStorage.clear();
-      this.menuCtrl.toggle();
+      
+      //this.menuCtrl.toggle();
       this.nav.push(WelcomePage);
     }).catch(e => {
       alert("Erro ao desconectar: " + e);
@@ -554,7 +645,7 @@ export class MyApp implements OnInit {
 
   }
   backToWelcome() {
-    this.menuCtrl.toggle();
+    //this.menuCtrl.toggle();
     setTimeout(() => {
       this.events.publish('Headerlocal', "WelcomePage");
       this.nav.setRoot(WelcomePage, {}, { animate: true, direction: "back" });
@@ -599,7 +690,7 @@ export class MyApp implements OnInit {
       this.responsePost = result;
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
-        this.menuCtrl.toggle();
+        //this.menuCtrl.toggle();
         this.nav.push(SignupPage);
       } else {
         this.data = JSON.parse(this.data).error;

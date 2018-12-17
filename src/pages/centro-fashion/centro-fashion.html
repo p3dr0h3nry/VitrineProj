@@ -1,8 +1,8 @@
 <custom-header>
 </custom-header>
 <!-- <filter-bar></filter-bar> -->
-<ion-list class="search-list" [@searchStatusChanged]="searchStatus ? 'show':'hidden'">
-  <ion-item *ngFor="let prof of profileF" (click)="openProfile(prof.prof_id)">
+<ion-list class="search-list" *ngIf="searchStatus" [@searchStatusChanged]="searchStatus ? 'show':'hidden'">
+  <ion-item *ngFor="let prof of profileF" (click)="openProfile(prof.prof_client_id)">
     <span>{{prof.prof_name }}</span>
   </ion-item>
 </ion-list>
@@ -36,7 +36,13 @@
 
 </div>
 <ion-content #pageContent padding id="centroFashion" fullscreen >
-
+    
+    <ion-fab left top *ngIf="flagBookmark" menuToggle="left">
+        <div class="fab-bookmark" ion-fab  >
+            <ion-icon name="md-star"></ion-icon>
+        </div>
+      </ion-fab>
+      
     <div ion-fixed class="balloon">
       <img src="../../assets/imgs/logo_natal2.png">
     </div>
@@ -46,18 +52,8 @@
       </ion-refresher-content>
     </ion-refresher>
 
-    <!-- <ion-fab ion-fixed (click)="toggle()" top left #fabCF *ngIf="!searchStatus">
-      <button ion-fab color="light" class="ion-fab" *ngIf="!filterDiv">
-        <ion-icon style="font-size: 20px; " name="md-search"></ion-icon>
-        <span>Buscar</span>
-      </button>
-      <button ion-fab color="light" class="ion-fab" *ngIf="filterDiv">
-        <ion-icon style="font-size: 20px; " name="md-close"></ion-icon>
-        <span>Fechar</span>
-      </button>
-    </ion-fab> -->
-
     <div class="conteudo">
+     
       <div class="posts">
 
         <div *ngFor="let post of postsFilter" class="card_post">
@@ -66,8 +62,10 @@
 
           <div class="content-card">
             <div class="profileName">
-              <ion-icon *ngIf="dataFavorites.fav_clients_id.indexOf(post.prof_client_id)>-1 && post.prof_client_id!=userDatails.client_id" name="md-star" class="favorite_check" (click)="removeFavorite(post.prof_client_id)"></ion-icon>
-              <ion-icon *ngIf="dataFavorites.fav_clients_id.indexOf(post.prof_client_id)==-1 && post.prof_client_id!=userDatails.client_id" name="md-star" class="favorite_uncheck" (click)="addFavorite(post.prof_client_id)"></ion-icon>
+              <ion-icon name="md-bookmark" class="flag_bookmark" *ngIf="post.prof_client_id!=userDatails.client_id">
+                <ion-icon *ngIf="dataFavorites.fav_clients_id.indexOf(post.prof_client_id)>-1 && post.prof_client_id!=userDatails.client_id" name="happy" class="favorite_check" (click)="removeFavorite(post.prof_client_id)"></ion-icon>
+                <ion-icon *ngIf="dataFavorites.fav_clients_id.indexOf(post.prof_client_id)==-1 && post.prof_client_id!=userDatails.client_id" name="sad" class="favorite_uncheck" (click)="addFavorite(post.prof_client_id)"></ion-icon>
+              </ion-icon>
               {{post.prof_name}}
             </div>
             <div class="inst">
@@ -80,21 +78,19 @@
               <div style="float: left; margin-right:0px; margin-top:3px;">
                 <span>{{post.prof_address}}</span>
               </div>
-              <div class="div-sector">
+              
+            </div>
+            <div class="div-sector">
                 <span style="float: left; margin-top:3px;">Setor</span>
                 <div class="color-sector {{post.sector_color}}"></div>
+                <span class="sector_name">{{post.sector_name}}</span>
               </div>
-            </div>
-
 
           </div>
         </div>
       </div>
-
+      <ion-infinite-scroll class="infinite_scroll" (ionInfinite)="doInfinite($event)">
+          <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Carregando..."></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
     </div>
-
-    <ion-infinite-scroll class="infiniteScroll" (ionInfinite)="doInfinite($event)">
-      <ion-infinite-scroll-content></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-
 </ion-content>

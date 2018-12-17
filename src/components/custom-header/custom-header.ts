@@ -22,12 +22,12 @@ export class CustomHeaderComponent {
 
   constructor(public events:Events, public navCtrl: NavController, public menuCtrl:MenuController, public app:App) {
     if(localStorage.getItem('user')){
-      console.log("Lendo header com usuário");
+      //console.log("Lendo header com usuário");
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;
       this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
     }else{
-      console.log("Lendo header sem usuário");
+      //console.log("Lendo header sem usuário");
     }
   }
 
@@ -55,7 +55,7 @@ export class CustomHeaderComponent {
     //this.events.publish('root',"CentroFashionPage");
   }
   goToHome(){
-    console.log("gotohome");
+    //console.log("gotohome");
     this.events.publish('local',"CentroFashionPage");
     // this.navCtrl.setRoot(Menu,{'rPage':CentroFashionPage});
     this.menuCtrl.close();

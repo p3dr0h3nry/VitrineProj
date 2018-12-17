@@ -72,11 +72,11 @@ export class WelcomePage {
       loginModal.present();
 
       loginModal.onDidDismiss((userData) => { //obtem o retorno quando o modal é fechado
-        //alert(userData);
+        //console.log(userData);
         if (userData != null) {
           this.parseData= JSON.parse(userData);
           
-          if(JSON.parse(JSON.stringify(this.parseData)).providerData){ //Logado pelo google
+          if(JSON.parse(JSON.stringify(this.parseData)).providerData){ //Logado por credentials
             
             let x =JSON.stringify(JSON.parse(JSON.stringify(this.parseData)).providerData);
             x = x.replace('[','');
@@ -92,7 +92,7 @@ export class WelcomePage {
             this.userFbImg = this.parseData.photoURL;
 
           }else if(this.parseData.additionalUserInfo.providerId=="facebook.com"){ //Logado pelo Facebook
-            console.log("logado com face");
+            //console.log("logado com face");
             this.newUserData.name = this.parseData.user.displayName;
             this.newUserData.email = this.parseData.user.email;
             this.newUserData.img = this.parseData.user.photoURL;

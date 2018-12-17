@@ -48,7 +48,7 @@ export class CreateProfilePage {
     this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
     this.userDatails = JSON.parse(this.userDatails).success;
     this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
-    console.log(this.userDatails);
+    //console.log(this.userDatails);
 
     // this.events.subscribe('root', data => {
     //   if (localStorage.getItem('user')) {
@@ -60,11 +60,11 @@ export class CreateProfilePage {
     //   }
     // });
     if (localStorage.getItem('editProfile')) {
-      console.log('editProfile');
+      //console.log('editProfile');
       this.profDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('editProfile'))))._body;
       this.profDatails = JSON.parse(this.profDatails).success;
       this.profDatails = JSON.parse(JSON.stringify(this.profDatails)).profileData;
-      console.log(this.profDatails);
+      //console.log(this.profDatails);
     }
 
     if (localStorage.getItem('root')) {
@@ -154,7 +154,7 @@ export class CreateProfilePage {
       this.formProfile.controls['client_id'].setValue(this.userDatails.client_id);
       //////////////////////////////////////////////////////////////////////////////////////////////////
       if (!this.profDatails) {
-        console.log("criar perfil");
+        //console.log("criar perfil");
         this.authServiceProvider.postProfile(this.formProfile.value, "signupProfile").then((result) => {
           this.reponseData = result;
           this.data = JSON.parse(JSON.stringify(this.reponseData))._body;
@@ -186,14 +186,14 @@ export class CreateProfilePage {
           console.log(err);
         });
       } else if (this.profDatails) {
-        console.log("editar perfil");
+        //console.log("editar perfil");
         this.formProfile.controls['prof_id'].setValue(this.profDatails.prof_id);
         this.authServiceProvider.postProfile(this.formProfile.value, "updateProfile").then((result) => {
           this.reponseData = result;
           this.data = JSON.parse(JSON.stringify(this.reponseData))._body;
           if (!JSON.parse(this.data).error) {
             setTimeout(() => {
-              console.log("edição ok");
+              //console.log("edição ok");
               this.getProfileData();
             }, 500);
 
@@ -222,10 +222,10 @@ export class CreateProfilePage {
     });
     loader.present();
     this.profileToGetData.client_id = this.userDatails.client_id;
-    console.log(this.userDatails.client_id);
+    //console.log(this.userDatails.client_id);
     this.authService.post(this.profileToGetData, "getProfile").then((result) => {
       this.reponseData = result;
-      console.log(this.reponseData);
+      //console.log(this.reponseData);
       this.data = JSON.parse(JSON.stringify(this.reponseData))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
         localStorage.setItem('profileData', JSON.stringify(this.reponseData));
@@ -238,7 +238,7 @@ export class CreateProfilePage {
         loader.dismiss();
         this.data = JSON.parse(this.data).error;
         let msg: string = this.data.e; //busca msg de erro
-        console.log(msg);
+        //console.log(msg);
         let alertSignup = this.alertCtrl.create({
           title: "Ops!",
           message: 'Esse perfil não existe!',

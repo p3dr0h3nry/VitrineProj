@@ -1,23 +1,24 @@
- 
-  ion-modal {
-    ion-backdrop{
-      visibility: visible;
-      //opacity: 1;
-      //z-index: 6;
-    }
-    .modal-wrapper {
-      border-radius: 3px;
-      position: absolute;
-      top: 35% !important;
-      left: 15% !important;
-      display: block;
-      width: 70% !important;
-      height: 30% !important;
-      // box-shadow: 10px 14px 20px 2px rgba(0, 0, 0, 0.274);
-      overflow: hidden;
-    }
- }
+ion-modal {
+  ion-backdrop{
+    visibility: visible;
+    //opacity: 1;
+    //z-index: 6;
+  }
+  .modal-wrapper {
+    border-radius: 3px;
+    position: absolute;
+    top: 35% !important;
+    left: 15% !important;
+    display: block;
+    width: 70% !important;
+    height: 30% !important;
+    // box-shadow: 10px 14px 20px 2px rgba(0, 0, 0, 0.274);
+    overflow: hidden;
+  }
+}
+
 page-modal-login {
+  
   // .div-facebook{
   //     //background-color: #ccc;
   // }

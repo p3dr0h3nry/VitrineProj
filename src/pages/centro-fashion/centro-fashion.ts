@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController, LoadingController, ModalController, Modal, ModalOptions, } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { ProfilePage } from '../profile/profile';
 import { trigger, state, style, animate, transition } from '@angular/animations';
@@ -28,7 +28,7 @@ import { ScrollHideConfig } from '../../directives/hide-search/hide-search';
 })
 export class CentroFashionPage {
 
-  searchScrollConfig: ScrollHideConfig = { cssProperty: 'margin-top', maxValue: 130 };
+  searchScrollConfig: ScrollHideConfig = { cssProperty: 'margin-top', maxValue: 115 };
   public userDatails: any;
   currentPage: string; //Armazena a pagina corrente
   postsFrom = { from: "", dateTime: "", last_dateTime: "", sector: "", category: "" };
@@ -54,40 +54,50 @@ export class CentroFashionPage {
   flagButtonFilter;
   postsVariable: any;
   favorites: string;
-
+  flagBookmark;
+  flagSearchFilter:boolean;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
     private authService: AuthServiceProvider,
     private alertCtrl: AlertController,
+    private modalCtrl: ModalController,
     private loadCtrl: LoadingController) {
-
+    this.flagSearchFilter=false;
     this.filterDiv = false;
     this.searchStatus = false;
     this.filterReset = false;
     this.counter = 1;
     this.refresher = false;
     this.searchFilterStatus = true; //flag invertida
-    this.dataFavorites='';
-    this.favorites='';
+    this.dataFavorites = '';
+    this.favorites = '';
+    this.flagBookmark=false;
     // this.flagButtonFilter=false;
-  
+
     if (localStorage.getItem('user')) {
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
       this.userDatails = JSON.parse(this.userDatails).success;
       this.userDatails = JSON.parse(JSON.stringify(this.userDatails)).user;
-      if(!sessionStorage.getItem('favorites')){
+      if (!sessionStorage.getItem('favorites')) {
         this.getFavorites();
       }
       if (sessionStorage.getItem('favorites')) {
         this.dataFavorites = JSON.parse(JSON.stringify(JSON.parse(sessionStorage.getItem('favorites'))))._body;
         this.dataFavorites = JSON.parse(this.dataFavorites).success;
         this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
+
+        if(this.dataFavorites.fav_clients_id==''){
+          
+          this.flagBookmark=false;
+        }else{
+          this.flagBookmark=true;
+        }
       }
       setTimeout(() => {
         this.currentPage = this.navCtrl.getActive().name;
         if (!sessionStorage.getItem('postsFilter')) {
-       
+
           this.getAllPostsFrom(this.currentPage, new Date);
 
         } else {
@@ -101,14 +111,16 @@ export class CentroFashionPage {
       //console.log(new Date().toDateString());
     }
     setTimeout(() => {
+      //console.log(this.filterProfileData);
       if (!this.filterProfileData) {
         this.filterProfile(this.currentPage);
       } else {
         this.profileF = this.filterProfileData;
+        //console.log(this.profileF);
       }
     }, 200);
 
-    
+
 
     // if (!localStorage.getItem('user')) { Já que somenta há usuários logados!
     //   setTimeout(() => {
@@ -134,6 +146,7 @@ export class CentroFashionPage {
       this.filterProfileData = JSON.parse(this.filterProfileData).success;
       this.filterProfileData = JSON.parse(JSON.stringify(this.filterProfileData)).filterProfile;
       this.profileF = this.filterProfileData;
+      //console.log(this.profileF);
       setTimeout(() => {
         this.events.unsubscribe('filterProfile');
       });
@@ -144,6 +157,23 @@ export class CentroFashionPage {
   toggle() {
     this.filterDiv = !this.filterDiv;
   }
+
+  // bookmarkModal() { desativando
+  //   //chamar todos os os favoritos
+  //   // const myModalOptions: ModalOptions = {
+  //   //   showBackdrop: true,
+  //   //   enableBackdropDismiss: true,
+  //   // };
+  //   const myModalData = { //isso é passado pra dentro do modal
+  //     name: 'teste',
+  //     algo: 'teste'
+  //   };
+  //   const bookModal: Modal = this.modalCtrl.create('ModalBookmarkPage', { data: myModalData }, { cssClass: "mymodal" });
+  //   bookModal.present();
+  //   // bookModal.onDidDismiss(data=>{
+  //   //   this.navCtrl.push.
+  //   // });
+  // }
 
   ionViewDidLoad() {
     if (!this.dataCategories || !this.dataSectors) {
@@ -161,12 +191,21 @@ export class CentroFashionPage {
       //console.log(result);
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
-        sessionStorage.setItem('favorites',JSON.stringify(this.responsePost));
+        
+        sessionStorage.setItem('favorites', JSON.stringify(this.responsePost));
+        setTimeout(() => {
+          this.events.publish('favorites',JSON.stringify(this.responsePost));
+        }, 100);
+        
         this.dataFavorites = JSON.stringify(this.responsePost);
         this.dataFavorites = JSON.parse(JSON.stringify(JSON.parse(this.dataFavorites)))._body;
         this.dataFavorites = JSON.parse(this.dataFavorites).success;
         this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
-        //console.log(this.dataFavorites);
+        if(this.dataFavorites.fav_clients_id==''){
+          this.flagBookmark=false;
+        }else{
+          this.flagBookmark=true;
+        }
 
       }
     }, (err) => {
@@ -266,15 +305,25 @@ export class CentroFashionPage {
 
   }
 
-  initializerPosts() {
-    this.postsFilter = this.postsCF;
-  }
+  // initializerPosts() {
+  //   this.postsFilter = this.postsCF;
+  // }
   initializerProfiles() {
     this.profileF = this.filterProfileData;
   }
 
   removeFavorite(prof_client_id) {
-    this.dataToSetFavorite.client_id =  this.dataFavorites.fav_clients_id.replace('-'+prof_client_id,'');
+    this.dataToSetFavorite.client_id='';
+    console.log(prof_client_id);
+    if(this.dataFavorites.fav_clients_id.indexOf(',' + prof_client_id)>-1){
+      this.dataToSetFavorite.client_id = this.dataFavorites.fav_clients_id.replace(',' + prof_client_id, '');
+    }else{
+      this.dataToSetFavorite.client_id = this.dataFavorites.fav_clients_id.replace(prof_client_id, '');
+    }
+    
+    
+
+    
     this.dataToSetFavorite.user_id = this.userDatails.user_id;
     this.dataToSetFavorite.fromm = this.currentPage;
     //console.log(this.dataToSetFavorite);
@@ -283,12 +332,16 @@ export class CentroFashionPage {
       //console.log(result);
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
-
+        this.events.publish('favorites',JSON.stringify(this.responsePost));
         this.dataFavorites = JSON.stringify(this.responsePost);
         this.dataFavorites = JSON.parse(JSON.stringify(JSON.parse(this.dataFavorites)))._body;
         this.dataFavorites = JSON.parse(this.dataFavorites).success;
         this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
-
+        if(this.dataFavorites.fav_clients_id==''){
+          this.flagBookmark=false;
+        }else{
+          this.flagBookmark=true;
+        }
         sessionStorage.setItem('favorites', JSON.stringify(this.responsePost));
 
       } else {
@@ -312,23 +365,31 @@ export class CentroFashionPage {
     });
 
   }
-  
+
   addFavorite(prof_client_id) {
-    this.dataToSetFavorite.client_id = this.dataFavorites.fav_clients_id+"-" + prof_client_id;
+    if(this.dataFavorites.fav_clients_id!=''){
+      this.dataToSetFavorite.client_id = this.dataFavorites.fav_clients_id +","+ prof_client_id;
+    }else{
+      this.dataToSetFavorite.client_id = prof_client_id;
+    }
     this.dataToSetFavorite.user_id = this.userDatails.user_id;
     this.dataToSetFavorite.fromm = this.currentPage;
-    console.log(this.dataToSetFavorite);
+    //console.log(this.dataToSetFavorite);
     this.authService.post(this.dataToSetFavorite, "setFavorite").then((result) => {
       this.responsePost = result;
       //console.log(result);
       this.data = JSON.parse(JSON.stringify(this.responsePost))._body;
       if (!JSON.parse(this.data).error) { //Retorno ok
-
+        this.events.publish('favorites',JSON.stringify(this.responsePost));
         this.dataFavorites = JSON.stringify(this.responsePost);
         this.dataFavorites = JSON.parse(JSON.stringify(JSON.parse(this.dataFavorites)))._body;
         this.dataFavorites = JSON.parse(this.dataFavorites).success;
         this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
-
+        if(this.dataFavorites.fav_clients_id==''){
+          this.flagBookmark=false;
+        }else{
+          this.flagBookmark=true;
+        }
         sessionStorage.setItem('favorites', JSON.stringify(this.responsePost));
 
       } else {
@@ -371,9 +432,11 @@ export class CentroFashionPage {
   }
 
   doInfinite(infiniteScroll) {
+
     setTimeout(() => {
       this.refresher = false;
-    }, 100);
+    }, 1000);
+
     infiniteScroll.enable(false);
     if (!this.filterReset) {
       console.log("scroll sem filterReset");
@@ -383,13 +446,6 @@ export class CentroFashionPage {
       console.log("scroll com filterReset");
       this.getAllPostsFrom(this.currentPage, new Date());
     }
-    // else if (!this.filterReset && this.counter == 0) {
-    //   this.counter++;
-    //   this.getAllPostsFrom(this.currentPage, new Date());
-    // } else if (!this.filterReset) {
-    //   this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
-    // }
-    // this.filterDiv = false;
     this.events.subscribe('closeInfinitScroll', (data) => {
       infiniteScroll.complete();
     });
@@ -475,40 +531,44 @@ export class CentroFashionPage {
 
   }
   searchFilter() {
-    if (this.postsFrom.sector != '' && this.postsFrom.category == '') {
-      this.postsFilter = this.postsFilter.filter((v) => {
-        if (v.post_sector_id.toLowerCase() == this.postsFrom.sector.toLowerCase()) {
-          return true;
-        }
-        return false;
-      });
-    } else if (this.postsFrom.sector == '' && this.postsFrom.category != '') {
-      this.postsFilter = this.postsFilter.filter((v) => {
-        if (v.post_category_id.toLowerCase() == this.postsFrom.category.toLowerCase()) {
-          return true;
-        }
-        return false;
-      });
-    } else if (this.postsFrom.sector != '' && this.postsFrom.category != '') {
-      this.postsFilter = this.postsFilter.filter((v) => {
-        if ((v.post_category_id.toLowerCase() == this.postsFrom.category.toLowerCase()) && (v.post_sector_id.toLowerCase() == this.postsFrom.sector.toLowerCase())) {
-          return true;
-        }
+    this.flagSearchFilter=true;
+    this.getAllPostsFrom(this.currentPage, new Date());
 
-        return false;
-      });
-    }
-    setTimeout(() => {
-      //this.postsFrom.last_dateTime=this.postsFilter[this.postsFilter.length-1].post_created_at;
-      if (!this.postsFilter[0] == undefined) {
-        //console.log(this.postsFilter);
-        this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
-      } else {
-        this.postsFrom.last_dateTime = '';
-        this.getAllPostsFrom(this.currentPage, new Date());
-      }
+    // if (this.postsFrom.sector != '' && this.postsFrom.category == '') {
+    //   this.postsFilter = this.postsFilter.filter((v) => {
+    //     if (v.post_sector_id.toLowerCase() == this.postsFrom.sector.toLowerCase()) {
+    //       return true;
+    //     }
+    //     return false;
+    //   });
+    // } else if (this.postsFrom.sector == '' && this.postsFrom.category != '') {
+    //   this.postsFilter = this.postsFilter.filter((v) => {
+    //     if (v.post_category_id.toLowerCase() == this.postsFrom.category.toLowerCase()) {
+    //       return true;
+    //     }
+    //     return false;
+    //   });
+    // } else if (this.postsFrom.sector != '' && this.postsFrom.category != '') {
+    //   this.postsFilter = this.postsFilter.filter((v) => {
+    //     if ((v.post_category_id.toLowerCase() == this.postsFrom.category.toLowerCase()) && (v.post_sector_id.toLowerCase() == this.postsFrom.sector.toLowerCase())) {
+    //       return true;
+    //     }
 
-    }, 500);
+    //     return false;
+    //   });
+    // }
+    // setTimeout(() => {
+    //   //this.postsFrom.last_dateTime=this.postsFilter[this.postsFilter.length-1].post_created_at;
+    //   if (!this.postsFilter[0] == undefined) {
+    //     //console.log(this.postsFilter);
+    //     this.getAllPostsFrom(this.currentPage, this.postsFilter[this.postsFilter.length - 1].post_created_at);
+    //   } else {
+    //     this.postsFrom.last_dateTime = '';
+    //     this.getAllPostsFrom(this.currentPage, new Date());
+    //   }
+
+    // }, 500);
+    
   }
 
   filterProfile(toFrom) {
@@ -560,6 +620,12 @@ export class CentroFashionPage {
         this.postsCF = JSON.parse(this.postsCF).success;
         this.postsCF = JSON.parse(JSON.stringify(this.postsCF)).posts;
 
+        if(this.flagSearchFilter){
+          this.flagSearchFilter=false;
+          this.postsFilter = this.postsCF;
+          sessionStorage.setItem('postsFilter', JSON.stringify(this.postsCF));
+        }
+      
         if (!this.postsFilter && !this.refresher) { // contempla a primeira entrada
           //console.log("1");
           this.postsFilter = this.postsCF;
@@ -593,6 +659,7 @@ export class CentroFashionPage {
           this.postsFilter = this.postsCF;
           sessionStorage.setItem('postsFilter', JSON.stringify(this.postsFilter));
         }
+        this.postsCF='';
       } else {
         //console.log(this.postsFilter);
         this.events.publish('closeInfinitScroll', "");

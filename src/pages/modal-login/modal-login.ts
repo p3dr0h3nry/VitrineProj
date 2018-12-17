@@ -78,7 +78,7 @@ export class ModalLoginPage {
 
       const provider = new firebase.auth.GoogleAuthProvider();
       const credential = await firebase.auth().signInWithPopup(provider).then(result => {
-        alert(result);
+        console.log(JSON.stringify(result));
         this.userData = JSON.stringify(result);
           this.close(0);
       });
