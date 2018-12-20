@@ -35,7 +35,7 @@
   </div>
 
 </div>
-<ion-content #pageContent padding id="centroFashion" fullscreen >
+<ion-content #pageContent padding class="centroFashion" fullscreen >
     
     <ion-fab left top *ngIf="flagBookmark" menuToggle="left">
         <div class="fab-bookmark" ion-fab  >
@@ -63,8 +63,8 @@
           <div class="content-card">
             <div class="profileName">
               <ion-icon name="md-bookmark" class="flag_bookmark" *ngIf="post.prof_client_id!=userDatails.client_id">
-                <ion-icon *ngIf="dataFavorites.fav_clients_id.indexOf(post.prof_client_id)>-1 && post.prof_client_id!=userDatails.client_id" name="happy" class="favorite_check" (click)="removeFavorite(post.prof_client_id)"></ion-icon>
-                <ion-icon *ngIf="dataFavorites.fav_clients_id.indexOf(post.prof_client_id)==-1 && post.prof_client_id!=userDatails.client_id" name="sad" class="favorite_uncheck" (click)="addFavorite(post.prof_client_id)"></ion-icon>
+                <ion-icon *ngIf="dataFavorites.fav_clients_id.indexOf(post.prof_client_id)>-1 && post.prof_client_id!=userDatails.client_id" name="star" class="favorite_check" (click)="removeFavorite(post.prof_client_id)"></ion-icon>
+                <ion-icon *ngIf="dataFavorites.fav_clients_id.indexOf(post.prof_client_id)==-1 && post.prof_client_id!=userDatails.client_id" name="star" class="favorite_uncheck" (click)="addFavorite(post.prof_client_id)"></ion-icon>
               </ion-icon>
               {{post.prof_name}}
             </div>

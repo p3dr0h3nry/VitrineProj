@@ -29,13 +29,13 @@ import{AutoHideDirective} from '../directives/auto-hide/auto-hide';
 import{HideSearchDirective} from '../directives/hide-search/hide-search';
 import{IonicImageViewerModule} from 'ionic-img-viewer';
 import { FilterBarComponent } from '../components/filter-bar/filter-bar';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { EmailComposer } from '@ionic-native/email-composer';
 import firebase from 'firebase';
 
-
 firebase.initializeApp({
+  // apiKey: "AIzaSyBptbR_uNl448hRbDoEBQWtVERTGRXBk2Q",
   apiKey: "AIzaSyCXJ65SwL_GtN1g8dRs5OPqcY0YMWb8wsc",
   authDomain: "vitrineapp-a7a67.firebaseapp.com",
   databaseURL: "https://vitrineapp-a7a67.firebaseio.com",

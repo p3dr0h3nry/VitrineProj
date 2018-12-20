@@ -21,7 +21,7 @@ page-profile {
 
         .content-img{
             height: 100%; 
-            background-image:url(../../assets/imgs/nophoto.png);  
+            background-image:url('../../assets/imgs/background-pastel.jpg');  
             padding: 0; 
             overflow: hidden; 
             background-size: cover; 
@@ -54,34 +54,24 @@ page-profile {
     .content-profile{
         width: 100%;
         height: 100%;
-        background-color: #e4e4e4;
+        background-color: rgb(226, 226, 226);
         margin-bottom: 150px;
         align-items: center;
 	    justify-content: center;
         //margin: 150px;
         position: relative!important;
-
         .profileHeader{
             
             margin-top: 5px;
-            //position: relative;
+            position: relative;
             //width: 100%;
             height: 140px;
             margin-left: 0px;
             background-color: #25d366;
             
-            // -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
-            // -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
-            // box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
-        }
-        // .content-img{
-        //     height: 145px; 
-            
-        //     padding: 0; 
 
-        //     position: relative;
-            
-        // }
+        }
+
         .headerImg{
             //object-position: 10% 50%;
             object-fit: fill;
@@ -110,14 +100,15 @@ page-profile {
 
         }
         .social{
-            margin-top:2px;
-             width: 100%; 
+            //margin-top:2px;
+            width: 100%; 
             height: 40px; 
             padding: 6px;
-
+            //background-color: #fdf497;
+            position: absolute;
         }
         .instagram{
-            //float: left;
+            float: right;
             //display: inline-block;
             width: 30px;
             height: 30px;
@@ -129,30 +120,29 @@ page-profile {
             vertical-align: middle;
             background: #d6249f;
             background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
-            box-shadow: 0px 3px 10px rgba(0,0,0,.25);
+            -webkit-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            -moz-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
             font-size: 25px;
-            //margin-right: 10px;
-            -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-            box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-            margin-top:10px;
-            margin-bottom: -10px;
-            
+ 
+            margin-right: 10px;
+           
         }
         .whatsApp{
             width: 30px;
             height: 30px;
-            float: left;
+            float: right;
             background-color: #25d366;
             border-radius: 5px;
             padding-top: 3px;
             padding-left: 5px;
-            -webkit-box-shadow: 0px 12px 25px -11px rgba(0, 0, 0, 1);
-            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-            box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
+            -webkit-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            -moz-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            margin-right: 10px;
         }
         .outFace{
-            margin-top: 10px;
+            //margin-top: 10px;
             background-color: #43609C; 
             padding-top: 4px;
             padding-left: 4px;
@@ -160,13 +150,12 @@ page-profile {
             width: 30px;
             height: 30px;
             //display: block;
-            float: left;
+            float: right;
             border-radius: 12%;
-            //margin-right: 10px;
-            -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-            box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-
+            -webkit-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            -moz-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            margin-right: 10px;
         }
         .facebook{
             background: #fff;
@@ -197,37 +186,40 @@ page-profile {
             padding-top: 3px;
             width: 30px;
             height: 30px;
-            margin-top:10px;
             background-color:  #2daae1;
             border-radius: 5px;
-            float: left;
+            float: right;
             //margin-right: 10px;
-            -webkit-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-            -moz-box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-            box-shadow: 0px 12px 25px -11px rgba(0,0,0,1);
-
+            -webkit-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            -moz-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            margin-right: 10px;
         }
         .twitter{
             color: white;
             font-size: 24px;
         }
         .perfil_name{
+            position: relative;
             font-size: 15px;
-            float: left;
+            //float: left;
             //margin: 10px;
             width: 100%;
             padding: 10px;
-            //background-color: #285AEB;
+            height: 70px;
+            background-color: rgba(255, 255, 255, 0.479);
+            box-shadow: 0px 3px 10px rgba(0,0,0,.25);
             
         }
-        .div-h6{
-            margin-left: 10px;
-            margin-top: -8px;
-            //width: 70px;
-            float: left;
-            position: absolute;
+        .container-newPoste{
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-top: 10px;
+            position: relative;
+
         }
         .createPost{
+            //position: relative;
             width: 100%;
             height: 300px;
             border: 2px dashed rgba(2, 2, 2, 0.205);
@@ -235,7 +227,7 @@ page-profile {
             padding-right: 10px;
             //padding-bottom: 0px;
             //padding-top: 0px;
-            margin-top: 40px;
+            //margin-top: 45px;
          }
         .iconAdd{
             display: table;
@@ -255,16 +247,12 @@ page-profile {
 
         }
         .closePost{
+
             float: left;
             margin-top: 10px;
 
         }
-        .container-newPoste{
-            padding: 10px;
-            margin-top: 20px;
-            //background-color: white;
 
-        }
         .selected_Img{
             object-fit: cover;
             width: 100%;
@@ -273,19 +261,22 @@ page-profile {
         }
 
         .posts{
-            column-count: 2;
+            margin-top: 0px;
+            column-count: 1;
             padding-top: 10px;
-            padding-left: 0px;
+            padding-left: 10px;
             width: 100%;
             padding-right: 10px;
             margin-bottom: 10px;
         }
         .card_post{
             margin-top: 0px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             margin-left: 0px;
-            width: 105%;
-            box-shadow: 0px 12px 25px -11px rgba(0,0,0,0.75);
+            width: 100%;
+            -webkit-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            -moz-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
+            box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
             
         }
         .card_img{
@@ -317,6 +308,10 @@ page-profile {
             float: right;
             margin:5px;
             
+        }
+        .fab-newPost{
+            margin-bottom: 12%;
+            //margin-right: 3%;
         }
         .icon-pin{
             width: 30px;
@@ -366,8 +361,13 @@ page-profile {
         
           }
           .fab-share{
-              margin-top: 150px;
-              margin-right: 10px;
+              margin-top: 7px;
+              margin-left: 75%;
+            //   display: flex;
+            //   justify-content: flex-end;
+            //   align-items: flex-end;
+              position: absolute;
+
           }
           .color-sector{
               width: 20px; 

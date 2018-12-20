@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { Facebook } from '@ionic-native/facebook';
 import { HttpClient } from '@angular/common/http';
 import { GooglePlus } from '@ionic-native/google-plus';
 import firebase from 'firebase';
-import { Observable } from 'rxjs/Observable';
+import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -16,7 +16,9 @@ export class ModalLoginPage {
 
   userData: string;
   userToken: any;
-
+  responseLogin: any;
+  private formLogin: FormGroup;
+  data: any;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private viewCtrl: ViewController,
@@ -24,12 +26,18 @@ export class ModalLoginPage {
     private googlePlus: GooglePlus,
     private http: HttpClient,
     private platform: Platform,
-    private events: Events, ) {
+    private events: Events,
+    public formBuilder: FormBuilder, ) {
 
 
     platform.registerBackButtonAction(() => { }); //Não  permite fechar o modal pelo backbutton
   }
-
+  ngOnInit() {
+    this.formLogin = this.formBuilder.group({
+      name: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required])
+    });
+  }
   ionViewDidLoad() {
 
   }
@@ -57,10 +65,12 @@ export class ModalLoginPage {
 
   async nativeGooleLogin(): Promise<void> {
     try {
+      const provider = new firebase.auth.GoogleAuthProvider();
       this.googlePlus.login({
         'webClientId': '777132893216-dq0qrl67fq9107gnh51a825e5n3thcec.apps.googleusercontent.com',
         'offline': true,
       }).then(res => {
+        
         firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken)).then(response => {
           this.userData = JSON.stringify(response);
             this.close(0);
@@ -68,17 +78,18 @@ export class ModalLoginPage {
       }, err => {
         console.error("Error: ", err);
       });
+
     } catch (err) {
       alert(err)
     }
   }
   async webGoogleLogin(): Promise<void> {
-    console.log("login web");
+    //console.log("login web");
     try {
 
       const provider = new firebase.auth.GoogleAuthProvider();
       const credential = await firebase.auth().signInWithPopup(provider).then(result => {
-        console.log(JSON.stringify(result));
+        //console.log(JSON.stringify(result));
         this.userData = JSON.stringify(result);
           this.close(0);
       });
@@ -89,27 +100,27 @@ export class ModalLoginPage {
 
   loginfb() { //usando Firebase
 
-    // this.fb.login(['email']).then(res => {
-    //   const fc = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
-    //   firebase.auth().signInWithCredential(fc).then(response => {
-    //     this.userData = JSON.stringify(response);
-    //     this.close(0);
-    //   }).catch(err => {
-    //     alert("FireBase error:" + err);
-    //   })
-    // }).catch(e => {
-    //   alert(JSON.stringify(e));
-    // });
-
-
-    let provider = new firebase.auth.FacebookAuthProvider().setCustomParameters({ auth_type: 'reauthenticate' });
-    firebase.auth().signInWithPopup(provider).then((result) => {
-      this.userData = JSON.stringify(result);
-      setTimeout(() => {
+    this.fb.login(['email']).then(res => {
+      const fc = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+      firebase.auth().signInWithCredential(fc).then(response => {
+        this.userData = JSON.stringify(response);
         this.close(0);
-      }, 500);
+      }).catch(err => {
+        alert("FireBase error:" + err);
+      })
     }).catch(e => {
-      console.log('Erro login facebook: ' + e);
+      alert(JSON.stringify(e));
     });
+
+
+    // let provider = new firebase.auth.FacebookAuthProvider().setCustomParameters({ auth_type: 'reauthenticate' });
+    // firebase.auth().signInWithPopup(provider).then((result) => {
+    //   this.userData = JSON.stringify(result);
+    //   setTimeout(() => {
+    //     this.close(0);
+    //   }, 500);
+    // }).catch(e => {
+    //   console.log('Erro login facebook: ' + e);
+    // });
   }
 }

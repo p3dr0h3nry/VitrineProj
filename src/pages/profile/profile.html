@@ -1,7 +1,7 @@
 <custom-header>
 </custom-header>
 
-<ion-content class="content-profile" auto-hide>
+<ion-content class="content-profile">
   <div class="profileHeader">
     <!-- <ion-card-content class="content-img"> -->
     <div right class="photo" (click)="selectImgFrom('imgProfile')" *ngIf="editPermission">
@@ -11,33 +11,7 @@
     <img *ngIf="!profileDatails.prof_img" src="../../assets/imgs/nophoto.png" class="headerImg">
     <!-- </ion-card-content> -->
   </div>
-  <!-- <div class="social"></div> -->
-  <ion-fab mini top right class="fab-share" #fab5>
-      <button ion-fab mini color="{{profileDatails.sector_color}}"><ion-icon name="md-share"></ion-icon></button>
-      <ion-fab-list side="top">
-          <a href="https://www.instagram.com/{{profileDatails.prof_inst}}" *ngIf="profileDatails.prof_inst">
-            <div class="">
-              <ion-icon name="logo-instagram" class="instagram"></ion-icon>
-            </div>
-          </a>
-        
-          <a href="https://www.facebook.com/{{profileDatails.prof_face}}" *ngIf="profileDatails.prof_face">
-            <div class="outFace">
-              <ion-icon class="facebook"></ion-icon>
-            </div>
-          </a>
-          <a href="https://twitter.com/{{profileDatails.prof_tw}}" *ngIf="profileDatails.prof_tw">
-            <div class="tw">
-              <ion-icon name="logo-twitter" class="twitter"></ion-icon>
-            </div>
-          </a>
-          <a href="https://wa.me/55{{profileDatails.prof_phone}}">
-            <div class="whatsApp">
-              <ion-icon name="logo-whatsapp" class="fab fa-whatsapp fa-7x" class="twitter" *ngIf="profileDatails.prof_phone"></ion-icon>
-            </div>
-          </a>
-      </ion-fab-list>
-    </ion-fab>
+  
 
   <div class="perfil_name" >
     <div class="icon-pin">
@@ -49,6 +23,29 @@
         <div class="color-sector {{profileDatails.sector_color}}"></div>
         <span class="sector_name">{{profileDatails.sector_name}}</span>
     </div>
+    <div class="social">
+                <a href="https://twitter.com/{{profileDatails.prof_tw}}" *ngIf="profileDatails.prof_tw">
+                  <div class="tw">
+                    <ion-icon name="logo-twitter" class="twitter"></ion-icon>
+                  </div>
+                </a>
+      
+                <a href="https://wa.me/55{{profileDatails.prof_phone}}">
+                  <div class="whatsApp">
+                    <ion-icon name="logo-whatsapp" class="fab fa-whatsapp fa-7x" class="twitter" *ngIf="profileDatails.prof_phone"></ion-icon>
+                  </div>
+                </a>
+                <a href="https://www.facebook.com/{{profileDatails.prof_face}}" *ngIf="profileDatails.prof_face">
+                  <div class="outFace">
+                    <ion-icon class="facebook"></ion-icon>
+                  </div>
+                </a>
+                <a href="https://www.instagram.com/{{profileDatails.prof_inst}}" *ngIf="profileDatails.prof_inst">
+                  <div class="">
+                    <ion-icon name="logo-instagram" class="instagram"></ion-icon>
+                  </div>
+                </a>
+        </div>
   </div>
 
   <div class="container-newPoste">
@@ -76,7 +73,7 @@
         <ion-icon [@visibilityChanged]="!addPost ? 'show':'hidden'" name="ios-remove-circle-outline" style="font-size: 35px;"></ion-icon>
       </div>
     </div>
-
+  </div>
     <!-- Exibição de postagens -->
     <div class="posts">
       <ion-card *ngFor="let post of postsDatails" class="card_post">
@@ -84,10 +81,10 @@
         <img [src]="post.post_img | showPipe" class="card_img" imageViewer *ngIf="!editPermission">
       </ion-card>
     </div>
-    <ion-fab bottom right #fab  *ngIf="editPermission">
+  
+  <ion-fab bottom right class="fab-newPost" *ngIf="editPermission">
       <button ion-fab (click)="toggle()" color="{{profileDatails.sector_color}}">
         <ion-icon name="ios-create-outline"></ion-icon>
       </button>
     </ion-fab>
-  </div>
 </ion-content>

@@ -54,7 +54,10 @@ export class MyApp implements OnInit {
     this.rootPage = WelcomePage;
     //console.log("Component Carregado");
     this.tokenAtive = false;
-
+    
+    // console.log(sessionStorage.getItem('postsFilter'));
+    // console.log(sessionStorage.getItem('favorites'));
+    // console.log(sessionStorage.getItem('user'));
     this.events.subscribe('root', data => {
       if (data == "CentroFashionPage") {
         this.thisPlace = "CentroFashionPage";
@@ -80,14 +83,14 @@ export class MyApp implements OnInit {
         // if (this.rootPage == CentroFashionPage) {
         //   this.nav.push(CentroFashionPage);
         // } else {
-          let load = this.loadCtrl.create({
-            content: 'Carregando...'
-          });
-          load.present();
-          setTimeout(() => {
-            load.dismiss();
+          // let load = this.loadCtrl.create({
+          //   content: 'Carregando...'
+          // });
+          // load.present();
+          // setTimeout(() => {
+          //   load.dismiss();
             //this.rootPage = CentroFashionPage;
-          }, 1000);
+          // }, 1000);
         // }
 
         //console.log(this.userDatails);
@@ -96,18 +99,24 @@ export class MyApp implements OnInit {
 
     this.events.unsubscribe('local');
     if(sessionStorage.getItem('favorites')){
+      
       this.dataFavorites = JSON.parse(JSON.stringify(JSON.parse(sessionStorage.getItem('favorites'))))._body;
       this.dataFavorites = JSON.parse(this.dataFavorites).success;
       this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
-      this.getBookmarkData(this.dataFavorites.fav_clients_id);
+      if(this.dataFavorites.fav_clients_id!=''){
+        this.getBookmarkData(this.dataFavorites.fav_clients_id);
+      }
+      
     }
 
     this.events.subscribe('favorites', data =>{
-      console.log("evento favorito");
+      //console.log("evento favorito");
       this.dataFavorites = JSON.parse(JSON.stringify(JSON.parse(data)))._body;
       this.dataFavorites = JSON.parse(this.dataFavorites).success;
       this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
-      this.getBookmarkData(this.dataFavorites.fav_clients_id);
+      if(this.dataFavorites.fav_clients_id!=''){
+        this.getBookmarkData(this.dataFavorites.fav_clients_id);
+      }
     });
     
 
@@ -176,9 +185,12 @@ export class MyApp implements OnInit {
 
   }
   openProfile(prof_id) {
-    console.log("openprofile");
+    //console.log("openprofile");
     let loader = this.loadCtrl.create({
-      content: 'Buscando perfil...'
+      content: 'Carregando Perfil...',
+      dismissOnPageChange: true,
+      showBackdrop: true,
+      enableBackdropDismiss: true
     });
     loader.present();
     this.profileToGetData.client_id = prof_id;
@@ -223,6 +235,7 @@ export class MyApp implements OnInit {
 
   getBookmarkData(data){
 
+    //console.log(this.dataFavorites);
     this.profileToGetData.client_id= data;
     //console.log(this.profileToGetData.client_id);
     this.authService.post(this.profileToGetData, "getBookmarkProfile").then((result) => {
@@ -236,6 +249,7 @@ export class MyApp implements OnInit {
         this.dataFavProfiles = JSON.parse(this.dataFavProfiles).success;
         this.dataFavProfiles = JSON.parse(JSON.stringify(this.dataFavProfiles)).profiles;
       } else {
+        this.logout();
       }
 
     }, (err) => {
@@ -635,14 +649,12 @@ export class MyApp implements OnInit {
     firebase.auth().signOut().then(() => {
       this.fb.logout();
       this.gplus.logout();
-      
-      //this.menuCtrl.toggle();
-      this.nav.push(WelcomePage);
+      console.log("logout");
+      this.app.getActiveNav().setRoot(WelcomePage);
     }).catch(e => {
       alert("Erro ao desconectar: " + e);
     });
-
-
+    
   }
   backToWelcome() {
     //this.menuCtrl.toggle();

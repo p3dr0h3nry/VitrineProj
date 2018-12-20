@@ -1,11 +1,10 @@
-.scroll-content{
-    height: 94%;
-}
-page-centro-fashion {
-        :root{
-            --secYellow: color($colors,secYellow);
 
-        }
+page-centro-fashion {
+    .scroll-content{
+        height: 94%;
+        padding: 16px !important;
+    }
+
            
         .searchbar-search-icon{
             margin-top: 0px;
@@ -14,13 +13,16 @@ page-centro-fashion {
         .config-bar{
             
             position: relative;
-           // z-index: 4;
+            z-index: 2;
             width: 100%;
             padding: 6px;
             padding-top:18px;
             padding-bottom:10px;
-            background: #F0F0F0;
-            background: linear-gradient(45deg, #F0F0F0 0%, rgb(126, 114, 117) 100%, #F0F0F0 100%);
+            //margin-bottom: 10px;
+            background: rgba(162, 181, 182, 0.548);
+            //background: linear-gradient(45deg, rgb(241, 241, 241) 10%, rgba(50, 157, 165, 0.548) 100%, #F0F0F0 100%);
+            //background-image: url('../../assets/imgs/background-pastel.jpg');
+            box-shadow: 2px 6px 15px 1px rgba(0,0,0,0.34);
             
         }
         .div-filter{
@@ -106,7 +108,6 @@ page-centro-fashion {
             height: 30px;
             width: 30px;
             border-radius: 20px;
-            background-color: rgb(126, 149, 185);
             box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.16);
             margin-top:7px;
             margin-left:10px;
@@ -125,15 +126,17 @@ page-centro-fashion {
             margin-top:5px;
         }
          
-         #centroFashion{
-            padding-top: 0px;
+         .centroFashion{
+            //padding-top: 0px;
             position: relative!important;
-            background: rgb(172, 163, 165);
-
+            padding: 0px;
+            background-color: rgb(228, 239, 240);
+            //background: linear-gradient(225deg, rgb(241, 241, 241) 10%, rgba(50, 157, 165, 0.548) 100%, #F0F0F0 100%);
+            //background-image: url('../../assets/imgs/background-pastel.jpg');
             .ion-fixed {
                 width: 100%;
+                
             }
-            //width: 100%;
             .balloon{
                 position: absolute;
                 z-index: 6;
@@ -147,39 +150,23 @@ page-centro-fashion {
                 //margin-left:-15px;
                 background-color: white;
             }
-            // .scroll-content{
-            //     height: 75%;
-            //     padding: 5%;
-            // }
-            // .fixed-content{
-            //     height: 75%;
-                
 
-            // }
             .select{
                 z-index: 6px;
             }
             .posts{
                 position: relative!important;
-                margin-top:25px;
-                padding-top: 10px;
                 padding-bottom: 10px;
                 padding-left: 0px;
                 width: 100%;
             }
             .card_post{
-                
-                //padding: 15px;
-                
                 border-radius: 3px;
                 width: 100%;
                 height: 295px;
-                //padding-top: 0px;
                 box-shadow: 2px 6px 15px 1px rgba(0,0,0,0.34);
                 margin-bottom: 30px;
-                //margin-left:-16px;
-                //background-color: rgb(248, 248, 248);
-                background: linear-gradient(125deg, #F0F0F0 0%, rgb(224, 224, 224) 75%, #F0F0F0 100%);
+                background-color: rgba(248, 248, 248, 0.603);
 
             }
             .card_img{
@@ -329,5 +316,6 @@ page-centro-fashion {
             border-radius: 10px; 
             background-color: rgb(255, 166, 0); 
             margin-left: -15px;
+            box-shadow: 2px 2px 5px 2px rgba(0,0,0,0.34);
         }
 }

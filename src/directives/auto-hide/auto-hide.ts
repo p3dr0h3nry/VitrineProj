@@ -19,7 +19,6 @@ export class AutoHideDirective {
  
   }
   onContentScroll(ev) {
-    
     if (this.element.nativeElement.getElementsByClassName('fab')[0]) {
       if (ev.scrollTop - this.oldScrollTop > 10) {
         console.log(ev.scrollTop - this.oldScrollTop);

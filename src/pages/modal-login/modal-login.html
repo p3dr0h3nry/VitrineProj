@@ -12,6 +12,31 @@
   </div>
   <hr> -->
   <!-- <div class="div-facebook"> -->
+  <div class="div-login">
+    <span class="span-login">LOGIN</span>
+    <form [formGroup]="formLogin" novalidate (ngSubmit)="login()">
+      <ion-list>
+        <ion-item no-lines style="margin-top:20px;" class="username">
+          <!-- <ion-label>
+            <ion-icon name="contact"></ion-icon>
+          </ion-label> -->
+            <ion-input placeholder="Nome"  type="text" formControlName="name"></ion-input>
+          </ion-item>
+ 
+          <ion-item no-lines class="password">
+          <!-- <ion-label>
+            <ion-icon name="lock"></ion-icon>
+          </ion-label> -->
+            <ion-input placeholder="Email" type="text" formControlName="email"></ion-input>
+          </ion-item>
+        <button ion-button class="button-login" type="submit" [disabled]="!formLogin.valid">Entrar</button>
+        <!-- <h6>Esqueci minha senha</h6> -->
+      </ion-list>
+      </form>
+  </div>
+  <div class="logo">
+      <ion-icon name="ios-arrow-down-outline" class="imgLogo"></ion-icon>
+  </div>
 
   <button (click)="loginfb()" ion-button class="facebookButton">
     <ion-icon class="icons" name="logo-facebook"></ion-icon>

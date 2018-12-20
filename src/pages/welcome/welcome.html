@@ -1,6 +1,6 @@
 <ion-content padding id="welcome">
 
-    <div class="menu" *ngIf="userDatails">
+    <!-- <div class="menu" *ngIf="userDatails">
         <img class="imgUser" *ngIf="userDatails" [src]="userDatails.user_img" alt="">
         <div class="tag_name" *ngIf="userDatails">
             <h5>Olá, {{userDatails.user_firstname}} ! </h5>
@@ -17,23 +17,19 @@
                 <span>Cadastro</span>
             </div>
         </div>
-        <!-- <div class="logout" *ngIf="userDatails" (click)="logout()">
-            <ion-icon class="icon-logout" name="md-log-out"></ion-icon>
-            <div class="span-log-out">
-                <span>Sair</span>
-            </div>
-        </div> -->
+
             <button  ion-button menuToggle icon-only menuToggle="right" persistent="true">
                 <ion-icon name="menu"></ion-icon>
             </button>
-        <!-- <button ion-button menuToggle right icon-only>
-            <ion-icon name="menu"></ion-icon>
-        </button> -->
-    </div>
 
-    <div class="mid_align">
+    </div> -->
+    <div class="mid_logo">
+            <img src="assets/imgs/logo2.png" class="back_logo" (click)="goTo()">
+        </div>
+     <!-- <div class="mid_align" *ngIf="userDatails">
         <img src="assets/imgs/logo2.png" class="welcome_logo" (click)="goTo()">
-    </div>
+        <img style="width: 30px; height: 30px; margin-bottom: 30px; margin-left: 30px; position: relative;" src="assets/imgs/google-maps.png" (click)="loadMap()">
+    </div> -->
 
 </ion-content>
 <!-- <ion-nav [root]="rootPage"></ion-nav> -->

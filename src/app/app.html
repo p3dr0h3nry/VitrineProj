@@ -11,7 +11,9 @@
               
             </ion-navbar>
           </ion-header>
+          <img src="assets/imgs/logo2.png" class="back_logo">
               <div class="posts">
+                  
                   <div *ngFor="let fav of dataFavProfiles" class="card_post" menuClose="left"  (click)="openProfile(fav.prof_client_id)">
                     
                     <!-- <img [src]="post.post_img | showPipe" class="card_img" (click)="openProfile(post.prof_client_id)"> -->
@@ -93,7 +95,7 @@
           <span class="span-menu">Editar Perfil</span>
         </button>
       </div>
-      <div *ngIf="!tokenAtive">
+      <div *ngIf="profileAtive">
         <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editClient()" menuClose="right" detail-none>
           <ion-icon name="md-settings"></ion-icon>
           <span class="span-menu" style="padding-bottom: 15px;">Editar Conta</span>
@@ -122,7 +124,7 @@
     <div>
       <img class="avatar" [src]="userDatails.user_img">
       <div style="padding: 10px;">
-        <Span class="span-menu">Olá, {{userDatails.user_firstname}}!!</Span>
+        <Span class="span-menu">Olá, {{userDatails.user_firstname}}!</Span>
       </div>
     </div>
     <!-- <img src="assets/imgs/cf_simbolo.png"> -->
@@ -134,30 +136,7 @@
           <span class="span-menu">Gerar chave</span>
         </button>
       </div>
-      <div>
-        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="getProfileData()" menuClose="right" menu-close detail-none>
-          <ion-icon name="logo-buffer"></ion-icon>
-          <span class="span-menu">Perfil</span>
-        </button>
-      </div>
-      <div>
-        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editProfile()" menuClose="right" detail-none>
-          <ion-icon name="md-create"></ion-icon>
-          <span class="span-menu">Editar Perfil</span>
-        </button>
-      </div>
-      <div>
-        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="editClient()" menuClose="right" detail-none>
-          <ion-icon name="md-settings"></ion-icon>
-          <span class="span-menu" style="padding-bottom: 15px;">Editar Conta</span>
-        </button>
-      </div>
-      <div>
-        <button style="color:rgb(66, 66, 66);" ion-item menu-close (click)="changePassword()" menuClose="right" detail-none>
-          <ion-icon name="md-lock"></ion-icon>
-          <span class="span-menu">Alterar senha</span>
-        </button>
-      </div>
+      
       <button style="color:rgb(66, 66, 66);" ion-item (click)="logout()" menuClose="right">
         <ion-icon name="md-log-out"></ion-icon>
         <span class="span-menu">Logout</span>
