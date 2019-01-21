@@ -1,16 +1,25 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
+import { Component, Renderer2 } from '@angular/core';
+import { IonicPage, NavController, NavParams, Events, Platform, Keyboard, Navbar } from 'ionic-angular';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { Facebook } from '@ionic-native/facebook';
 import { HttpClient } from '@angular/common/http';
 import { GooglePlus } from '@ionic-native/google-plus';
 import firebase from 'firebase';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @IonicPage()
 @Component({
   selector: 'page-modal-login',
   templateUrl: 'modal-login.html',
+  animations: [
+    trigger('viewChanged', [
+      state('shown', style({ opacity: 1 })),
+      state('hidden', style({ opacity: 0 })),
+      transition('show => hidden', animate('0ms')),
+      transition('hidden => show', animate('500ms'))
+    ])]
 })
 export class ModalLoginPage {
 
@@ -19,6 +28,7 @@ export class ModalLoginPage {
   responseLogin: any;
   private formLogin: FormGroup;
   data: any;
+  flag:boolean;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private viewCtrl: ViewController,
@@ -26,12 +36,30 @@ export class ModalLoginPage {
     private googlePlus: GooglePlus,
     private http: HttpClient,
     private platform: Platform,
-    private events: Events,
-    public formBuilder: FormBuilder, ) {
-
-
-    platform.registerBackButtonAction(() => { }); //Não  permite fechar o modal pelo backbutton
+    public formBuilder: FormBuilder, 
+    private keyboard: Keyboard,
+    private renderer: Renderer2) {
+      
+      this.flag=true;
+      platform.registerBackButtonAction(() => { 
+        }); //Não  permite fechar o modal pelo backbutton
   }
+
+  changeFlag(){
+
+      if(this.keyboard.isOpen().valueOf() && this.flag){
+        this.flag=!this.flag;
+          const divForm: HTMLElement=document.getElementById('div-login');
+          this.renderer.setStyle(divForm,'height','100%');
+      }
+      if(!this.keyboard.isOpen().valueOf() && !this.flag){
+        const divForm: HTMLElement=document.getElementById('div-login');
+        this.renderer.setStyle(divForm,'height','55%');
+          this.flag=!this.flag;
+   
+      }
+  }
+
   ngOnInit() {
     this.formLogin = this.formBuilder.group({
       name: new FormControl('', [Validators.required]),
@@ -39,7 +67,6 @@ export class ModalLoginPage {
     });
   }
   ionViewDidLoad() {
-
   }
   ionViewWillLoad() {
 
@@ -54,6 +81,7 @@ export class ModalLoginPage {
     }
 
   }
+  
 
   loginGoogle() {
     if (this.platform.is('cordova')) {

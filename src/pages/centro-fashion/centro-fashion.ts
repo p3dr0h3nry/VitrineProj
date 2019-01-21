@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, AlertController, LoadingController, ModalController, Modal, ModalOptions, } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController, LoadingController, ModalController, Modal, ModalOptions, Keyboard, } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { ProfilePage } from '../profile/profile';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { _ParseAST } from '@angular/compiler';
 import { ScrollHideConfig } from '../../directives/hide-search/hide-search';
+import { StatusBar } from '@ionic-native/status-bar';
 
 
 @IonicPage()
@@ -62,8 +63,13 @@ export class CentroFashionPage {
     public events: Events,
     private authService: AuthServiceProvider,
     private alertCtrl: AlertController,
-    private modalCtrl: ModalController,
-    private loadCtrl: LoadingController) {
+    private loadCtrl: LoadingController,
+    private statusBar: StatusBar,
+    private keyboard: Keyboard) {
+    this.statusBar.show();
+    this.statusBar.overlaysWebView(false);
+    this.statusBar.backgroundColorByHexString('#F8F8F8');
+    this.statusBar.styleDefault();
     this.flagSearchFilter = false;
     this.filterDiv = false;
     this.searchStatus = false;
@@ -126,28 +132,6 @@ export class CentroFashionPage {
         //console.log(this.profileF);
       }
     }, 200);
-
-
-
-    // if (!localStorage.getItem('user')) { Já que somenta há usuários logados!
-    //   setTimeout(() => {
-    //     this.currentPage = this.navCtrl.getActive().name;
-    //     if (!sessionStorage.getItem('postsFilter')) {
-    //       this.getAllPostsFrom(this.currentPage, new Date);
-    //     } else {
-    //       setTimeout(() => {
-
-    //         // this.postsVariable = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('postsFilter'))))._body;
-    //         // this.postsVariable = JSON.parse(this.postsVariable).success;
-    //         // this.postsVariable = JSON.parse(JSON.stringify(this.postsVariable)).posts;
-    //         this.postsFilter = JSON.parse(sessionStorage.getItem('postsFilter'));
-    //       }, 100);
-
-
-    //     }
-    //   }, 50);
-
-    // }
     this.events.subscribe('filterProfile', (data) => {
       this.filterProfileData = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('filterProfile'))))._body;
       this.filterProfileData = JSON.parse(this.filterProfileData).success;
@@ -164,23 +148,6 @@ export class CentroFashionPage {
   toggle() {
     this.filterDiv = !this.filterDiv;
   }
-
-  // bookmarkModal() { desativando
-  //   //chamar todos os os favoritos
-  //   // const myModalOptions: ModalOptions = {
-  //   //   showBackdrop: true,
-  //   //   enableBackdropDismiss: true,
-  //   // };
-  //   const myModalData = { //isso é passado pra dentro do modal
-  //     name: 'teste',
-  //     algo: 'teste'
-  //   };
-  //   const bookModal: Modal = this.modalCtrl.create('ModalBookmarkPage', { data: myModalData }, { cssClass: "mymodal" });
-  //   bookModal.present();
-  //   // bookModal.onDidDismiss(data=>{
-  //   //   this.navCtrl.push.
-  //   // });
-  // }
 
   ionViewDidLoad() {
     if (!this.dataCategories || !this.dataSectors) {
@@ -334,9 +301,12 @@ export class CentroFashionPage {
     //console.log(prof_client_id);
     if (this.dataFavorites.fav_clients_id.indexOf(',' + prof_client_id) > -1) {
       this.dataToSetFavorite.client_id = this.dataFavorites.fav_clients_id.replace(',' + prof_client_id, '');
-    } else {
+    } else if (this.dataFavorites.fav_clients_id.indexOf(prof_client_id + ',') > -1) {
+      this.dataToSetFavorite.client_id = this.dataFavorites.fav_clients_id.replace(prof_client_id+',', '');
+    }else{
       this.dataToSetFavorite.client_id = this.dataFavorites.fav_clients_id.replace(prof_client_id, '');
     }
+    
     this.dataToSetFavorite.user_id = this.userDatails.user_id;
     this.dataToSetFavorite.fromm = this.currentPage;
     //console.log(this.dataToSetFavorite);
@@ -433,6 +403,7 @@ export class CentroFashionPage {
 
   }
   searchStores(ev: any) {
+
     this.initializerProfiles();
     let val = ev.target.value;
     //console.log(val);

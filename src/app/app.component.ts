@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { App, MenuController, Events, Nav, LoadingController, AlertController } from 'ionic-angular';
+import { App, MenuController, Events, Nav, LoadingController, AlertController, Platform } from 'ionic-angular';
 //Modulo do sistema
 import { WelcomePage } from '../pages/welcome/welcome';
 import { CentroFashionPage } from '../pages/centro-fashion/centro-fashion';
@@ -12,6 +12,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { Facebook } from '@ionic-native/facebook';
 import firebase from 'firebase';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { StatusBar } from '@ionic-native/status-bar';
 
 @Component({
   templateUrl: 'app.html',
@@ -47,17 +48,15 @@ export class MyApp implements OnInit {
     private alertCtrl: AlertController,
     private emailComposer: EmailComposer,
     private fb: Facebook,
-    private gplus:GooglePlus
+    private gplus:GooglePlus,
+    private statusBar: StatusBar
   ) {
     //this.logout();
-    //localStorage.clear();
     this.rootPage = WelcomePage;
-    //console.log("Component Carregado");
     this.tokenAtive = false;
-    
-    // console.log(sessionStorage.getItem('postsFilter'));
-    // console.log(sessionStorage.getItem('favorites'));
-    // console.log(sessionStorage.getItem('user'));
+    this.statusBar.hide();
+
+
     this.events.subscribe('root', data => {
       if (data == "CentroFashionPage") {
         this.thisPlace = "CentroFashionPage";
@@ -646,6 +645,7 @@ export class MyApp implements OnInit {
   logout() {
     sessionStorage.clear();
     localStorage.clear();
+    this.statusBar.hide();
     firebase.auth().signOut().then(() => {
       this.fb.logout();
       this.gplus.logout();

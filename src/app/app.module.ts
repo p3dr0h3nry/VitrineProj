@@ -76,6 +76,7 @@ firebase.initializeApp({
     HttpClientModule,
     BrowserAnimationsModule,
     IonicImageViewerModule,
+   
   ],
   bootstrap: [IonicApp],
   entryComponents: [

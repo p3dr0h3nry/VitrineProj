@@ -13,6 +13,7 @@ page-welcome {
         height: 100%;
         .imgUser{
             float: left;
+            width: 50px;
             border-radius: 30px;
             margin-right: 10px;
         }
@@ -23,10 +24,15 @@ page-welcome {
             background-color: rgba(255, 255, 255, 0.459);
             border-radius: 3px;
             padding: 10px;
+            display: table;
+            width: 100%;
+            
         }
         .mid_logo{
+            
             margin-top: 50%;
             text-align: center;
+            
         }
         .back_logo{
             position: relative;           
@@ -34,11 +40,21 @@ page-welcome {
             margin-top: auto;
             margin-bottom: auto;
         }
+        .infor{
+            //background-color: antiquewhite;
+            //position: absolute;
+           padding-top: 10px; 
+            display: table-cell;
+            width: 60%;
+            vertical-align: top;
+            
+        }
         .welcome_logo{
-            position: relative;           
+            display: table-cell;
+            //position: absolute;    
+            //float: left;       
             height: 100px;
-            margin-top: auto;
-            margin-bottom: auto;
+          
         }
         .menu{
             padding: 10px;

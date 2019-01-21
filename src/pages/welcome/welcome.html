@@ -1,35 +1,45 @@
 <ion-content padding id="welcome">
 
-    <!-- <div class="menu" *ngIf="userDatails">
-        <img class="imgUser" *ngIf="userDatails" [src]="userDatails.user_img" alt="">
-        <div class="tag_name" *ngIf="userDatails">
+    <div class="menu" *ngIf="userDatails">
+        <!-- <img class="imgUser" *ngIf="userDatails" [src]="userDatails.user_img" alt=""> -->
+        <!-- <div class="tag_name" *ngIf="userDatails">
             <h5>Olá, {{userDatails.user_firstname}} ! </h5>
-        </div>
-        <div class="login" *ngIf="!userDatails" (click)="login()">
+        </div> -->
+        <!-- <div class="login" *ngIf="!userDatails" (click)="login()">
             <ion-icon class="icon-sign-in" name="md-log-in"></ion-icon>
             <div class="span-log-in">
                 <span>Entrar</span>
             </div>
-        </div>
-        <div class="sign-in" *ngIf="!userDatails" (click)="signup()">
+        </div> -->
+        <!-- <div class="sign-in" *ngIf="!userDatails" (click)="signup()">
             <ion-icon class="icon-sign-in" name="ios-contact"></ion-icon>
             <div class="span-sign-in">
                 <span>Cadastro</span>
             </div>
-        </div>
+        </div> -->
 
-            <button  ion-button menuToggle icon-only menuToggle="right" persistent="true">
-                <ion-icon name="menu"></ion-icon>
-            </button>
+        <button ion-button menuToggle icon-only menuToggle="right" persistent="true">
+            <ion-icon name="menu"></ion-icon>
+        </button>
 
-    </div> -->
-    <div class="mid_logo">
-            <img src="assets/imgs/logo2.png" class="back_logo" (click)="goTo()">
+    </div>
+    <!-- <div class="mid_logo"> -->
+    <!-- <img src="assets/imgs/logo2.png" *ngIf="!userDatails" class="back_logo" (click)="goTo()"> -->
+    <!-- </div> -->
+    <div class="mid_align" *ngIf="userDatails">
+        <div style="display:table-row">
+            <img src="assets/imgs/logo2.png" class="welcome_logo" (click)="goTo()">
+            
+                <div class="infor" target="_system" href="geo:?q=-3.7190247,-38.5423505">
+                    <span>
+                        <img style="width: 15px; height: 15px;" src="assets/imgs/google-maps.png" (click)="loadMap()">
+                        Av. Filomeno Gomes, 430 - Jacarecanga, Fortaleza
+                    </span>
+                </div>
+            
         </div>
-     <!-- <div class="mid_align" *ngIf="userDatails">
-        <img src="assets/imgs/logo2.png" class="welcome_logo" (click)="goTo()">
-        <img style="width: 30px; height: 30px; margin-bottom: 30px; margin-left: 30px; position: relative;" src="assets/imgs/google-maps.png" (click)="loadMap()">
-    </div> -->
+        <!-- <img style="width: 30px; height: 30px; margin-bottom: 30px; margin-left: 30px; position: relative;" src="assets/imgs/google-maps.png" (click)="loadMap()"> -->
+    </div>
 
 </ion-content>
 <!-- <ion-nav [root]="rootPage"></ion-nav> -->

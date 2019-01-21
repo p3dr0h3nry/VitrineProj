@@ -117,7 +117,7 @@ export class WelcomePage {
 
           }
           else if(this.parseData.additionalUserInfo.providerId=="google.com"){ //Logado pelo Facebook
-            console.log("logado com gmail");
+            //console.log("logado com gmail");
             this.newUserData.name = this.parseData.user.displayName;
             this.newUserData.email = this.parseData.user.email;
             this.newUserData.img = this.parseData.user.photoURL;
@@ -188,9 +188,9 @@ export class WelcomePage {
         setTimeout(() => {
           this.events.publish('updateUserData',JSON.stringify(result));
         }, 50);
-        setTimeout(() => {
-          this.goTo();
-        }, 50);
+        // setTimeout(() => {
+        //   this.goTo();
+        // }, 50);
 
       } else {
         this.loader.dismiss();

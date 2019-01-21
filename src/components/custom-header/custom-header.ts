@@ -41,14 +41,14 @@ export class CustomHeaderComponent {
   }
   back() { //está retornando para paginas principais.
     //console.log(this.navCtrl.getPrevious().name);
-    if (this.navCtrl.getPrevious().name == "WelcomePage") {
+    // if (this.navCtrl.getPrevious().name == "WelcomePage") {
 
-    } else {
-      if (this.navCtrl.getPrevious().name != "CentroFashionPage" && this.navCtrl.getPrevious().name != "ProfilePage") {
+    // } else {
+      if (this.navCtrl.getPrevious().name != "CentroFashionPage" && this.navCtrl.getPrevious().name != "WelcomePage" && this.navCtrl.getPrevious().name != "ProfilePage") {
         this.navCtrl.remove(this.navCtrl.getPrevious().index);
       }
       setTimeout(() => this.navCtrl.pop(), 150);
-    }
+    // }
 
   }
   backToRoot() {
