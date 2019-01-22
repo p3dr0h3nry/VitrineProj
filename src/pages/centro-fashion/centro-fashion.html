@@ -1,6 +1,12 @@
 <custom-header>
 </custom-header>
 <!-- <filter-bar></filter-bar> -->
+<!-- <ion-fab right top >
+  <ion-icon class="fab-bookmark" name="md-bookmark" menuToggle="left" *ngIf="flagBookmark" >
+      <ion-icon name="md-star" class="top-star"></ion-icon>
+  </ion-icon>
+</ion-fab> -->
+
 <ion-list class="search-list" *ngIf="searchStatus" [@searchStatusChanged]="searchStatus ? 'show':'hidden'">
   <ion-item *ngFor="let prof of profileF" (click)="openProfile(prof.prof_client_id)">
     <span>{{prof.prof_name }}</span>
@@ -37,12 +43,7 @@
 </div>
 <ion-content #pageContent padding class="centroFashion" fullscreen >
     
-    <ion-fab left top *ngIf="flagBookmark" menuToggle="left">
-        <div class="fab-bookmark" ion-fab  >
-            <ion-icon name="md-star"></ion-icon>
-        </div>
-      </ion-fab>
-      
+     
     <div ion-fixed class="balloon">
       <img src="../../assets/imgs/logo_natal2.png">
     </div>

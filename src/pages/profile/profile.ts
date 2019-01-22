@@ -373,8 +373,8 @@ export class ProfilePage {
       mediaType: this.camera.MediaType.PICTURE,
      // targetHeight: 500,
       // targetWidth: 600,
-      targetHeight: 600,
-      targetWidth: 800,
+      targetHeight: 764,
+      targetWidth: 1028,
 
       saveToPhotoAlbum: true,
     }
@@ -400,8 +400,8 @@ export class ProfilePage {
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       // targetHeight: 500,
       // targetWidth: 600,
-      targetHeight: 600,
-      targetWidth: 800,
+      targetHeight: 764,
+      targetWidth: 1028,
       saveToPhotoAlbum: true,
       allowEdit: true
     }

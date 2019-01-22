@@ -656,6 +656,7 @@ export class MyApp implements OnInit {
     });
     
   }
+  
   backToWelcome() {
     //this.menuCtrl.toggle();
     setTimeout(() => {

@@ -95,10 +95,16 @@ export class CentroFashionPage {
         this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
 
         if (this.dataFavorites.fav_clients_id == '') {
-
-          this.flagBookmark = false;
+          setTimeout(() => {
+            this.events.publish('flag-bookmark',false);
+          }, 300);
+          
+          //this.flagBookmark = false;
         } else {
-          this.flagBookmark = true;
+          setTimeout(() => {
+            this.events.publish('flag-bookmark',true);
+          }, 300);
+          //this.flagBookmark = true;
         }
       }
       setTimeout(() => {
@@ -176,9 +182,11 @@ export class CentroFashionPage {
         this.dataFavorites = JSON.parse(this.dataFavorites).success;
         this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
         if (this.dataFavorites.fav_clients_id == '') {
-          this.flagBookmark = false;
+          this.events.publish('flag-bookmark',false);
+          // this.flagBookmark = false;
         } else {
-          this.flagBookmark = true;
+          this.events.publish('flag-bookmark',true);
+          // this.flagBookmark = true;
         }
 
       } else {
@@ -321,9 +329,11 @@ export class CentroFashionPage {
         this.dataFavorites = JSON.parse(this.dataFavorites).success;
         this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
         if (this.dataFavorites.fav_clients_id == '') {
-          this.flagBookmark = false;
+          //this.flagBookmark = false;
+          this.events.publish('flag-bookmark',false);
         } else {
-          this.flagBookmark = true;
+          this.events.publish('flag-bookmark',true);
+          //this.flagBookmark = true;
         }
         sessionStorage.setItem('favorites', JSON.stringify(this.responsePost));
         setTimeout(() => {
@@ -372,9 +382,11 @@ export class CentroFashionPage {
         this.dataFavorites = JSON.parse(this.dataFavorites).success;
         this.dataFavorites = JSON.parse(JSON.stringify(this.dataFavorites)).favorites;
         if (this.dataFavorites.fav_clients_id == '') {
-          this.flagBookmark = false;
+          //this.flagBookmark = false;
+          this.events.publish('flag-bookmark',false);
         } else {
-          this.flagBookmark = true;
+          this.events.publish('flag-bookmark',true);
+          //this.flagBookmark = true;
         }
         sessionStorage.setItem('favorites', JSON.stringify(this.responsePost));
         setTimeout(() => {

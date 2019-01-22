@@ -103,7 +103,12 @@
     <plugin name="cordova-plugin-googleplus" spec="5.3.2">
         <variable name="REVERSED_CLIENT_ID" value="777132893216-s2ekt8nf08l9d8ebeer3o1rpghipjfq1.apps.googleusercontent.com" />
     </plugin>
+    <plugin name="cordova-plugin-email-composer" spec="0.8.15" />
+    <plugin name="cordova-plugin-buildinfo" spec="2.0.2" />
+    <plugin name="cordova-universal-links-plugin" />
+    <plugin name="cordova-plugin-browsertab" spec="0.2.0" />
+    <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
     <engine name="browser" spec="5.0.4" />
-    <engine name="android" spec="^7.0.0" />
+    <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.5" />
 </widget>

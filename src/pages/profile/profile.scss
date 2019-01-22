@@ -67,7 +67,7 @@ page-profile {
             //width: 100%;
             height: 140px;
             margin-left: 0px;
-            background-color: #25d366;
+            background-color: #ffffff;
             
 
         }
@@ -75,11 +75,23 @@ page-profile {
         .headerImg{
             //object-position: 10% 50%;
             object-fit: fill;
-            width: 100%;
-            height: 100%;
+            width: 80px;
+            height: 80px;
+            //border-radius: 50px;
             //position: relative;
             overflow: hidden;
+            margin: 20px;
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
             
+            
+        }
+        .prof_title{
+            margin: 20px;
+            margin-bottom: 40px;
+            font-size: 25px;
+            //position: absolute;
             
         }
         .photo{
@@ -103,7 +115,7 @@ page-profile {
             //margin-top:2px;
             width: 100%; 
             height: 40px; 
-            padding: 6px;
+            //padding: 6px;
             //background-color: #fdf497;
             position: absolute;
         }
@@ -205,9 +217,10 @@ page-profile {
             //float: left;
             //margin: 10px;
             width: 100%;
-            padding: 10px;
-            height: 70px;
-            background-color: rgba(255, 255, 255, 0.479);
+            //padding: 10px;
+            padding-top: 5px;
+            height: 40px;
+            background-color: rgb(255, 255, 255);
             box-shadow: 0px 3px 10px rgba(0,0,0,.25);
             
         }
@@ -256,7 +269,7 @@ page-profile {
         .selected_Img{
             object-fit: cover;
             width: 100%;
-            height: 100%;
+            height: 300px;
 
         }
 
@@ -274,6 +287,9 @@ page-profile {
             margin-bottom: 15px;
             margin-left: 0px;
             width: 100%;
+            height: 300px;
+            object-fit: inherit;
+            overflow: auto;
             -webkit-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
             -moz-box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
             box-shadow: 7px 6px 5px -3px rgba(0,0,0,0.54);
@@ -315,14 +331,14 @@ page-profile {
         }
         .icon-pin{
             width: 30px;
-            height: 30px;
+            //height: 30px;
             border-radius: 20px;
             float: left;
             background-color: rgba(223, 157, 157, 0.178);
             padding-top: 3px;
             padding-left: 8px;
-            margin-top: -6px;
-            margin-right: 5px;
+            margin-top: 10px;
+ 
         }
         .pin{
             color: red;
@@ -353,7 +369,7 @@ page-profile {
           .div-sector{
             float: left;
             margin-top: 5px;
-            margin-right: 2%;
+            //margin-right: 2%;
             //background-color: aqua;
             width: 100%;
 
@@ -377,11 +393,12 @@ page-profile {
             //   margin-top: -5px; 
               margin-left: 5px;
               float: left;
+              margin-top: 10px;
         
           }
           .sector_name{
             margin-left: 8px;
-            margin-top: 2px;
+            margin-top: 15px;
               //position: absolute;
             float: left;
           }

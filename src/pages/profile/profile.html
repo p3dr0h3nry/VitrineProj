@@ -3,49 +3,79 @@
 
 <ion-content class="content-profile">
   <div class="profileHeader">
-    <!-- <ion-card-content class="content-img"> -->
-    <div right class="photo" (click)="selectImgFrom('imgProfile')" *ngIf="editPermission">
-      <ion-icon name="md-create"></ion-icon>
-    </div>
-    <img *ngIf="profileDatails.prof_img" [src]="profileDatails.prof_img | showPipe" class="headerImg">
-    <img *ngIf="!profileDatails.prof_img" src="../../assets/imgs/nophoto.png" class="headerImg">
-    <!-- </ion-card-content> -->
-  </div>
-  
+    <table style="width: 100%;">
+      <tbody>
 
-  <div class="perfil_name" >
-    <div class="icon-pin">
-      <ion-icon name="pin" class="pin"></ion-icon>
-    </div>
-    <span>{{profileDatails.prof_address}}</span>
-    <div class="div-sector">
-        <span style="float: left; margin-top:3px;">Setor</span>
-        <div class="color-sector {{profileDatails.sector_color}}"></div>
-        <span class="sector_name">{{profileDatails.sector_name}}</span>
-    </div>
+        <tr >
+
+
+        <td>
+          <div right class="photo" (click)="selectImgFrom('imgProfile')" *ngIf="editPermission">
+            <ion-icon name="md-create"></ion-icon>
+          </div>
+          <img *ngIf="profileDatails.prof_img" [src]="profileDatails.prof_img | showPipe" class="headerImg">
+          <img *ngIf="!profileDatails.prof_img" src="../../assets/imgs/nophoto.png" class="headerImg">
+        </td>
+
+        <td style=" padding: 5px; vertical-align: text-top;">
+            <tr style=" margin-bottom: 20px;">
+                <span class="prof_title">
+                  {{profileDatails.prof_name}}
+                </span>
+              </tr>
+              <hr>
+          <tr>
+  
+            <img style="width: 30px; height: 30px; float: left;" src="assets/imgs/google-maps.png">
+            <span style="margin-top: 7px; margin-left: 5px; float: left;">{{profileDatails.prof_address}}</span>
+          </tr>
+          <tr>
+
+              <!-- <span style="float: left; margin-top:3px;">Setor</span> -->
+              <div class="icon-pin">
+                  <ion-icon name="pin" class="pin"></ion-icon>
+                </div>
+              <span style="float: left; margin-left: 5px; margin-top: 15px;">Setor:</span>
+              <span class="sector_name">{{profileDatails.sector_name}}</span>
+              <div class="color-sector {{profileDatails.sector_color}}"></div>
+              
+
+          </tr>
+        </td>
+        </tr>
+
+
+        <!-- </ion-card-content> -->
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="perfil_name">
+
     <div class="social">
-                <a href="https://twitter.com/{{profileDatails.prof_tw}}" *ngIf="profileDatails.prof_tw">
-                  <div class="tw">
-                    <ion-icon name="logo-twitter" class="twitter"></ion-icon>
-                  </div>
-                </a>
-      
-                <a href="https://wa.me/55{{profileDatails.prof_phone}}">
-                  <div class="whatsApp">
-                    <ion-icon name="logo-whatsapp" class="fab fa-whatsapp fa-7x" class="twitter" *ngIf="profileDatails.prof_phone"></ion-icon>
-                  </div>
-                </a>
-                <a href="https://www.facebook.com/{{profileDatails.prof_face}}" *ngIf="profileDatails.prof_face">
-                  <div class="outFace">
-                    <ion-icon class="facebook"></ion-icon>
-                  </div>
-                </a>
-                <a href="https://www.instagram.com/{{profileDatails.prof_inst}}" *ngIf="profileDatails.prof_inst">
-                  <div class="">
-                    <ion-icon name="logo-instagram" class="instagram"></ion-icon>
-                  </div>
-                </a>
+      <a href="https://twitter.com/{{profileDatails.prof_tw}}" *ngIf="profileDatails.prof_tw">
+        <div class="tw">
+          <ion-icon name="logo-twitter" class="twitter"></ion-icon>
         </div>
+      </a>
+
+      <a href="https://wa.me/55{{profileDatails.prof_phone}}" *ngIf="profileDatails.prof_phone">
+        <div class="whatsApp">
+          <ion-icon name="logo-whatsapp" class="fab fa-whatsapp fa-7x" class="twitter" ></ion-icon>
+        </div>
+      </a>
+      <a href="https://www.facebook.com/{{profileDatails.prof_face}}" *ngIf="profileDatails.prof_face">
+        <div class="outFace">
+          <ion-icon class="facebook"></ion-icon>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/{{profileDatails.prof_inst}}" *ngIf="profileDatails.prof_inst">
+        <div class="">
+          <ion-icon name="logo-instagram" class="instagram"></ion-icon>
+        </div>
+      </a>
+    </div>
   </div>
 
   <div class="container-newPoste">
@@ -74,17 +104,17 @@
       </div>
     </div>
   </div>
-    <!-- Exibição de postagens -->
-    <div class="posts">
-      <ion-card *ngFor="let post of postsDatails" class="card_post">
-        <img [src]="post.post_img | showPipe" class="card_img" imageViewer *ngIf="editPermission" (press)="deletePost(post.post_id)">
-        <img [src]="post.post_img | showPipe" class="card_img" imageViewer *ngIf="!editPermission">
-      </ion-card>
-    </div>
-  
+  <!-- Exibição de postagens -->
+  <div class="posts">
+    <ion-card *ngFor="let post of postsDatails" class="card_post">
+      <img [src]="post.post_img | showPipe" class="card_img" imageViewer *ngIf="editPermission" (press)="deletePost(post.post_id)">
+      <img [src]="post.post_img | showPipe" class="card_img" imageViewer *ngIf="!editPermission">
+    </ion-card>
+  </div>
+
   <ion-fab bottom right class="fab-newPost" *ngIf="editPermission">
-      <button ion-fab (click)="toggle()" color="{{profileDatails.sector_color}}">
-        <ion-icon name="ios-create-outline"></ion-icon>
-      </button>
-    </ion-fab>
+    <button ion-fab (click)="toggle()" color="{{profileDatails.sector_color}}">
+      <ion-icon name="ios-create-outline"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>

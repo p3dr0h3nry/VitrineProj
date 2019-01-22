@@ -19,8 +19,10 @@ export class CustomHeaderComponent {
   text: string;
   header_data: any;
   public menu: Menu;
+  flagBookmark;
 
   constructor(public events: Events, public navCtrl: NavController, public menuCtrl: MenuController, public app: App) {
+    this.flagBookmark = false;
     if (localStorage.getItem('user')) {
       //console.log("Lendo header com usuário");
       this.userDatails = JSON.parse(JSON.stringify(JSON.parse(localStorage.getItem('user'))))._body;
@@ -29,6 +31,11 @@ export class CustomHeaderComponent {
     } else {
       //console.log("Lendo header sem usuário");
     }
+
+    this.events.subscribe('flag-bookmark', (data) => {
+      this.flagBookmark=data;
+    });
+
   }
 
 

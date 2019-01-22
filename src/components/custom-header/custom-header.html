@@ -1,9 +1,10 @@
 
 <ion-header class="ionheader">
   <ion-toolbar class="toolbar">
-      <!-- <button id="menuBook"  ion-button menuToggle="left" style="margin-left:10px;" left icon-only persistent="true" [disabled]="!userDatails">
-          <ion-icon name="menu"></ion-icon>
-      </button> -->
+
+      <ion-icon class="fab-bookmark" name="md-bookmark" menuToggle="left" *ngIf="flagBookmark" >
+        <ion-icon name="md-star" class="top-star"></ion-icon>
+    </ion-icon>
     <button id="menuSystem"  ion-button menuToggle="right" style="margin-right:10px;" right icon-only persistent="true" [disabled]="!userDatails">
         <ion-icon name="menu"></ion-icon>
     </button>
